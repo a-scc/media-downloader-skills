@@ -52,7 +52,7 @@ def write_timestamps(filepaths, ts):
     jpg_heic = [f for f in filepaths if f.lower().endswith((".jpg", ".jpeg", ".heic"))]
     pngs = [f for f in filepaths if f.lower().endswith(".png")]
     # XMP 需要 ISO 8601 带时区格式：2026-10-02T18:26:12+08:00
-    ts_xmp = ts[0:4] + "-" + ts[5:7] + "-" + ts[8:10] + "T" + ts[11:16] + ":00+08:00"
+    ts_xmp = ts[0:4] + "-" + ts[5:7] + "-" + ts[8:10] + "T" + ts[11:19] + "+08:00"
     try:
         if jpg_heic:
             subprocess.run([EXIFTOOL, "-overwrite_original",
