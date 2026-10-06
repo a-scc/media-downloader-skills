@@ -36,7 +36,7 @@ def write_timestamps(filepaths, ts):
     jpg_heic = [f for f in filepaths if f.lower().endswith((".jpg", ".jpeg", ".heic"))]
     pngs = [f for f in filepaths if f.lower().endswith(".png")]
     # XMP 需要 ISO 8601 带时区格式：2026-07-05T15:33:12+08:00
-    ts_xmp = ts[0:4] + "-" + ts[5:7] + "-" + ts[8:10] + "T" + ts[11:16] + ":00+08:00"
+    ts_xmp = ts[0:4] + "-" + ts[5:7] + "-" + ts[8:10] + "T" + ts[11:19] + "+08:00"
     try:
         if jpg_heic:
             subprocess.run([EXIFTOOL, "-overwrite_original",
@@ -275,11 +275,6 @@ def fetch_status(session, status_id):
         if url and not any(f["url"] == url for f in files):
             files.append({"url": url, "type": "video"})
 
-    # 编号文件名
-    for i, f in enumerate(files, 1):
-        ext = "mp4" if f["type"] == "video" else "jpg"
-        f["filename"] = f"{prefix}_{i:02d}.{ext}"
-
     # 发布时间：created_at 是 "Sun Jul 05 15:33:00 +0800 2026" 格式
     created_at = data.get("created_at", "")
     publish_time_str = ""
@@ -289,6 +284,13 @@ def fetch_status(session, status_id):
             publish_time_str = dt.strftime("%Y:%m:%d %H:%M:%S")
         except ValueError:
             pass
+    # 日期用 YYYYMMDD（Windows 文件名不认冒号）
+    date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
+
+    # 编号文件名
+    for i, f in enumerate(files, 1):
+        ext = "mp4" if f["type"] == "video" else "jpg"
+        f["filename"] = f"{prefix}_{i:02d}_{date_part}.{ext}"
 
     return {
         "success": True,
