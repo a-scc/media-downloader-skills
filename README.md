@@ -39,7 +39,7 @@ python3 douyin/story.py --out-dir /tmp/douyin_story
 
 ### 微博 (`weibo/`)
 
-- 图片：`largest` 原图档，带 Referer 下载（代码版即手动链路，无画质差）
+- 图片：`largest` 原图档，带 Referer 下载
 - 时间戳：`created_at` 字符串自动转换
 
 ```bash
@@ -48,7 +48,7 @@ python3 weibo/download.py "<微博链接>" --out-dir /tmp/weibo
 
 ### 小红书 (`xiaohongshu/`)
 
-- 优先级：(1) 代码版拿 CDN 源文件（HEIC/PNG/JPEG 原样）；(2) 手动 q/100 转码备用
+- 直接拿 CDN 源文件（HEIC/PNG/JPEG 原样）
 - 原理：从 `__INITIAL_STATE__` 提取裸 fileId，剥掉图片处理参数，直取对象存储源文件
 - 按文件魔数判定真实后缀，不信 CDN 的 content-type
 - 时间戳：`note.time`
