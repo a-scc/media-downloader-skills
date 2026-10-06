@@ -1,1 +1,6 @@
-X19weWNhY2hlX18vCioucHljCioucHlvCnN0b3JhZ2UvCi0tb3V0LWRpci8KLkRTX1N0b3JlCg==
+__pycache__/
+*.pyc
+*.pyo
+storage/
+--out-dir/
+.DS_Store
