@@ -299,7 +299,9 @@ def parse_detail_api(data: dict) -> dict | None:
                 ext = "jpeg" if (".jpeg?" in best_url or ".jpg?" in best_url) else "webp"
                 name_part = _safe_name(nickname, 12)
                 desc_part = _safe_name(desc, 18)
-                filename = f"{name_part}_{desc_part}_{i + 1}.{ext}"
+                # 日期用 YYYYMMDD（Windows 文件名不认冒号）
+                date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
+                filename = f"{name_part}_{desc_part}_{i + 1}_{date_part}.{ext}"
                 # 期望尺寸（API 自带，用于校验 CDN 档位）
                 exp_w = img.get("width") or 0
                 exp_h = img.get("height") or 0
@@ -429,6 +431,13 @@ def parse_content(data: dict) -> dict | None:
 
         desc = item.get("desc", "无标题")
         nickname = item.get("author", {}).get("nickname", "未知作者")
+        # 发布时间（Unix 秒），转 YYYYMMDD（Windows 文件名不认冒号）
+        create_ts = item.get("create_time")
+        if create_ts:
+            dt = datetime.fromtimestamp(create_ts, timezone(timedelta(hours=8)))
+            date_part = dt.strftime("%Y%m%d")
+        else:
+            date_part = "nodate"
 
         # 判断类型：有 images 就是图文，否则是视频
         images = item.get("images", [])
@@ -448,7 +457,7 @@ def parse_content(data: dict) -> dict | None:
                 ext = "jpeg" if (".jpeg?" in best_url or ".jpg?" in best_url) else "webp"
                 name_part = _safe_name(nickname, 12)
                 desc_part = _safe_name(desc, 18)
-                filename = f"{name_part}_{desc_part}_{i + 1}.{ext}"
+                filename = f"{name_part}_{desc_part}_{i + 1}_{date_part}.{ext}"
                 # 期望尺寸（API 自带，用于校验 CDN 档位）
                 exp_w = img.get("width") or 0
                 exp_h = img.get("height") or 0
