@@ -1,1 +1,278 @@
-aW1wb3J0IGFyZ3BhcnNlCmltcG9ydCBqc29uCmltcG9ydCBvcwppbXBvcnQgc3RydWN0CmZyb20gaW8gaW1wb3J0IEJ5dGVzSU8KZnJvbSB0eXBpbmcgaW1wb3J0IEl0ZXJhYmxlLCBMaXN0LCBPcHRpb25hbCwgVHVwbGUKZnJvbSB1cmxsaWIucGFyc2UgaW1wb3J0IHVucXVvdGUsIHVybHBhcnNlCgppbXBvcnQgcmVxdWVzdHMKCgpERUZBVUxUX0hPU1RTID0gWwogICAgImh0dHBzOi8vc25zLWltZy1xYy54aHNjZG4uY29tIiwKICAgICJodHRwczovL3Nucy1pbWctYmQueGhzY2RuLmNvbSIsCiAgICAiaHR0cHM6Ly9zbnMtaW1nLWh3Lnhoc2Nkbi5jb20iLAogICAgImh0dHBzOi8vc25zLWltZy1xbi54aHNjZG4uY29tIiwKICAgICJodHRwczovL3Nucy1uYS1pMS54aHNjZG4uY29tIiwKICAgICJodHRwczovL3Nucy1uYS1pMi54aHNjZG4uY29tIiwKICAgICJodHRwczovL2NpLnhpYW9ob25nc2h1LmNvbSIsCl0KUFJFVklFV19NQVJLRVJTID0gKAogICAgIiFuZF8iLAogICAgIldCX1BSViIsCiAgICAiV0JfREZUIiwKICAgICJpbWFnZVZpZXcyIiwKICAgICJ3YXRlcm1hcmsiLAogICAgInNucy13ZWJwaWMiLAopCgoKZGVmIGNsYXNzaWZ5X2lucHV0KHZhbHVlOiBzdHIpIC0+IHN0cjoKICAgIGxvd2VyID0gdmFsdWUubG93ZXIoKQogICAgaWYgbG93ZXIuc3RhcnRzd2l0aCgiaHR0cDovLyIpIG9yIGxvd2VyLnN0YXJ0c3dpdGgoImh0dHBzOi8vIik6CiAgICAgICAgaWYgYW55KG1hcmtlci5sb3dlcigpIGluIGxvd2VyIGZvciBtYXJrZXIgaW4gUFJFVklFV19NQVJLRVJTKToKICAgICAgICAgICAgcmV0dXJuICJwcmV2aWV3X3VybCIKICAgICAgICBpZiAieGhzY2RuLmNvbSIgaW4gbG93ZXIgb3IgInhoc2NpLmNvbSIgaW4gbG93ZXI6CiAgICAgICAgICAgIHJldHVybiAicmF3X3VybCIKICAgICAgICByZXR1cm4gInVybCIKICAgIHJldHVybiAicmF3X2tleSIKCgpkZWYgY2xhc3NpZnlfZmluYWxfdXJsKHZhbHVlOiBzdHIpIC0+IHN0cjoKICAgIGxvd2VyID0gdmFsdWUubG93ZXIoKQogICAgaWYgYW55KG1hcmtlci5sb3dlcigpIGluIGxvd2VyIGZvciBtYXJrZXIgaW4gUFJFVklFV19NQVJLRVJTKToKICAgICAgICByZXR1cm4gInByZXZpZXdfdXJsIgogICAgaWYgInhoc2Nkbi5jb20iIGluIGxvd2VyIG9yICJ4aHNjaS5jb20iIGluIGxvd2VyOgogICAgICAgIHJldHVybiAib3JpZ2luYWxfdXJsIgogICAgcmV0dXJuICJ1bmtub3duX3VybCIKCgpkZWYgZXh0cmFjdF9yYXdfa2V5KHZhbHVlOiBzdHIpIC0+IHN0cjoKICAgIGtpbmQgPSBjbGFzc2lmeV9pbnB1dCh2YWx1ZSkKICAgIGlmIGtpbmQgPT0gInJhd19rZXkiOgogICAgICAgIHJldHVybiB2YWx1ZS5zdHJpcCgpCgogICAgcGFyc2VkID0gdXJscGFyc2UodmFsdWUpCiAgICBwYXRoID0gdW5xdW90ZShwYXJzZWQucGF0aCBvciAiIikuc3RyaXAoIi8iKQogICAgaWYgbm90IHBhdGg6CiAgICAgICAgcmFpc2UgVmFsdWVFcnJvcihmImNhbm5vdCBleHRyYWN0IHJhdyBrZXkgZnJvbToge3ZhbHVlfSIpCgogICAga2V5ID0gcGF0aC5zcGxpdCgiLyIpWy0xXQogICAgaWYgIiEiIGluIGtleToKICAgICAgICBrZXkgPSBrZXkuc3BsaXQoIiEiLCAxKVswXQogICAgaWYgIj8iIGluIGtleToKICAgICAgICBrZXkgPSBrZXkuc3BsaXQoIj8iLCAxKVswXQogICAgcmV0dXJuIGtleQoKCmRlZiBidWlsZF9jYW5kaWRhdGVfdXJscyhyYXdfa2V5OiBzdHIsIGhvc3RzOiBJdGVyYWJsZVtzdHJdKSAtPiBMaXN0W3N0cl06CiAgICBrZXkgPSByYXdfa2V5LmxzdHJpcCgiLyIpCiAgICB1cmxzID0gW10KICAgIGZvciBob3N0IGluIGhvc3RzOgogICAgICAgIGJhc2UgPSBob3N0LnJzdHJpcCgiLyIpCiAgICAgICAgdXJscy5hcHBlbmQoZiJ7YmFzZX0vbm90ZXNfcHJlX3Bvc3Qve2tleX0iKQogICAgICAgIHVybHMuYXBwZW5kKGYie2Jhc2V9L3trZXl9IikKICAgICAgICAjIExpdmUgUGhvdG/vvIjlrp7lhrXvvInotbAgbm90ZV9wcmVfcG9zdF91aGRyIOi3r+W+hO+8iOazqOaEj+WNleaVsCBub3Rl77yJCiAgICAgICAgdXJscy5hcHBlbmQoZiJ7YmFzZX0vbm90ZV9wcmVfcG9zdF91aGRyL3trZXl9IikKICAgIHJldHVybiB1cmxzCgoKZGVmIHNuaWZmX3NpemUoY29udGVudDogYnl0ZXMsIGNvbnRlbnRfdHlwZTogc3RyKSAtPiBPcHRpb25hbFtUdXBsZVtpbnQsIGludF1dOgogICAgaWYgY29udGVudC5zdGFydHN3aXRoKGIiXHg4OVBOR1xyXG5ceDFhXG4iKSBhbmQgbGVuKGNvbnRlbnQpID49IDI0OgogICAgICAgIHdpZHRoLCBoZWlnaHQgPSBzdHJ1Y3QudW5wYWNrKCI+SUkiLCBjb250ZW50WzE2OjI0XSkKICAgICAgICByZXR1cm4gd2lkdGgsIGhlaWdodAoKICAgIGlmIGNvbnRlbnQuc3RhcnRzd2l0aChiIlx4ZmZceGQ4Iik6CiAgICAgICAgc3RyZWFtID0gQnl0ZXNJTyhjb250ZW50KQogICAgICAgIHN0cmVhbS5yZWFkKDIpCiAgICAgICAgd2hpbGUgVHJ1ZToKICAgICAgICAgICAgbWFya2VyX3ByZWZpeCA9IHN0cmVhbS5yZWFkKDEpCiAgICAgICAgICAgIGlmIG5vdCBtYXJrZXJfcHJlZml4OgogICAgICAgICAgICAgICAgYnJlYWsKICAgICAgICAgICAgaWYgbWFya2VyX3ByZWZpeCAhPSBiIlx4ZmYiOgogICAgICAgICAgICAgICAgY29udGludWUKICAgICAgICAgICAgbWFya2VyID0gc3RyZWFtLnJlYWQoMSkKICAgICAgICAgICAgd2hpbGUgbWFya2VyID09IGIiXHhmZiI6CiAgICAgICAgICAgICAgICBtYXJrZXIgPSBzdHJlYW0ucmVhZCgxKQogICAgICAgICAgICBpZiBtYXJrZXIgaW4gewogICAgICAgICAgICAgICAgYiJceGMwIiwKICAgICAgICAgICAgICAgIGIiXHhjMSIsCiAgICAgICAgICAgICAgICBiIlx4YzIiLAogICAgICAgICAgICAgICAgYiJceGMzIiwKICAgICAgICAgICAgICAgIGIiXHhjNSIsCiAgICAgICAgICAgICAgICBiIlx4YzYiLAogICAgICAgICAgICAgICAgYiJceGM3IiwKICAgICAgICAgICAgICAgIGIiXHhjOSIsCiAgICAgICAgICAgICAgICBiIlx4Y2EiLAogICAgICAgICAgICAgICAgYiJceGNiIiwKICAgICAgICAgICAgICAgIGIiXHhjZCIsCiAgICAgICAgICAgICAgICBiIlx4Y2UiLAogICAgICAgICAgICAgICAgYiJceGNmIiwKICAgICAgICAgICAgfToKICAgICAgICAgICAgICAgIGJsb2NrID0gc3RyZWFtLnJlYWQoNykKICAgICAgICAgICAgICAgIGlmIGxlbihibG9jaykgPj0gNToKICAgICAgICAgICAgICAgICAgICBoZWlnaHQsIHdpZHRoID0gc3RydWN0LnVucGFjaygiPkhIIiwgYmxvY2tbMTo1XSkKICAgICAgICAgICAgICAgICAgICByZXR1cm4gd2lkdGgsIGhlaWdodAogICAgICAgICAgICAgICAgYnJlYWsKICAgICAgICAgICAgc2l6ZV9ieXRlcyA9IHN0cmVhbS5yZWFkKDIpCiAgICAgICAgICAgIGlmIGxlbihzaXplX2J5dGVzKSAhPSAyOgogICAgICAgICAgICAgICAgYnJlYWsKICAgICAgICAgICAgYmxvY2tfc2l6ZSA9IHN0cnVjdC51bnBhY2soIj5IIiwgc2l6ZV9ieXRlcylbMF0KICAgICAgICAgICAgc3RyZWFtLnNlZWsobWF4KGJsb2NrX3NpemUgLSAyLCAwKSwgb3MuU0VFS19DVVIpCgogICAgaWYgY29udGVudC5zdGFydHN3aXRoKGIiUklGRiIpIGFuZCBjb250ZW50Wzg6MTJdID09IGIiV0VCUCIgYW5kIGxlbihjb250ZW50KSA+PSAzMDoKICAgICAgICBjaHVua190eXBlID0gY29udGVudFsxMjoxNl0KICAgICAgICBpZiBjaHVua190eXBlID09IGIiVlA4WCIgYW5kIGxlbihjb250ZW50KSA+PSAzMDoKICAgICAgICAgICAgd2lkdGggPSAxICsgaW50LmZyb21fYnl0ZXMoY29udGVudFsyNDoyN10sICJsaXR0bGUiKQogICAgICAgICAgICBoZWlnaHQgPSAxICsgaW50LmZyb21fYnl0ZXMoY29udGVudFsyNzozMF0sICJsaXR0bGUiKQogICAgICAgICAgICByZXR1cm4gd2lkdGgsIGhlaWdodAoKICAgIGlmIGNvbnRlbnRfdHlwZS5zdGFydHN3aXRoKCJpbWFnZS8iKToKICAgICAgICByZXR1cm4gTm9uZQogICAgcmV0dXJuIE5vbmUKCgpkZWYgcHJvYmUoc2Vzc2lvbjogcmVxdWVzdHMuU2Vzc2lvbiwgdXJsOiBzdHIsIHRpbWVvdXQ6IGludCA9IDIwKSAtPiBUdXBsZVtib29sLCBkaWN0XToKICAgIHRyeToKICAgICAgICByID0gc2Vzc2lvbi5nZXQodXJsLCB0aW1lb3V0PXRpbWVvdXQsIHN0cmVhbT1UcnVlKQogICAgICAgIHIucmFpc2VfZm9yX3N0YXR1cygpCiAgICAgICAgY29udGVudF90eXBlID0gKHIuaGVhZGVycy5nZXQoImNvbnRlbnQtdHlwZSIpIG9yICIiKS5sb3dlcigpCiAgICAgICAgYm9keSA9IHIucmF3LnJlYWQoNTEyICogMTAyNCwgZGVjb2RlX2NvbnRlbnQ9VHJ1ZSkKICAgICAgICBpbmZvID0gewogICAgICAgICAgICAidXJsIjogdXJsLAogICAgICAgICAgICAic3RhdHVzIjogci5zdGF0dXNfY29kZSwKICAgICAgICAgICAgImNvbnRlbnRfdHlwZSI6IGNvbnRlbnRfdHlwZSwKICAgICAgICAgICAgImJ5dGVzX3NhbXBsZWQiOiBsZW4oYm9keSksCiAgICAgICAgICAgICJzaXplIjogc25pZmZfc2l6ZShib2R5LCBjb250ZW50X3R5cGUpLAogICAgICAgICAgICAidXJsX2tpbmQiOiBjbGFzc2lmeV9maW5hbF91cmwodXJsKSwKICAgICAgICB9CiAgICAgICAgcmV0dXJuIFRydWUsIGluZm8KICAgIGV4Y2VwdCBFeGNlcHRpb24gYXMgZToKICAgICAgICByZXR1cm4gRmFsc2UsIHsidXJsIjogdXJsLCAiZXJyb3IiOiBzdHIoZSksICJ1cmxfa2luZCI6IGNsYXNzaWZ5X2ZpbmFsX3VybCh1cmwpfQoKCmRlZiBzbmlmZl9leHQoY29udGVudDogYnl0ZXMpIC0+IHN0cjoKICAgICIiIuaMieaWh+S7tumtlOaVsOWIpOWumuecn+WunuWQjue8gO+8jOS4jeS/oSBIVFRQIGNvbnRlbnQtdHlwZe+8iOWwj+e6ouS5piBDRE4g5Lya5Lmx5qCH77yJ44CCIiIiCiAgICBpZiBjb250ZW50LnN0YXJ0c3dpdGgoYiJceDg5UE5HXHJcblx4MWFcbiIpOgogICAgICAgIHJldHVybiAiLnBuZyIKICAgIGlmIGNvbnRlbnQuc3RhcnRzd2l0aChiIlx4ZmZceGQ4Iik6CiAgICAgICAgcmV0dXJuICIuanBnIgogICAgIyBIRUlGOiBmdHlwIGJveCDlnKjlgY/np7sgNCDlpITvvIxicmFuZCDlkKsgaGVpYy9oZWl4L2hldmMvaGV2eC9taWYxL21zZjEKICAgIGlmIGxlbihjb250ZW50KSA+PSAxMiBhbmQgY29udGVudFs0OjhdID09IGIiZnR5cCIgYW5kIGNvbnRlbnRbODoxMl0gaW4gKAogICAgICAgIGIiaGVpYyIsIGIiaGVpeCIsIGIiaGV2YyIsIGIiaGV2eCIsIGIibWlmMSIsIGIibXNmMSIsCiAgICApOgogICAgICAgIHJldHVybiAiLmhlaWMiCiAgICBpZiBjb250ZW50LnN0YXJ0c3dpdGgoYiJSSUZGIikgYW5kIGxlbihjb250ZW50KSA+PSAxMiBhbmQgY29udGVudFs4OjEyXSA9PSBiIldFQlAiOgogICAgICAgIHJldHVybiAiLndlYnAiCiAgICByZXR1cm4gIi5iaW4iCgoKZGVmIGRvd25sb2FkKHNlc3Npb246IHJlcXVlc3RzLlNlc3Npb24sIHVybDogc3RyLCBvdXRfZGlyOiBzdHIsIGluZGV4OiBpbnQpIC0+IGRpY3Q6CiAgICByID0gc2Vzc2lvbi5nZXQodXJsLCB0aW1lb3V0PTMwKQogICAgci5yYWlzZV9mb3Jfc3RhdHVzKCkKCiAgICBjb250ZW50X3R5cGUgPSAoci5oZWFkZXJzLmdldCgiY29udGVudC10eXBlIikgb3IgIiIpLmxvd2VyKCkKICAgICMg5rOo5oSP77yaY29udGVudC10eXBlIOS4jeWPr+mdoO+8iOWmguaghyBpbWFnZS9qcGVnIOWunumZheaYryBIRUlGL1BOR++8ie+8jOS7peWQjue8gOS4gOW+i+aMiemtlOaVsOWIpOWumgogICAgZXh0ID0gc25pZmZfZXh0KHIuY29udGVudCkKICAgIHBhdGggPSBvcy5wYXRoLmpvaW4ob3V0X2RpciwgZiJvcmlnaW5hbF97aW5kZXh9e2V4dH0iKQoKICAgIHdpdGggb3BlbihwYXRoLCAid2IiKSBhcyBmOgogICAgICAgIGYud3JpdGUoci5jb250ZW50KQoKICAgIHJldHVybiB7CiAgICAgICAgInBhdGgiOiBwYXRoLAogICAgICAgICJjb250ZW50X3R5cGUiOiBjb250ZW50X3R5cGUsCiAgICAgICAgImJ5dGVzIjogbGVuKHIuY29udGVudCksCiAgICAgICAgInNpemUiOiBzbmlmZl9zaXplKHIuY29udGVudCwgY29udGVudF90eXBlKSwKICAgICAgICAidXJsIjogdXJsLAogICAgICAgICJ1cmxfa2luZCI6IGNsYXNzaWZ5X2ZpbmFsX3VybCh1cmwpLAogICAgfQoKCmRlZiBtYWtlX3Nlc3Npb24oKSAtPiByZXF1ZXN0cy5TZXNzaW9uOgogICAgc2Vzc2lvbiA9IHJlcXVlc3RzLlNlc3Npb24oKQogICAgc2Vzc2lvbi5oZWFkZXJzLnVwZGF0ZSh7CiAgICAgICAgIlVzZXItQWdlbnQiOiAiTW96aWxsYS81LjAiLAogICAgICAgICJSZWZlcmVyIjogImh0dHBzOi8vd3d3LnhpYW9ob25nc2h1LmNvbS8iLAogICAgfSkKICAgIHJldHVybiBzZXNzaW9uCgoKZGVmIG1haW4oKToKICAgIHBhcnNlciA9IGFyZ3BhcnNlLkFyZ3VtZW50UGFyc2VyKAogICAgICAgIGRlc2NyaXB0aW9uPSJOb3JtYWxpemUgWGlhb2hvbmdzaHUgcHJldmlldyBVUkxzIHRvIHJhdyBrZXlzLCBwcm9iZSBjYW5kaWRhdGUgb3JpZ2luYWwgVVJMcywgYW5kIHJlcG9ydCB3aGV0aGVyIGVhY2ggcmVzdWx0IGlzIG9yaWdpbmFsIG9yIHByZXZpZXctb25seS4iCiAgICApCiAgICBwYXJzZXIuYWRkX2FyZ3VtZW50KCItLW91dC1kaXIiKQogICAgcGFyc2VyLmFkZF9hcmd1bWVudCgiLS11cmwiLCBhY3Rpb249ImFwcGVuZCIsIGRlZmF1bHQ9W10sIGhlbHA9IkltYWdlIFVSTC4gQ2FuIGJlIHByZXZpZXcgVVJMIG9yIHJhdyBDRE4gVVJMLiIpCiAgICBwYXJzZXIuYWRkX2FyZ3VtZW50KCItLWtleSIsIGFjdGlvbj0iYXBwZW5kIiwgZGVmYXVsdD1bXSwgaGVscD0iUmF3IENETiBrZXkgd2l0aG91dCBob3N0LiIpCiAgICBwYXJzZXIuYWRkX2FyZ3VtZW50KCItLWhvc3QiLCBhY3Rpb249ImFwcGVuZCIsIGRlZmF1bHQ9W10sIGhlbHA9IkNhbmRpZGF0ZSByYXcgaG9zdC4gQ2FuIGJlIHBhc3NlZCBtdWx0aXBsZSB0aW1lcy4iKQogICAgcGFyc2VyLmFkZF9hcmd1bWVudCgiLS1wcm9iZS1vbmx5IiwgYWN0aW9uPSJzdG9yZV90cnVlIiwgaGVscD0iT25seSBjbGFzc2lmeSAvIG5vcm1hbGl6ZSAvIHByb2JlIGNhbmRpZGF0ZSBVUkxzLCBkbyBub3QgZG93bmxvYWQuIikKICAgIGFyZ3MgPSBwYXJzZXIucGFyc2VfYXJncygpCgogICAgaWYgbm90IGFyZ3MudXJsIGFuZCBub3QgYXJncy5rZXk6CiAgICAgICAgcGFyc2VyLmVycm9yKCJhdCBsZWFzdCBvbmUgb2YgLS11cmwgb3IgLS1rZXkgaXMgcmVxdWlyZWQiKQoKICAgIGhvc3RzID0gYXJncy5ob3N0IG9yIERFRkFVTFRfSE9TVFMKICAgIHNlc3Npb24gPSBtYWtlX3Nlc3Npb24oKQoKICAgIHJhd19rZXlzOiBMaXN0W3N0cl0gPSBbXQogICAgc2VlbiA9IHNldCgpCiAgICBmb3IgdmFsdWUgaW4gWyphcmdzLnVybCwgKmFyZ3Mua2V5XToKICAgICAgICByYXdfa2V5ID0gZXh0cmFjdF9yYXdfa2V5KHZhbHVlKQogICAgICAgIGlmIHJhd19rZXkgbm90IGluIHNlZW46CiAgICAgICAgICAgIHNlZW4uYWRkKHJhd19rZXkpCiAgICAgICAgICAgIHJhd19rZXlzLmFwcGVuZChyYXdfa2V5KQogICAgICAgIHByaW50KGpzb24uZHVtcHMoewogICAgICAgICAgICAiaW5wdXQiOiB2YWx1ZSwKICAgICAgICAgICAgImtpbmQiOiBjbGFzc2lmeV9pbnB1dCh2YWx1ZSksCiAgICAgICAgICAgICJyYXdfa2V5IjogcmF3X2tleSwKICAgICAgICAgICAgImNhbmRpZGF0ZV91cmxzIjogYnVpbGRfY2FuZGlkYXRlX3VybHMocmF3X2tleSwgaG9zdHMpLAogICAgICAgIH0sIGVuc3VyZV9hc2NpaT1GYWxzZSkpCgogICAgaWYgYXJncy5wcm9iZV9vbmx5OgogICAgICAgIGZvciByYXdfa2V5IGluIHJhd19rZXlzOgogICAgICAgICAgICBmb3IgdXJsIGluIGJ1aWxkX2NhbmRpZGF0ZV91cmxzKHJhd19rZXksIGhvc3RzKToKICAgICAgICAgICAgICAgIG9rLCBpbmZvID0gcHJvYmUoc2Vzc2lvbiwgdXJsKQogICAgICAgICAgICAgICAgcHJpbnQoanNvbi5kdW1wcyh7InByb2JlX29rIjogb2ssICoqaW5mb30sIGVuc3VyZV9hc2NpaT1GYWxzZSkpCiAgICAgICAgcmV0dXJuCgogICAgaWYgbm90IGFyZ3Mub3V0X2RpcjoKICAgICAgICBwYXJzZXIuZXJyb3IoIi0tb3V0LWRpciBpcyByZXF1aXJlZCB1bmxlc3MgLS1wcm9iZS1vbmx5IGlzIHNldCIpCgogICAgb3MubWFrZWRpcnMoYXJncy5vdXRfZGlyLCBleGlzdF9vaz1UcnVlKQoKICAgIGRvd25sb2FkX2luZGV4ID0gMQogICAgZm9yIHJhd19rZXkgaW4gcmF3X2tleXM6CiAgICAgICAgc2VsZWN0ZWRfdXJsID0gTm9uZQogICAgICAgIHNlbGVjdGVkX3Byb2JlID0gTm9uZQogICAgICAgIGZvciB1cmwgaW4gYnVpbGRfY2FuZGlkYXRlX3VybHMocmF3X2tleSwgaG9zdHMpOgogICAgICAgICAgICBvaywgaW5mbyA9IHByb2JlKHNlc3Npb24sIHVybCkKICAgICAgICAgICAgcHJpbnQoanNvbi5kdW1wcyh7InByb2JlX29rIjogb2ssICoqaW5mb30sIGVuc3VyZV9hc2NpaT1GYWxzZSkpCiAgICAgICAgICAgIGlmIG9rIGFuZCAoaW5mby5nZXQoImNvbnRlbnRfdHlwZSIpIG9yICIiKS5zdGFydHN3aXRoKCJpbWFnZS8iKToKICAgICAgICAgICAgICAgIHNlbGVjdGVkX3VybCA9IHVybAogICAgICAgICAgICAgICAgc2VsZWN0ZWRfcHJvYmUgPSBpbmZvCiAgICAgICAgICAgICAgICBicmVhawoKICAgICAgICBpZiBub3Qgc2VsZWN0ZWRfdXJsOgogICAgICAgICAgICBwcmludChqc29uLmR1bXBzKHsKICAgICAgICAgICAgICAgICJyYXdfa2V5IjogcmF3X2tleSwKICAgICAgICAgICAgICAgICJzdGF0dXMiOiAiZmFpbGVkIiwKICAgICAgICAgICAgICAgICJkb3dubG9hZGVkIjogRmFsc2UsCiAgICAgICAgICAgICAgICAicmVhc29uIjogIm5vX3dvcmtpbmdfY2FuZGlkYXRlX3VybCIsCiAgICAgICAgICAgIH0sIGVuc3VyZV9hc2NpaT1GYWxzZSkpCiAgICAgICAgICAgIGNvbnRpbnVlCgogICAgICAgIGluZm8gPSBkb3dubG9hZChzZXNzaW9uLCBzZWxlY3RlZF91cmwsIGFyZ3Mub3V0X2RpciwgZG93bmxvYWRfaW5kZXgpCiAgICAgICAgc3RhdHVzID0gIm9yaWdpbmFsX3N1Y2Nlc3MiIGlmIGluZm9bInVybF9raW5kIl0gPT0gIm9yaWdpbmFsX3VybCIgZWxzZSAicHJldmlld19vbmx5IgogICAgICAgIHByaW50KGpzb24uZHVtcHMoewogICAgICAgICAgICAic3RhdHVzIjogc3RhdHVzLAogICAgICAgICAgICAiZG93bmxvYWRlZCI6IFRydWUsCiAgICAgICAgICAgICJwcm9iZSI6IHNlbGVjdGVkX3Byb2JlLAogICAgICAgICAgICAqKmluZm8sCiAgICAgICAgfSwgZW5zdXJlX2FzY2lpPUZhbHNlKSkKICAgICAgICBkb3dubG9hZF9pbmRleCArPSAxCgoKaWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIG1haW4oKQo=
+import argparse
+import json
+import os
+import struct
+from io import BytesIO
+from typing import Iterable, List, Optional, Tuple
+from urllib.parse import unquote, urlparse
+
+import requests
+
+
+DEFAULT_HOSTS = [
+    "https://sns-img-qc.xhscdn.com",
+    "https://sns-img-bd.xhscdn.com",
+    "https://sns-img-hw.xhscdn.com",
+    "https://sns-img-qn.xhscdn.com",
+    "https://sns-na-i1.xhscdn.com",
+    "https://sns-na-i2.xhscdn.com",
+    "https://ci.xiaohongshu.com",
+]
+PREVIEW_MARKERS = (
+    "!nd_",
+    "WB_PRV",
+    "WB_DFT",
+    "imageView2",
+    "watermark",
+    "sns-webpic",
+)
+
+
+def classify_input(value: str) -> str:
+    lower = value.lower()
+    if lower.startswith("http://") or lower.startswith("https://"):
+        if any(marker.lower() in lower for marker in PREVIEW_MARKERS):
+            return "preview_url"
+        if "xhscdn.com" in lower or "xhsci.com" in lower:
+            return "raw_url"
+        return "url"
+    return "raw_key"
+
+
+def classify_final_url(value: str) -> str:
+    lower = value.lower()
+    if any(marker.lower() in lower for marker in PREVIEW_MARKERS):
+        return "preview_url"
+    if "xhscdn.com" in lower or "xhsci.com" in lower:
+        return "original_url"
+    return "unknown_url"
+
+
+def extract_raw_key(value: str) -> str:
+    kind = classify_input(value)
+    if kind == "raw_key":
+        return value.strip()
+
+    parsed = urlparse(value)
+    path = unquote(parsed.path or "").strip("/")
+    if not path:
+        raise ValueError(f"cannot extract raw key from: {value}")
+
+    key = path.split("/")[-1]
+    if "!" in key:
+        key = key.split("!", 1)[0]
+    if "?" in key:
+        key = key.split("?", 1)[0]
+    return key
+
+
+def build_candidate_urls(raw_key: str, hosts: Iterable[str]) -> List[str]:
+    key = raw_key.lstrip("/")
+    urls = []
+    for host in hosts:
+        base = host.rstrip("/")
+        urls.append(f"{base}/notes_pre_post/{key}")
+        urls.append(f"{base}/{key}")
+        # Live Photo（实况）走 note_pre_post_uhdr 路径（注意单数 note）
+        urls.append(f"{base}/note_pre_post_uhdr/{key}")
+    return urls
+
+
+def sniff_size(content: bytes, content_type: str) -> Optional[Tuple[int, int]]:
+    if content.startswith(b"\x89PNG\r\n\x1a\n") and len(content) >= 24:
+        width, height = struct.unpack(">II", content[16:24])
+        return width, height
+
+    if content.startswith(b"\xff\xd8"):
+        stream = BytesIO(content)
+        stream.read(2)
+        while True:
+            marker_prefix = stream.read(1)
+            if not marker_prefix:
+                break
+            if marker_prefix != b"\xff":
+                continue
+            marker = stream.read(1)
+            while marker == b"\xff":
+                marker = stream.read(1)
+            if marker in {
+                b"\xc0",
+                b"\xc1",
+                b"\xc2",
+                b"\xc3",
+                b"\xc5",
+                b"\xc6",
+                b"\xc7",
+                b"\xc9",
+                b"\xca",
+                b"\xcb",
+                b"\xcd",
+                b"\xce",
+                b"\xcf",
+            }:
+                block = stream.read(7)
+                if len(block) >= 5:
+                    height, width = struct.unpack(">HH", block[1:5])
+                    return width, height
+                break
+            size_bytes = stream.read(2)
+            if len(size_bytes) != 2:
+                break
+            block_size = struct.unpack(">H", size_bytes)[0]
+            stream.seek(max(block_size - 2, 0), os.SEEK_CUR)
+
+    if content.startswith(b"RIFF") and content[8:12] == b"WEBP" and len(content) >= 30:
+        chunk_type = content[12:16]
+        if chunk_type == b"VP8X" and len(content) >= 30:
+            width = 1 + int.from_bytes(content[24:27], "little")
+            height = 1 + int.from_bytes(content[27:30], "little")
+            return width, height
+
+    if content_type.startswith("image/"):
+        return None
+    return None
+
+
+def probe(session: requests.Session, url: str, timeout: int = 20) -> Tuple[bool, dict]:
+    try:
+        r = session.get(url, timeout=timeout, stream=True)
+        r.raise_for_status()
+        content_type = (r.headers.get("content-type") or "").lower()
+        body = r.raw.read(512 * 1024, decode_content=True)
+        info = {
+            "url": url,
+            "status": r.status_code,
+            "content_type": content_type,
+            "bytes_sampled": len(body),
+            "size": sniff_size(body, content_type),
+            "url_kind": classify_final_url(url),
+        }
+        return True, info
+    except Exception as e:
+        return False, {"url": url, "error": str(e), "url_kind": classify_final_url(url)}
+
+
+def sniff_ext(content: bytes) -> str:
+    """按文件魔数判定真实后缀，不信 HTTP content-type（小红书 CDN 会乱标）。"""
+    if content.startswith(b"\x89PNG\r\n\x1a\n"):
+        return ".png"
+    if content.startswith(b"\xff\xd8"):
+        return ".jpg"
+    # HEIF: ftyp box 在偏移 4 处，brand 含 heic/heix/hevc/hevx/mif1/msf1
+    if len(content) >= 12 and content[4:8] == b"ftyp" and content[8:12] in (
+        b"heic", b"heix", b"hevc", b"hevx", b"mif1", b"msf1",
+    ):
+        return ".heic"
+    if content.startswith(b"RIFF") and len(content) >= 12 and content[8:12] == b"WEBP":
+        return ".webp"
+    return ".bin"
+
+
+def download(session: requests.Session, url: str, out_dir: str, index: int) -> dict:
+    r = session.get(url, timeout=30)
+    r.raise_for_status()
+
+    content_type = (r.headers.get("content-type") or "").lower()
+    # 注意：content-type 不可靠（如标 image/jpeg 实际是 HEIF/PNG），以后缀一律按魔数判定
+    ext = sniff_ext(r.content)
+    path = os.path.join(out_dir, f"original_{index}{ext}")
+
+    with open(path, "wb") as f:
+        f.write(r.content)
+
+    return {
+        "path": path,
+        "content_type": content_type,
+        "bytes": len(r.content),
+        "size": sniff_size(r.content, content_type),
+        "url": url,
+        "url_kind": classify_final_url(url),
+    }
+
+
+def make_session() -> requests.Session:
+    session = requests.Session()
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0",
+        "Referer": "https://www.xiaohongshu.com/",
+    })
+    return session
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Normalize Xiaohongshu preview URLs to raw keys, probe candidate original URLs, and report whether each result is original or preview-only."
+    )
+    parser.add_argument("--out-dir")
+    parser.add_argument("--url", action="append", default=[], help="Image URL. Can be preview URL or raw CDN URL.")
+    parser.add_argument("--key", action="append", default=[], help="Raw CDN key without host.")
+    parser.add_argument("--host", action="append", default=[], help="Candidate raw host. Can be passed multiple times.")
+    parser.add_argument("--probe-only", action="store_true", help="Only classify / normalize / probe candidate URLs, do not download.")
+    args = parser.parse_args()
+
+    if not args.url and not args.key:
+        parser.error("at least one of --url or --key is required")
+
+    hosts = args.host or DEFAULT_HOSTS
+    session = make_session()
+
+    raw_keys: List[str] = []
+    seen = set()
+    for value in [*args.url, *args.key]:
+        raw_key = extract_raw_key(value)
+        if raw_key not in seen:
+            seen.add(raw_key)
+            raw_keys.append(raw_key)
+        print(json.dumps({
+            "input": value,
+            "kind": classify_input(value),
+            "raw_key": raw_key,
+            "candidate_urls": build_candidate_urls(raw_key, hosts),
+        }, ensure_ascii=False))
+
+    if args.probe_only:
+        for raw_key in raw_keys:
+            for url in build_candidate_urls(raw_key, hosts):
+                ok, info = probe(session, url)
+                print(json.dumps({"probe_ok": ok, **info}, ensure_ascii=False))
+        return
+
+    if not args.out_dir:
+        parser.error("--out-dir is required unless --probe-only is set")
+
+    os.makedirs(args.out_dir, exist_ok=True)
+
+    download_index = 1
+    for raw_key in raw_keys:
+        selected_url = None
+        selected_probe = None
+        for url in build_candidate_urls(raw_key, hosts):
+            ok, info = probe(session, url)
+            print(json.dumps({"probe_ok": ok, **info}, ensure_ascii=False))
+            if ok and (info.get("content_type") or "").startswith("image/"):
+                selected_url = url
+                selected_probe = info
+                break
+
+        if not selected_url:
+            print(json.dumps({
+                "raw_key": raw_key,
+                "status": "failed",
+                "downloaded": False,
+                "reason": "no_working_candidate_url",
+            }, ensure_ascii=False))
+            continue
+
+        info = download(session, selected_url, args.out_dir, download_index)
+        status = "original_success" if info["url_kind"] == "original_url" else "preview_only"
+        print(json.dumps({
+            "status": status,
+            "downloaded": True,
+            "probe": selected_probe,
+            **info,
+        }, ensure_ascii=False))
+        download_index += 1
+
+
+if __name__ == "__main__":
+    main()
