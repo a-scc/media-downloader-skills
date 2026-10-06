@@ -1,1 +1,68 @@
-IyDlvq7ljZrkuIvovb3lmaggLyBXZWlibyBEb3dubG9hZGVyCgrwn5OxIOS4gOmUruS4i+i9veW+ruWNmuWbvuaWhyvop4bpopHvvIznuq8gUHl0aG9uIOWunueOsO+8jOaXoOmcgOWklumDqOW3peWFt+OAggoKIyMg5Yqf6IO9CgotIPCflrzvuI8gKirlm77niYfkuIvovb0qKiDigJQg5Y6f5Zu+IC5qcGfvvIzoh6rliqjpgInmnIDlpKflsLrlr7gKLSDwn46sICoq6KeG6aKR5LiL6L29Kiog4oCUIOmrmOa4hSAubXA077yI5LyY5YWIIEhE77yM5YWc5bqVIHN0cmVhbe+8iQotIPCflJcgKirmlK/mjIHmiYDmnInpk77mjqXmoLzlvI8qKiDigJQg5qCH5YeG5b6u5Y2a6ZO+5o6l44CBZngg5YiG5Lqr6ZO+5o6l44CB56e75Yqo56uv6ZO+5o6lCi0g8J+TiyAqKuaJuemHj+S4i+i9vSoqIOKAlCDmlK/mjIHku44gdHh0IOaWh+S7tuaJuemHj+WvvOWFpQotIPCfjYMgKirpm7blpJbpg6jkvp3otZYqKiDigJQg5LuFIGByZXF1ZXN0c2DvvIzkuI3kvp3otZYgZ2FsbGVyeS1kbC95dC1kbHAg562J5bel5YW3Ci0g8J+UkiAqKuiHquWMheWQqyoqIOKAlCDorr/lrqIgY29va2llIOiHquWKqOeuoeeQhu+8jDM2NeWkqeacieaViAoKIyMg5Yqf6IO9CgotIOKPsCAqKuiHquWKqOaXtumXtOaIsyoq77ya5LiL6L295ZCO6Ieq5Yqo55SoIGV4aWZ0b29sIOWGmeWFpeWPkeW4g+aXtumXtO+8iEpQRUcg5YaZIEVYSUbvvIx0b3VjaCAtdCDkv53lupUgbXRpbWXvvIkKCiMjIOS9v+eUqOaWueazlQoKYGBgYmFzaAojIOWuieijheS+nei1lgpwaXAgaW5zdGFsbCByZXF1ZXN0cwoKIyDkuIvovb3ljZXmnaHlvq7ljZoKcHl0aG9uMyBzY3JpcHRzL2Rvd25sb2FkLnB5ICJodHRwczovL3dlaWJvLmNvbS9VU0VSL1NUQVRVU19JRCIKCiMgZngg5YiG5Lqr6ZO+5o6l77yI6Ieq5Yqo6Kej5p6Q77yJCnB5dGhvbjMgc2NyaXB0cy9kb3dubG9hZC5weSAiaHR0cHM6Ly9tYXBwLmFwaS53ZWliby5jbi9meC9YWFhYLmh0bWwiCgojIOaMh+WumuS/neWtmOebruW9lQpweXRob24zIHNjcmlwdHMvZG93bmxvYWQucHkgImh0dHBzOi8vd2VpYm8uY29tL1VTRVIvMTIzNDU2IiAvdG1wL291dHB1dAoKIyDmibnph4/kuIvovb0KcHl0aG9uMyBzY3JpcHRzL2Rvd25sb2FkLnB5IC0tYmF0Y2ggbGlua3MudHh0IC0tb3V0LWRpciAvdG1wL3dlaWJvCmBgYAoKIyMg5pSv5oyB55qE6ZO+5o6l5qC85byPCgp8IOagvOW8jyB8IOekuuS+iyB8IOivtOaYjiB8CnwtLS0tLS18LS0tLS0tfC0tLS0tLXwKfCDmoIflh4blvq7ljZogfCBgaHR0cHM6Ly93ZWliby5jb20vVVNFUi9TVEFUVVNfSURgIHwg4pyFIOacgOW4uOeUqCB8Cnwg5YiG5Lqr6ZO+5o6lIHwgYGh0dHBzOi8vbWFwcC5hcGkud2VpYm8uY24vZngvWFhYWC5odG1sYCB8IOKchSDoh6rliqggMzAyIOmHjeWumuWQkeino+aekCB8Cnwg56e75Yqo56uvIHwgYGh0dHBzOi8vbS53ZWliby5jbi9zdGF0dXMvU1RBVFVTX0lEYCB8IOKchSDnp7vliqjnq6/pk77mjqUgfAoKIyMg6L6T5Ye6CgotICoq5pe26Ze05oizKirvvJpwdWJsaXNoX3RpbWVfc3Ry77yIIjIwMjY6MDc6MDUgMTU6MzM6MTIi77yMZXhpZnRvb2wg55u05o6l5Y+v55So77yM6Ieq5Yqo5YaZ5YWl5paH5Lu277yJCuekuuS+iwoKYGBgCi4vYXV0aG9yX25hbWVfc3RhdHVzaWQvCuKUnOKUgOKUgCBwcmVmaXhfMDEuanBnCuKUnOKUgOKUgCBwcmVmaXhfMDIuanBnCuKUnOKUgOKUgCBwcmVmaXhfMDMubXA0CuKUnOKUgOKUgCAuLi4KYGBgCgojIyDmioDmnK/or7TmmI4KCjEuICoq6K6/5a6i57uV6L+HKiog4oCUIOiHquWKqOiwg+eUqCBgcGFzc3BvcnQud2VpYm8uY29tL3Zpc2l0b3IvZ2VudmlzaXRvcjJgIOiOt+WPluiuv+WuouWHreivgQoyLiAqKkNvb2tpZSDnrqHnkIYqKiDigJQg6aaW5qyh6I635Y+W5ZCO5L+d5a2Y5YiwIGBzdG9yYWdlL3dlaWJvX2Nvb2tpZXMucGtsYO+8jDM2NSDlpKnmnInmlYgKMy4gKipBUEkg6LCD55SoKiog4oCUIGB3ZWliby5jb20vYWpheC9zdGF0dXNlcy9zaG93P2lkPXh4eGAg6I635Y+W5b6u5Y2a6K+m5oOFCjQuICoq5aqS5L2T6Kej5p6QKiog4oCUIOaUr+aMgeaWsOeJiCBgbWl4X21lZGlhX2luZm9gIOWSjOaXp+eJiCBgcGljX2lkc2Ag5Lik56eN5pWw5o2u5qC85byPCjUuICoq6KeG6aKR5YWc5bqVKiog4oCUIGBtcDRfaGRfdXJsYCDihpIgYG1wNF83MjBwX21wNGAg4oaSIGBzdHJlYW1fdXJsYCDkuInnuqfpmY3nuqcKCiMjIOiuuOWPr+ivgQoKTUlUCg==
+# 微博下载器 / Weibo Downloader
+
+📱 一键下载微博图文+视频，纯 Python 实现，无需外部工具。
+
+## 功能
+
+- 🖼️ **图片下载** — 原图 .jpg，自动选最大尺寸
+- 🎬 **视频下载** — 高清 .mp4（优先 HD，兜底 stream）
+- 🔗 **支持所有链接格式** — 标准微博链接、fx 分享链接、移动端链接
+- 📋 **批量下载** — 支持从 txt 文件批量导入
+- 🍃 **零外部依赖** — 仅 `requests`，不依赖 gallery-dl/yt-dlp 等工具
+- 🔒 **自包含** — 访客 cookie 自动管理，365天有效
+
+## 功能
+
+- ⏰ **自动时间戳**：下载后自动用 exiftool 写入发布时间（JPEG 写 EXIF，touch -t 保底 mtime）
+
+## 使用方法
+
+```bash
+# 安装依赖
+pip install requests
+
+# 下载单条微博
+python3 scripts/download.py "https://weibo.com/USER/STATUS_ID"
+
+# fx 分享链接（自动解析）
+python3 scripts/download.py "https://mapp.api.weibo.cn/fx/XXXX.html"
+
+# 指定保存目录
+python3 scripts/download.py "https://weibo.com/USER/123456" /tmp/output
+
+# 批量下载
+python3 scripts/download.py --batch links.txt --out-dir /tmp/weibo
+```
+
+## 支持的链接格式
+
+| 格式 | 示例 | 说明 |
+|------|------|------|
+| 标准微博 | `https://weibo.com/USER/STATUS_ID` | ✅ 最常用 |
+| 分享链接 | `https://mapp.api.weibo.cn/fx/XXXX.html` | ✅ 自动 302 重定向解析 |
+| 移动端 | `https://m.weibo.cn/status/STATUS_ID` | ✅ 移动端链接 |
+
+## 输出
+
+- **时间戳**：publish_time_str（"2026:07:05 15:33:12"，exiftool 直接可用，自动写入文件）
+示例
+
+```
+./author_name_statusid/
+├── prefix_01.jpg
+├── prefix_02.jpg
+├── prefix_03.mp4
+├── ...
+```
+
+## 技术说明
+
+1. **访客绕过** — 自动调用 `passport.weibo.com/visitor/genvisitor2` 获取访客凭证
+2. **Cookie 管理** — 首次获取后保存到 `storage/weibo_cookies.pkl`，365 天有效
+3. **API 调用** — `weibo.com/ajax/statuses/show?id=xxx` 获取微博详情
+4. **媒体解析** — 支持新版 `mix_media_info` 和旧版 `pic_ids` 两种数据格式
+5. **视频兜底** — `mp4_hd_url` → `mp4_720p_mp4` → `stream_url` 三级降级
+
+## 许可证
+
+MIT
