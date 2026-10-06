@@ -1,1 +1,210 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwojIC0qLSBjb2Rpbmc6IHV0Zi04IC0qLQoiIiIK5oqW6Z+z5pel5bi477yI6KeG6aKR77yJ5Y6f55S75LiL6L29Ci0g5ou/IFVSSe+8muiwgyBhd2VtZS5zbnNzZGsuY29tL2F3ZW1lL3YxL3N0b3J5L3Byb2ZpbGUvbGlzdC/vvIjpnIDnmbvlvZUgQ29va2llICsgWC1Hb3Jnb24g562+5ZCN77yJCi0g5LiL6L2977ya5ou/5YiwIHYwMzAwIFVSSSDlkI7vvIzkuI7kvZzlk4Hop4bpopHlkIzkuIDlhazlvI/vvIhyYXRpbz1kZWZhdWx077yM5YWN55m75b2V77yJCi0gQ29va2llIOi/h+acn+WIpOaWre+8muaOpeWPo+i/lOWbnuepuuWIl+ihqOWNs+i/h+acnwotIOaXtumXtOaIs++8muiHquWKqOeUqCBleGlmdG9vbCDlhpnlhaXvvIjkuI4gZG93bmxvYWQucHkg5ZCM5LiA6KeE6IyD77yJCgpDb29raWUg6I635Y+W77ya55So5oi355SoIFN0cmVhbSDmipPljIXvvIzku47or7fmsYLlpLTlpI3liLYgQ29va2llIOWtl+espuS4su+8jArlrZjliLAgfi8uY29uZmlnL2RvdXlpbi9jb29raWUudHh077yI5oiW55SoIC0tY29va2llIOWPguaVsOaMh+WumuaWh+S7tu+8ieOAggoiIiIKaW1wb3J0IG9zCmltcG9ydCBzeXMKaW1wb3J0IGpzb24KaW1wb3J0IHRpbWUKaW1wb3J0IHN1YnByb2Nlc3MKaW1wb3J0IGFyZ3BhcnNlCmZyb20gZGF0ZXRpbWUgaW1wb3J0IGRhdGV0aW1lLCB0aW1lem9uZSwgdGltZWRlbHRhCgppbXBvcnQgcmVxdWVzdHMKCiMg5aSN55SoIHNpZ25lcu+8iFB5dGhvbiDniYggWC1Hb3Jnb27vvIkKc3lzLnBhdGguaW5zZXJ0KDAsIG9zLnBhdGguZXhwYW5kdXNlcigifi93b3Jrc3BhY2UvZG91eWluLXN0b3JpZXMvc3JjIikpCnRyeToKICAgIGZyb20gc2lnbmVyLmdvcmdvbiBpbXBvcnQgZ2V0X3hnb3Jnb24KZXhjZXB0IEltcG9ydEVycm9yOgogICAgcHJpbnQoIlshXSDmib7kuI3liLAgc2lnbmVy77yM6K+356Gu6K6kIH4vd29ya3NwYWNlL2RvdXlpbi1zdG9yaWVzL3NyYy9zaWduZXIvIOWtmOWcqCIpCiAgICBzeXMuZXhpdCgxKQoKRVhJRlRPT0wgPSBvcy5wYXRoLmV4cGFuZHVzZXIoIn4vd29ya3NwYWNlL3Rvb2xzL0ltYWdlLUV4aWZUb29sLTEzLjU5L2V4aWZ0b29sIikKQ09PS0lFX0ZJTEUgPSBvcy5wYXRoLmV4cGFuZHVzZXIoIn4vLmNvbmZpZy9kb3V5aW4vY29va2llLnR4dCIpCgpBUElfSE9TVCA9ICJodHRwczovL2F3ZW1lLnNuc3Nkay5jb20iClNUT1JZX0xJU1RfQVBJID0gIi9hd2VtZS92MS9zdG9yeS9wcm9maWxlL2xpc3QvIgoKSEVBREVSUyA9IHsKICAgICJVc2VyLUFnZW50IjogKAogICAgICAgICJNb3ppbGxhLzUuMCAoaVBob25lOyBDUFUgaVBob25lIE9TIDE2XzAgbGlrZSBNYWMgT1MgWCkgIgogICAgICAgICJBcHBsZVdlYktpdC82MDUuMS4xNSAoS0hUTUwsIGxpa2UgR2Vja28pICIKICAgICAgICAiVmVyc2lvbi8xNi4wIE1vYmlsZS8xNUUxNDggU2FmYXJpLzYwNC4xIgogICAgKSwKfQoKCmRlZiBsb2FkX2Nvb2tpZShjb29raWVfZmlsZT1Ob25lKToKICAgICIiIuWKoOi9vSBDb29raWXvvIjmlofku7bmiJblj4LmlbDvvIkiIiIKICAgIHBhdGggPSBjb29raWVfZmlsZSBvciBDT09LSUVfRklMRQogICAgaWYgbm90IG9zLnBhdGguZXhpc3RzKHBhdGgpOgogICAgICAgIHJldHVybiBOb25lCiAgICB3aXRoIG9wZW4ocGF0aCwgInIiLCBlbmNvZGluZz0idXRmLTgiKSBhcyBmOgogICAgICAgIHJldHVybiBmLnJlYWQoKS5zdHJpcCgpCgoKZGVmIGZldGNoX3N0b3J5X2xpc3QoY29va2llLCBzZWNfdWlkPU5vbmUsIGNvdW50PTIwKToKICAgICIiIuiwgyBzdG9yeS9wcm9maWxlL2xpc3Qg5ou/5pel5bi45YiX6KGo77yI6ZyA55m75b2VIENvb2tpZSArIOetvuWQje+8iSIiIgogICAgcGFyYW1zID0gewogICAgICAgICJzZWNfdWlkIjogc2VjX3VpZCBvciAiIiwKICAgICAgICAiY291bnQiOiBzdHIoY291bnQpLAogICAgICAgICJjdXJzb3IiOiAiMCIsCiAgICB9CiAgICAjIFgtR29yZ29uIOetvuWQjQogICAgcXVlcnkgPSAiJiIuam9pbihmIntrfT17dn0iIGZvciBrLCB2IGluIHBhcmFtcy5pdGVtcygpKQogICAgdHJ5OgogICAgICAgIHhnb3Jnb24gPSBnZXRfeGdvcmdvbihxdWVyeSwgIiIsICIiLCBjb29raWUpCiAgICBleGNlcHQgRXhjZXB0aW9uIGFzIGU6CiAgICAgICAgcHJpbnQoZiJbIV0g562+5ZCN5aSx6LSlOiB7ZX0iKQogICAgICAgIHJldHVybiBOb25lCgogICAgaGVhZGVycyA9IGRpY3QoSEVBREVSUykKICAgIGhlYWRlcnNbIkNvb2tpZSJdID0gY29va2llCiAgICBoZWFkZXJzWyJYLUdvcmdvbiJdID0geGdvcmdvbgoKICAgIHVybCA9IEFQSV9IT1NUICsgU1RPUllfTElTVF9BUEkKICAgIHRyeToKICAgICAgICByID0gcmVxdWVzdHMuZ2V0KHVybCwgcGFyYW1zPXBhcmFtcywgaGVhZGVycz1oZWFkZXJzLCB0aW1lb3V0PTE1KQogICAgICAgIGRhdGEgPSByLmpzb24oKQogICAgZXhjZXB0IEV4Y2VwdGlvbiBhcyBlOgogICAgICAgIHByaW50KGYiWyFdIOaOpeWPo+ivt+axguWksei0pToge2V9IikKICAgICAgICByZXR1cm4gTm9uZQoKICAgIGlmIGRhdGEuZ2V0KCJzdGF0dXNfY29kZSIpICE9IDA6CiAgICAgICAgcHJpbnQoZiJbIV0g5o6l5Y+j6L+U5Zue6ZSZ6K+vOiBzdGF0dXNfY29kZT17ZGF0YS5nZXQoJ3N0YXR1c19jb2RlJyl9IikKICAgICAgICByZXR1cm4gTm9uZQoKICAgIGl0ZW1zID0gZGF0YS5nZXQoImF3ZW1lX2xpc3QiLCBbXSkgb3IgZGF0YS5nZXQoInN0b3J5X2xpc3QiLCBbXSkgb3IgW10KICAgIGlmIG5vdCBpdGVtczoKICAgICAgICBwcmludCgiWyFdIOi/lOWbnuepuuWIl+ihqO+8mkNvb2tpZSDlj6/og73lt7Lov4fmnJ/vvIzor7fph43mlrDmipPljIXmm7TmlrAiKQogICAgcmV0dXJuIGl0ZW1zCgoKZGVmIGV4dHJhY3RfdmlkZW9faW5mbyhpdGVtKToKICAgICIiIuS7juWNleS4qiBzdG9yeSBpdGVtIOaPkOWPluinhumikSBVUkkg5ZKM5YWD5pWw5o2uIiIiCiAgICB2aWRlbyA9IGl0ZW0uZ2V0KCJ2aWRlbyIsIHt9KQogICAgIyDml6XluLggVVJJIOS7pSB2MDMwMCDlvIDlpLTvvIzkvJjlhYggcGxheV9hZGRyXzI2Ne+8iEguMjY177yJCiAgICB1cmkgPSBOb25lCiAgICBmb3Iga2V5IGluICgicGxheV9hZGRyXzI2NSIsICJwbGF5X2FkZHIiKToKICAgICAgICBwYSA9IHZpZGVvLmdldChrZXksIHt9KQogICAgICAgICMg5YWI5om+IHVyaSDlrZfmrrUKICAgICAgICBpZiBwYS5nZXQoInVyaSIpOgogICAgICAgICAgICB1cmkgPSBwYVsidXJpIl0KICAgICAgICAgICAgYnJlYWsKICAgICAgICAjIOWGjeS7jiB1cmxfbGlzdCDlj43mjqjvvIjpgJrluLjkuI3pnIDopoHvvIkKICAgICMg5YWc5bqV77ya55u05o6l5om+IHYwMzAwCiAgICBpZiBub3QgdXJpOgogICAgICAgIGltcG9ydCByZQogICAgICAgIHRleHQgPSBqc29uLmR1bXBzKGl0ZW0pCiAgICAgICAgbSA9IHJlLnNlYXJjaChyJ3YwMzAwW2EtekEtWjAtOV8tXXsyMCw0MH0nLCB0ZXh0KQogICAgICAgIGlmIG06CiAgICAgICAgICAgIHVyaSA9IG0uZ3JvdXAoMCkKCiAgICBpZiBub3QgdXJpOgogICAgICAgIHJldHVybiBOb25lCgogICAgIyDlj5HluIPml7bpl7TvvIhjcmVhdGVfdGltZe+8jFVuaXgg56eS77yJCiAgICBjcmVhdGVfdGltZSA9IGl0ZW0uZ2V0KCJjcmVhdGVfdGltZSIsIDApCiAgICB0el9zaCA9IHRpbWV6b25lKHRpbWVkZWx0YShob3Vycz04KSkKICAgIHRzX3N0ciA9IGRhdGV0aW1lLmZyb210aW1lc3RhbXAoY3JlYXRlX3RpbWUsIHR6X3NoKS5zdHJmdGltZSgiJVk6JW06JWQgJUg6JU06JVMiKSBpZiBjcmVhdGVfdGltZSBlbHNlICIiCgogICAgcmV0dXJuIHsKICAgICAgICAidXJpIjogdXJpLAogICAgICAgICJkZXNjIjogaXRlbS5nZXQoImRlc2MiLCAi5peg5qCH6aKYIilbOjMwXSwKICAgICAgICAiY3JlYXRlX3RpbWUiOiBjcmVhdGVfdGltZSwKICAgICAgICAicHVibGlzaF90aW1lX3N0ciI6IHRzX3N0ciwKICAgICAgICAiYXdlbWVfaWQiOiBpdGVtLmdldCgiYXdlbWVfaWQiLCAiIiksCiAgICB9CgoKZGVmIGRvd25sb2FkX3RydWVfb3JpZ2luYWwodXJpLCBmaWxlcGF0aCk6CiAgICAiIiLnlKggcmF0aW89ZGVmYXVsdCDkuIvovb3nnJ/ljp/nlLvvvIjlhY3nmbvlvZXvvIkiIiIKICAgIHVybCA9IGYie0FQSV9IT1NUfS9hd2VtZS92MS9wbGF5Lz92aWRlb19pZD17dXJpfSZyYXRpbz1kZWZhdWx0IgogICAgdHJ5OgogICAgICAgIHIgPSByZXF1ZXN0cy5nZXQodXJsLCBoZWFkZXJzPUhFQURFUlMsIHN0cmVhbT1UcnVlLCB0aW1lb3V0PTYwLCBhbGxvd19yZWRpcmVjdHM9VHJ1ZSkKICAgICAgICByLnJhaXNlX2Zvcl9zdGF0dXMoKQogICAgICAgIHRvdGFsID0gMAogICAgICAgIHdpdGggb3BlbihmaWxlcGF0aCwgIndiIikgYXMgZjoKICAgICAgICAgICAgZm9yIGNodW5rIGluIHIuaXRlcl9jb250ZW50KGNodW5rX3NpemU9ODE5Mik6CiAgICAgICAgICAgICAgICBpZiBjaHVuazoKICAgICAgICAgICAgICAgICAgICBmLndyaXRlKGNodW5rKQogICAgICAgICAgICAgICAgICAgIHRvdGFsICs9IGxlbihjaHVuaykKICAgICAgICBwcmludChmIiAg4pyFIHtvcy5wYXRoLmJhc2VuYW1lKGZpbGVwYXRoKX0gKHt0b3RhbH0gYnl0ZXMpIikKICAgICAgICByZXR1cm4gVHJ1ZQogICAgZXhjZXB0IEV4Y2VwdGlvbiBhcyBlOgogICAgICAgIHByaW50KGYiICDinYwg5LiL6L295aSx6LSlOiB7ZX0iKQogICAgICAgIHJldHVybiBGYWxzZQoKCmRlZiB3cml0ZV90aW1lc3RhbXBzKGZpbGVwYXRocywgdHMpOgogICAgIiIi55SoIGV4aWZ0b29sIOWGmeWFpeaXtumXtOaIs++8iOS4jiBkb3dubG9hZC5weSDlkIzkuIDop4TojIPvvIkiIiIKICAgIGlmIG5vdCB0cyBvciBub3QgZmlsZXBhdGhzOgogICAgICAgIHJldHVybgogICAgdHJ5OgogICAgICAgIHN1YnByb2Nlc3MucnVuKFtFWElGVE9PTCwgIi1vdmVyd3JpdGVfb3JpZ2luYWwiLAogICAgICAgICAgICAgICAgICAgICAgICBmIi1EYXRlVGltZU9yaWdpbmFsPXt0c30iLCBmIi1DcmVhdGVEYXRlPXt0c30iXSArIGZpbGVwYXRocywKICAgICAgICAgICAgICAgICAgICAgICBjYXB0dXJlX291dHB1dD1UcnVlLCB0aW1lb3V0PTYwKQogICAgICAgIHRvdWNoX3RzID0gdHNbMDo0XSArIHRzWzU6N10gKyB0c1s4OjEwXSArIHRzWzExOjEzXSArIHRzWzE0OjE2XQogICAgICAgIGZvciBmIGluIGZpbGVwYXRoczoKICAgICAgICAgICAgc3VicHJvY2Vzcy5ydW4oWyJ0b3VjaCIsICItdCIsIHRvdWNoX3RzLCBmXSwgY2FwdHVyZV9vdXRwdXQ9VHJ1ZSwgdGltZW91dD0xMCkKICAgICAgICBwcmludChmIlsrXSDml7bpl7TmiLPlt7LlhpnlhaUgKHt0c30pIikKICAgIGV4Y2VwdCBFeGNlcHRpb24gYXMgZToKICAgICAgICBwcmludChmIlt+XSDml7bpl7TmiLPlhpnlhaXlpLHotKU6IHtlfSIpCgoKZGVmIG1haW4oKToKICAgIHBhcnNlciA9IGFyZ3BhcnNlLkFyZ3VtZW50UGFyc2VyKGRlc2NyaXB0aW9uPSLmipbpn7Pml6XluLjvvIjop4bpopHvvInljp/nlLvkuIvovb0iKQogICAgcGFyc2VyLmFkZF9hcmd1bWVudCgiLS1zZWMtdWlkIiwgaGVscD0i5L2c6ICFIHNlY191aWTvvIjlj6/pgInvvIzkuI3loavliJnnlKggQ29va2llIOWvueW6lOeahOi0puWPt++8iSIpCiAgICBwYXJzZXIuYWRkX2FyZ3VtZW50KCItLWNvb2tpZS1maWxlIiwgaGVscD0iQ29va2llIOaWh+S7tui3r+W+hO+8iOm7mOiupCB+Ly5jb25maWcvZG91eWluL2Nvb2tpZS50eHTvvIkiKQogICAgcGFyc2VyLmFkZF9hcmd1bWVudCgiLS1vdXQtZGlyIiwgZGVmYXVsdD0iLiIsIGhlbHA9IuS/neWtmOebruW9lSIpCiAgICBwYXJzZXIuYWRkX2FyZ3VtZW50KCItLWNvdW50IiwgdHlwZT1pbnQsIGRlZmF1bHQ9MjAsIGhlbHA9IuaLieWPluaVsOmHjyIpCiAgICBhcmdzID0gcGFyc2VyLnBhcnNlX2FyZ3MoKQoKICAgIGNvb2tpZSA9IGxvYWRfY29va2llKGFyZ3MuY29va2llX2ZpbGUpCiAgICBpZiBub3QgY29va2llOgogICAgICAgIHByaW50KGYiWyFdIOacquaJvuWIsCBDb29raWUg5paH5Lu2OiB7YXJncy5jb29raWVfZmlsZSBvciBDT09LSUVfRklMRX0iKQogICAgICAgIHByaW50KCIgICAg6K+355SoIFN0cmVhbSDmipPljIXojrflj5YgQ29va2ll77yM5a2Y5Yiw5LiK6L+w6Lev5b6E77yI57qv5paH5pys77yM5LiA6KGM77yJIikKICAgICAgICBzeXMuZXhpdCgxKQoKICAgIHByaW50KCJbK10g5q2j5Zyo5ouJ5Y+W5pel5bi45YiX6KGoLi4uIikKICAgIGl0ZW1zID0gZmV0Y2hfc3RvcnlfbGlzdChjb29raWUsIHNlY191aWQ9YXJncy5zZWNfdWlkLCBjb3VudD1hcmdzLmNvdW50KQogICAgaWYgaXRlbXMgaXMgTm9uZToKICAgICAgICBzeXMuZXhpdCgxKQogICAgaWYgbm90IGl0ZW1zOgogICAgICAgIHByaW50KCJbIV0g5rKh5pyJ5ou/5Yiw5pel5bi46KeG6aKR77yIQ29va2llIOWPr+iDvei/h+acn++8iSIpCiAgICAgICAgc3lzLmV4aXQoMSkKCiAgICBwcmludChmIlsrXSDmi7/liLAge2xlbihpdGVtcyl9IOadoeaXpeW4uCIpCiAgICBvcy5tYWtlZGlycyhhcmdzLm91dF9kaXIsIGV4aXN0X29rPVRydWUpCgogICAgZG93bmxvYWRlZCA9IFtdCiAgICBmb3IgaSwgaXRlbSBpbiBlbnVtZXJhdGUoaXRlbXMsIDEpOgogICAgICAgIGluZm8gPSBleHRyYWN0X3ZpZGVvX2luZm8oaXRlbSkKICAgICAgICBpZiBub3QgaW5mbzoKICAgICAgICAgICAgcHJpbnQoZiIgIFt7aX1dIOi3s+i/h++8muacquaJvuWIsOinhumikSBVUkkiKQogICAgICAgICAgICBjb250aW51ZQogICAgICAgIGZpbGVuYW1lID0gZiLml6XluLhfe2k6MDJkfV97aW5mb1snYXdlbWVfaWQnXX0ubXA0IgogICAgICAgIGZpbGVwYXRoID0gb3MucGF0aC5qb2luKGFyZ3Mub3V0X2RpciwgZmlsZW5hbWUpCiAgICAgICAgcHJpbnQoZiIgIFt7aX1dIHtpbmZvWydkZXNjJ119ICh2MDMwMC4uLikiKQogICAgICAgIGlmIGRvd25sb2FkX3RydWVfb3JpZ2luYWwoaW5mb1sidXJpIl0sIGZpbGVwYXRoKToKICAgICAgICAgICAgZG93bmxvYWRlZC5hcHBlbmQoKGZpbGVwYXRoLCBpbmZvWyJwdWJsaXNoX3RpbWVfc3RyIl0pKQoKICAgICMg5oyJ5ZCE6Ieq5pe26Ze05oiz5YaZ5YWl77yI5pel5bi45q+P5p2h5pe26Ze05LiN5ZCM77yJCiAgICBmb3IgZmlsZXBhdGgsIHRzIGluIGRvd25sb2FkZWQ6CiAgICAgICAgaWYgdHM6CiAgICAgICAgICAgIHdyaXRlX3RpbWVzdGFtcHMoW2ZpbGVwYXRoXSwgdHMpCgogICAgcHJpbnQoZiJcbltPS10g5a6M5oiQIHtsZW4oZG93bmxvYWRlZCl9L3tsZW4oaXRlbXMpfSIpCgoKaWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIG1haW4oKQo=
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+抖音日常（视频）原画下载
+- 拿 URI：调 aweme.snssdk.com/aweme/v1/story/profile/list/（需登录 Cookie + X-Gorgon 签名）
+- 下载：拿到 v0300 URI 后，与作品视频同一公式（ratio=default，免登录）
+- Cookie 过期判断：接口返回空列表即过期
+- 时间戳：自动用 exiftool 写入（与 download.py 同一规范）
+
+Cookie 获取：用户用 Stream 抓包，从请求头复制 Cookie 字符串，
+存到 ~/.config/douyin/cookie.txt（或用 --cookie 参数指定文件）。
+"""
+import os
+import sys
+import json
+import time
+import subprocess
+import argparse
+from datetime import datetime, timezone, timedelta
+
+import requests
+
+# 复用 signer（Python 版 X-Gorgon）
+sys.path.insert(0, os.path.expanduser("~/workspace/douyin-stories/src"))
+try:
+    from signer.gorgon import get_xgorgon
+except ImportError:
+    print("[!] 找不到 signer，请确认 ~/workspace/douyin-stories/src/signer/ 存在")
+    sys.exit(1)
+
+EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
+COOKIE_FILE = os.path.expanduser("~/.config/douyin/cookie.txt")
+
+API_HOST = "https://aweme.snssdk.com"
+STORY_LIST_API = "/aweme/v1/story/profile/list/"
+
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) "
+        "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+        "Version/16.0 Mobile/15E148 Safari/604.1"
+    ),
+}
+
+
+def load_cookie(cookie_file=None):
+    """加载 Cookie（文件或参数）"""
+    path = cookie_file or COOKIE_FILE
+    if not os.path.exists(path):
+        return None
+    with open(path, "r", encoding="utf-8") as f:
+        return f.read().strip()
+
+
+def fetch_story_list(cookie, sec_uid=None, count=20):
+    """调 story/profile/list 拿日常列表（需登录 Cookie + 签名）"""
+    params = {
+        "sec_uid": sec_uid or "",
+        "count": str(count),
+        "cursor": "0",
+    }
+    # X-Gorgon 签名
+    query = "&".join(f"{k}={v}" for k, v in params.items())
+    try:
+        xgorgon = get_xgorgon(query, "", "", cookie)
+    except Exception as e:
+        print(f"[!] 签名失败: {e}")
+        return None
+
+    headers = dict(HEADERS)
+    headers["Cookie"] = cookie
+    headers["X-Gorgon"] = xgorgon
+
+    url = API_HOST + STORY_LIST_API
+    try:
+        r = requests.get(url, params=params, headers=headers, timeout=15)
+        data = r.json()
+    except Exception as e:
+        print(f"[!] 接口请求失败: {e}")
+        return None
+
+    if data.get("status_code") != 0:
+        print(f"[!] 接口返回错误: status_code={data.get('status_code')}")
+        return None
+
+    items = data.get("aweme_list", []) or data.get("story_list", []) or []
+    if not items:
+        print("[!] 返回空列表：Cookie 可能已过期，请重新抓包更新")
+    return items
+
+
+def extract_video_info(item):
+    """从单个 story item 提取视频 URI 和元数据"""
+    video = item.get("video", {})
+    # 日常 URI 以 v0300 开头，优先 play_addr_265（H.265）
+    uri = None
+    for key in ("play_addr_265", "play_addr"):
+        pa = video.get(key, {})
+        # 先找 uri 字段
+        if pa.get("uri"):
+            uri = pa["uri"]
+            break
+        # 再从 url_list 反推（通常不需要）
+    # 兜底：直接找 v0300
+    if not uri:
+        import re
+        text = json.dumps(item)
+        m = re.search(r'v0300[a-zA-Z0-9_-]{20,40}', text)
+        if m:
+            uri = m.group(0)
+
+    if not uri:
+        return None
+
+    # 发布时间（create_time，Unix 秒）
+    create_time = item.get("create_time", 0)
+    tz_sh = timezone(timedelta(hours=8))
+    ts_str = datetime.fromtimestamp(create_time, tz_sh).strftime("%Y:%m:%d %H:%M:%S") if create_time else ""
+
+    return {
+        "uri": uri,
+        "desc": item.get("desc", "无标题")[:30],
+        "create_time": create_time,
+        "publish_time_str": ts_str,
+        "aweme_id": item.get("aweme_id", ""),
+    }
+
+
+def download_true_original(uri, filepath):
+    """用 ratio=default 下载真原画（免登录）"""
+    url = f"{API_HOST}/aweme/v1/play/?video_id={uri}&ratio=default"
+    try:
+        r = requests.get(url, headers=HEADERS, stream=True, timeout=60, allow_redirects=True)
+        r.raise_for_status()
+        total = 0
+        with open(filepath, "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
+                    total += len(chunk)
+        print(f"  ✅ {os.path.basename(filepath)} ({total} bytes)")
+        return True
+    except Exception as e:
+        print(f"  ❌ 下载失败: {e}")
+        return False
+
+
+def write_timestamps(filepaths, ts):
+    """用 exiftool 写入时间戳（与 download.py 同一规范）"""
+    if not ts or not filepaths:
+        return
+    try:
+        subprocess.run([EXIFTOOL, "-overwrite_original",
+                        f"-DateTimeOriginal={ts}", f"-CreateDate={ts}"] + filepaths,
+                       capture_output=True, timeout=60)
+        touch_ts = ts[0:4] + ts[5:7] + ts[8:10] + ts[11:13] + ts[14:16]
+        for f in filepaths:
+            subprocess.run(["touch", "-t", touch_ts, f], capture_output=True, timeout=10)
+        print(f"[+] 时间戳已写入 ({ts})")
+    except Exception as e:
+        print(f"[~] 时间戳写入失败: {e}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="抖音日常（视频）原画下载")
+    parser.add_argument("--sec-uid", help="作者 sec_uid（可选，不填则用 Cookie 对应的账号）")
+    parser.add_argument("--cookie-file", help="Cookie 文件路径（默认 ~/.config/douyin/cookie.txt）")
+    parser.add_argument("--out-dir", default=".", help="保存目录")
+    parser.add_argument("--count", type=int, default=20, help="拉取数量")
+    args = parser.parse_args()
+
+    cookie = load_cookie(args.cookie_file)
+    if not cookie:
+        print(f"[!] 未找到 Cookie 文件: {args.cookie_file or COOKIE_FILE}")
+        print("    请用 Stream 抓包获取 Cookie，存到上述路径（纯文本，一行）")
+        sys.exit(1)
+
+    print("[+] 正在拉取日常列表...")
+    items = fetch_story_list(cookie, sec_uid=args.sec_uid, count=args.count)
+    if items is None:
+        sys.exit(1)
+    if not items:
+        print("[!] 没有拿到日常视频（Cookie 可能过期）")
+        sys.exit(1)
+
+    print(f"[+] 拿到 {len(items)} 条日常")
+    os.makedirs(args.out_dir, exist_ok=True)
+
+    downloaded = []
+    for i, item in enumerate(items, 1):
+        info = extract_video_info(item)
+        if not info:
+            print(f"  [{i}] 跳过：未找到视频 URI")
+            continue
+        filename = f"日常_{i:02d}_{info['aweme_id']}.mp4"
+        filepath = os.path.join(args.out_dir, filename)
+        print(f"  [{i}] {info['desc']} (v0300...)")
+        if download_true_original(info["uri"], filepath):
+            downloaded.append((filepath, info["publish_time_str"]))
+
+    # 按各自时间戳写入（日常每条时间不同）
+    for filepath, ts in downloaded:
+        if ts:
+            write_timestamps([filepath], ts)
+
+    print(f"\n[OK] 完成 {len(downloaded)}/{len(items)}")
+
+
+if __name__ == "__main__":
+    main()
