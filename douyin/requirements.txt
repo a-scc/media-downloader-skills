@@ -1,1 +1,24 @@
-IyDmipbpn7Pml6DmsLTljbDkuIvovb3lmaggLSDkvp3otZbplIHlrprmlofku7YNCiMg5a6J5YWo562W55Wl77ya5YWo5L6d6LWW6ZO+5Zu65a6a54mI5pys5Y+3ICsgU0hBMjU2IGhhc2gg5qCh6aqM77yM6Ziy5q2i5L6b5bqU6ZO+5oqV5q+SDQojIOWuieijheWRveS7pO+8mnBpcCBpbnN0YWxsIC1yIHJlcXVpcmVtZW50cy50eHQgLS1yZXF1aXJlLWhhc2hlcw0KIw0KIyDmm7TmlrDkvp3otZbml7bor7fvvJoNCiMgICAxLiDkv67mlLnniYjmnKzlj7cNCiMgICAyLiDku44gaHR0cHM6Ly9weXBpLm9yZy9weXBpLzzljIXlkI0+LzzniYjmnKw+L2pzb24g6I635Y+W5pawIGhhc2gNCiMgICAzLiDov5DooYwgcGlwIGluc3RhbGwgLXIgcmVxdWlyZW1lbnRzLnR4dCAtLXJlcXVpcmUtaGFzaGVzIOmqjOivgQ0KDQpyZXF1ZXN0cz09Mi4zMy4xIFwNCiAgICAtLWhhc2g9c2hhMjU2OjRlNmQxZWY0NjJmMzYyNmExZjBhMGE5YzQyZGQ5M2M2M2JhZDMzZjlmMWMxOTM3NTA5YjhjNWM4NzE4YWI1NmENCiAgICAjIOS+nei1lu+8mmNoYXJzZXQtbm9ybWFsaXplciwgaWRuYSwgdXJsbGliMywgY2VydGlmaQ0KDQpjaGFyc2V0LW5vcm1hbGl6ZXI9PTMuNC43IFwNCiAgICAtLWhhc2g9c2hhMjU2OjNkY2U1MWQwZjVlNzk1MWY4YmI0OTAwYzI1N2RhZDI4MmY0OTE5MGZkYmViZWNkNGJhOTliY2M0MWZlZjQwNGQNCg0KaWRuYT09My4xMyBcDQogICAgLS1oYXNoPXNoYTI1Njo4OTJlYTBjZGUxMjRhOTljZTc3M2RlY2JhMjA0YzU1NTJiNjljM2M2N2ZmZDVmMjMyZWI3Njk2MTM1YmM4YmIzDQoNCnVybGxpYjM9PTIuNi4zIFwNCiAgICAtLWhhc2g9c2hhMjU2OmJmMjcyMzIzZTU1M2RmYjJlODdkOWJmZDIyNWNhN2IwZjQ2N2I5MTlkN2JiZDM1NTQzNmQzZmQzN2NiMGFjZDQNCg0KY2VydGlmaT09MjAyNi40LjIyIFwNCiAgICAtLWhhc2g9c2hhMjU2OjNjYjIyMTBjOGY4OGJhMjMxOGQyOWIwMzg4ZDEwMjNjODQ5MmZmNzJlY2RkZTRlYmRhZGRiYjEzYTMxYjFjNGENCg==
+# 抖音无水印下载器 - 依赖锁定文件
+# 安全策略：全依赖链固定版本号 + SHA256 hash 校验，防止供应链投毒
+# 安装命令：pip install -r requirements.txt --require-hashes
+#
+# 更新依赖时请：
+#   1. 修改版本号
+#   2. 从 https://pypi.org/pypi/<包名>/<版本>/json 获取新 hash
+#   3. 运行 pip install -r requirements.txt --require-hashes 验证
+
+requests==2.33.1 \
+    --hash=sha256:4e6d1ef462f3626a1f0a0a9c42dd93c63bad33f9f1c1937509b8c5c8718ab56a
+    # 依赖：charset-normalizer, idna, urllib3, certifi
+
+charset-normalizer==3.4.7 \
+    --hash=sha256:3dce51d0f5e7951f8bb4900c257dad282f49190fdbebecd4ba99bcc41fef404d
+
+idna==3.13 \
+    --hash=sha256:892ea0cde124a99ce773decba204c5552b69c3c67ffd5f232eb7696135bc8bb3
+
+urllib3==2.6.3 \
+    --hash=sha256:bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4
+
+certifi==2026.4.22 \
+    --hash=sha256:3cb2210c8f88ba2318d29b0388d1023c8492ff72ecdde4ebdaddbb13a31b1c4a
