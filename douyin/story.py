@@ -146,12 +146,13 @@ def download_true_original(uri, filepath):
 
 
 def write_timestamps(filepaths, ts):
-    """用 exiftool 写入时间戳（与 download.py 同一规范）"""
+    """用 exiftool 写入时间戳（与 download.py 同一规范，带东八区时区偏移）"""
     if not ts or not filepaths:
         return
     try:
         subprocess.run([EXIFTOOL, "-overwrite_original",
-                        f"-DateTimeOriginal={ts}", f"-CreateDate={ts}"] + filepaths,
+                        f"-DateTimeOriginal={ts}", f"-CreateDate={ts}",
+                        "-OffsetTimeOriginal=+08:00", "-OffsetTimeDigitized=+08:00"] + filepaths,
                        capture_output=True, timeout=60)
         touch_ts = ts[0:4] + ts[5:7] + ts[8:10] + ts[11:13] + ts[14:16]
         for f in filepaths:
