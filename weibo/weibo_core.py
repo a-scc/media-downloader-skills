@@ -1,1 +1,402 @@
-IyAtKi0gY29kaW5nOiB1dGYtOCAtKi0KIiIiCuW+ruWNmuWqkuS9k+S4i+i9veWZqCAtIOaguOW/g+aooeWdlwrnuq8gUHl0aG9uICsgcmVxdWVzdHPvvIzml6DlpJbpg6jkvp3otZbjgIIKCuS4i+i9veWOn+eQhu+8mgogIDEuIOaPkOWPluW+ruWNmumTvuaOpeS4reeahCBzdGF0dXNfaWQKICAyLiDku44gfi8uc3RvcmFnZS93ZWlib19jb29raWVzLnBrbCDliqDovb0gU1VCL1NVQlAgY29va2llCiAgMy4g5aSx5pWIL+S4jeWtmOWcqOaXtuiHquWKqOi1sOiuv+Wuouezu+e7n+iOt+WPlu+8iOS4gOW5tOacieaViO+8iQogIDQuIOivt+axgiB3ZWliby5jb20vYWpheC9zdGF0dXNlcy9zaG93IOiOt+WPluWbvuaWhy/op4bpopEgSlNPTgogIDUuIOaPkOWPluWbvueJh+Wkp+WbviBVUkwgKyDop4bpopHnm7Tpk77lubbkuIvovb0KCuaUr+aMgemTvuaOpeagvOW8j++8mgogIC0gaHR0cHM6Ly93ZWliby5jb20vVVNFUi9TVEFUVVNfSUQKICAtIGh0dHBzOi8vbS53ZWliby5jbi9zdGF0dXMvU1RBVFVTX0lECiAgLSBodHRwczovL21hcHAuYXBpLndlaWJvLmNuL2Z4L1VVSUQuaHRtbAoiIiIKCmltcG9ydCBvcwppbXBvcnQgcmUKaW1wb3J0IGpzb24KaW1wb3J0IHBpY2tsZQppbXBvcnQgcmVxdWVzdHMKaW1wb3J0IHN1YnByb2Nlc3MKZnJvbSBkYXRldGltZSBpbXBvcnQgZGF0ZXRpbWUKCkVYSUZUT09MID0gb3MucGF0aC5leHBhbmR1c2VyKCJ+L3dvcmtzcGFjZS90b29scy9JbWFnZS1FeGlmVG9vbC0xMy41OS9leGlmdG9vbCIpCgoKZGVmIHdyaXRlX3RpbWVzdGFtcHMoZmlsZXBhdGhzLCB0cyk6CiAgICAiIiLnlKggZXhpZnRvb2wg5YaZ5YWl5pe26Ze05oiz77yI5LiA5q2l5Yiw5L2N77yJ44CCCiAgICBKUEVHL0hFSUMg5YaZIEVYSUYgRGF0ZVRpbWVPcmlnaW5hbC9DcmVhdGVEYXRl77yMUE5HIOWGmSBYTVA6Q3JlYXRlRGF0Ze+8jAogICAgdG91Y2ggLXQg5L+d5bqVIG10aW1l44CCdHMg5qC85byPICIyMDI2OjA3OjA1IDE1OjMzOjEyIu+8iGV4aWZ0b29sIOebtOaOpeWPr+eUqO+8ieOAgiIiIgogICAgaWYgbm90IHRzIG9yIG5vdCBmaWxlcGF0aHM6CiAgICAgICAgcmV0dXJuCiAgICBqcGdfaGVpYyA9IFtmIGZvciBmIGluIGZpbGVwYXRocyBpZiBmLmxvd2VyKCkuZW5kc3dpdGgoKCIuanBnIiwgIi5qcGVnIiwgIi5oZWljIikpXQogICAgcG5ncyA9IFtmIGZvciBmIGluIGZpbGVwYXRocyBpZiBmLmxvd2VyKCkuZW5kc3dpdGgoIi5wbmciKV0KICAgIHRyeToKICAgICAgICBpZiBqcGdfaGVpYzoKICAgICAgICAgICAgc3VicHJvY2Vzcy5ydW4oW0VYSUZUT09MLCAiLW92ZXJ3cml0ZV9vcmlnaW5hbCIsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBmIi1EYXRlVGltZU9yaWdpbmFsPXt0c30iLCBmIi1DcmVhdGVEYXRlPXt0c30iXSArIGpwZ19oZWljLAogICAgICAgICAgICAgICAgICAgICAgICAgICBjYXB0dXJlX291dHB1dD1UcnVlLCB0aW1lb3V0PTYwKQogICAgICAgIGlmIHBuZ3M6CiAgICAgICAgICAgIHN1YnByb2Nlc3MucnVuKFtFWElGVE9PTCwgIi1vdmVyd3JpdGVfb3JpZ2luYWwiLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgZiItWE1QOkNyZWF0ZURhdGU9e3RzfSJdICsgcG5ncywKICAgICAgICAgICAgICAgICAgICAgICAgICAgY2FwdHVyZV9vdXRwdXQ9VHJ1ZSwgdGltZW91dD02MCkKICAgICAgICB0b3VjaF90cyA9IHRzWzA6NF0gKyB0c1s1OjddICsgdHNbODoxMF0gKyB0c1sxMToxM10gKyB0c1sxNDoxNl0KICAgICAgICBmb3IgZiBpbiBmaWxlcGF0aHM6CiAgICAgICAgICAgIHN1YnByb2Nlc3MucnVuKFsidG91Y2giLCAiLXQiLCB0b3VjaF90cywgZl0sIGNhcHR1cmVfb3V0cHV0PVRydWUsIHRpbWVvdXQ9MTApCiAgICAgICAgcHJpbnQoZiJbK10g5pe26Ze05oiz5bey5YaZ5YWlICh7dHN9KSIpCiAgICBleGNlcHQgRXhjZXB0aW9uIGFzIGU6CiAgICAgICAgcHJpbnQoZiJbfl0g5pe26Ze05oiz5YaZ5YWl5aSx6LSlOiB7ZX0iKQoKCkNPT0tJRV9GSUxFID0gb3MucGF0aC5qb2luKAogICAgb3MucGF0aC5kaXJuYW1lKG9zLnBhdGguZGlybmFtZShvcy5wYXRoLmFic3BhdGgoX19maWxlX18pKSksCiAgICAic3RvcmFnZSIsICJ3ZWlib19jb29raWVzLnBrbCIKKQoKSEVBREVSUyA9IHsKICAgICJVc2VyLUFnZW50IjogKAogICAgICAgICJNb3ppbGxhLzUuMCAoTGludXg7IEFuZHJvaWQgOC4wLjA7IFNNLUc5NTVVIEJ1aWxkL1IxNk5XKSAiCiAgICAgICAgIkFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pICIKICAgICAgICAiQ2hyb21lLzExNi4wLjAuMCBNb2JpbGUgU2FmYXJpLzUzNy4zNiIKICAgICksCiAgICAiUmVmZXJlciI6ICJodHRwczovL3dlaWJvLmNvbS8iLAp9CgoKZGVmIF9zYXZlX2Nvb2tpZXMoc2Vzc2lvbik6CiAgICAiIiLkv53lrZggU1VCL1NVQlAgY29va2llIOWIsOaWh+S7tiIiIgogICAgb3MubWFrZWRpcnMob3MucGF0aC5kaXJuYW1lKENPT0tJRV9GSUxFKSwgZXhpc3Rfb2s9VHJ1ZSkKICAgIGNvb2tpZXMgPSB7fQogICAgZm9yIG5hbWUgaW4gKCJTVUIiLCAiU1VCUCIpOgogICAgICAgIGlmIG5hbWUgaW4gc2Vzc2lvbi5jb29raWVzOgogICAgICAgICAgICBjID0gc2Vzc2lvbi5jb29raWVzW25hbWVdCiAgICAgICAgICAgIGNvb2tpZXNbbmFtZV0gPSB7CiAgICAgICAgICAgICAgICAidmFsdWUiOiBjLAogICAgICAgICAgICAgICAgImRvbWFpbiI6IHNlc3Npb24uY29va2llcy5saXN0X2RvbWFpbnMoKSwKICAgICAgICAgICAgfQogICAgIyDkv53lrZjlrozmlbQgY29va2llIGphcgogICAgd2l0aCBvcGVuKENPT0tJRV9GSUxFLCAid2IiKSBhcyBmOgogICAgICAgIHBpY2tsZS5kdW1wKHNlc3Npb24uY29va2llcywgZikKICAgIHByaW50KGYiWytdIGNvb2tpZSDlt7Lkv53lrZjliLAge0NPT0tJRV9GSUxFfSIpCgoKZGVmIF9sb2FkX2Nvb2tpZXMoc2Vzc2lvbik6CiAgICAiIiLku47mlofku7bliqDovb0gY29va2llIiIiCiAgICBpZiBub3Qgb3MucGF0aC5leGlzdHMoQ09PS0lFX0ZJTEUpOgogICAgICAgIHJldHVybiBGYWxzZQogICAgdHJ5OgogICAgICAgIHdpdGggb3BlbihDT09LSUVfRklMRSwgInJiIikgYXMgZjoKICAgICAgICAgICAgamFyID0gcGlja2xlLmxvYWQoZikKICAgICAgICBzZXNzaW9uLmNvb2tpZXMudXBkYXRlKGphcikKICAgICAgICAjIOajgOafpSBTVUIg5piv5ZCm6L+Y5Zyo5pyJ5pWI5pyf5YaFCiAgICAgICAgaWYgIlNVQiIgaW4gc2Vzc2lvbi5jb29raWVzOgogICAgICAgICAgICBwcmludCgiWytdIOS7juaWh+S7tuWKoOi9veS6huW+ruWNmiBjb29raWUg4pyFIikKICAgICAgICAgICAgcmV0dXJuIFRydWUKICAgIGV4Y2VwdCBFeGNlcHRpb246CiAgICAgICAgcGFzcwogICAgcmV0dXJuIEZhbHNlCgoKZGVmIF9nZXRfdmlzaXRvcl9jb29raWVzKHNlc3Npb24pOgogICAgIiIiCiAgICDnu5Xov4fmlrDmtarorr/lrqLns7vnu5/vvIzojrflj5YgU1VCL1NVQlAgY29va2llCiAgICBTVUIvU1VCUCDmnInmlYjmnJ/kuLogMzY1IOWkqQogICAgIiIiCiAgICBwcmludCgiWypdIOato+WcqOiOt+WPluiuv+WuoiBjb29raWUuLi4iKQoKICAgICMgU3RlcCAxOiDojrflj5borr/lrqLlh63or4EKICAgIHIgPSBzZXNzaW9uLnBvc3QoCiAgICAgICAgImh0dHBzOi8vcGFzc3BvcnQud2VpYm8uY29tL3Zpc2l0b3IvZ2VudmlzaXRvcjIiLAogICAgICAgIGRhdGE9ewogICAgICAgICAgICAiY2IiOiAidmlzaXRvcl9ncmF5X2NhbGxiYWNrIiwKICAgICAgICAgICAgInZlciI6ICIyMDI1MDkxNiIsCiAgICAgICAgICAgICJ0aWQiOiAiIiwKICAgICAgICAgICAgImZyb20iOiAid2VpYm8iLAogICAgICAgICAgICAid2ViZHJpdmVyIjogImZhbHNlIiwKICAgICAgICAgICAgInJldHVybl91cmwiOiAiaHR0cHM6Ly93ZWliby5jb20vIiwKICAgICAgICB9LAogICAgICAgIGhlYWRlcnM9eyJSZWZlcmVyIjogImh0dHBzOi8vd2VpYm8uY29tLyJ9LAogICAgKQogICAgbSA9IHJlLnNlYXJjaChyJ1woKC4qPylcKTtccyokJywgci50ZXh0KQogICAgaWYgbm90IG06CiAgICAgICAgcHJpbnQoIlshXSDorr/lrqLns7vnu5/nu5Xov4flpLHotKU6IOaXoOazleino+aekCBnZW52aXNpdG9yMiDlk43lupQiKQogICAgICAgIHJldHVybiBGYWxzZQoKICAgIHZkID0ganNvbi5sb2FkcyhtLmdyb3VwKDEpKS5nZXQoImRhdGEiLCB7fSkKICAgIGlmIG5vdCB2ZC5nZXQoInRpZCIpOgogICAgICAgIHByaW50KCJbIV0g6K6/5a6i57O757uf57uV6L+H5aSx6LSlOiDmnKrojrflj5bliLAgdGlkIikKICAgICAgICByZXR1cm4gRmFsc2UKCiAgICAjIFN0ZXAgMjog55SoIHRpZCDmjaLlj5YgU1VCL1NVQlAgY29va2llCiAgICBzZXNzaW9uLmdldCgKICAgICAgICAiaHR0cHM6Ly9wYXNzcG9ydC53ZWliby5jb20vdmlzaXRvci92aXNpdG9yIiwKICAgICAgICBwYXJhbXM9ewogICAgICAgICAgICAiYSI6ICJjcm9zc2RvbWFpbiIsCiAgICAgICAgICAgICJ0IjogdmRbInRpZCJdLAogICAgICAgICAgICAic3AiOiB2ZFsic3VicCJdLAogICAgICAgICAgICAicyI6IHZkWyJzdWIiXSwKICAgICAgICAgICAgImZyb20iOiAid2VpYm8iLAogICAgICAgICAgICAiX3JhbmQiOiBzdHIoaGFzaChzdHIodmQpKSlbOjhdLAogICAgICAgICAgICAidXJsIjogImh0dHBzOi8vd2VpYm8uY29tLyIsCiAgICAgICAgfSwKICAgICAgICBhbGxvd19yZWRpcmVjdHM9RmFsc2UsCiAgICApCgogICAgaWYgIlNVQiIgaW4gc2Vzc2lvbi5jb29raWVzOgogICAgICAgIHByaW50KCJbK10g6K6/5a6iIGNvb2tpZSDojrflj5bmiJDlip8g4pyFICjmnInmlYjmnJ8gfjM2NSDlpKkpIikKICAgICAgICBfc2F2ZV9jb29raWVzKHNlc3Npb24pCiAgICAgICAgcmV0dXJuIFRydWUKICAgIGVsc2U6CiAgICAgICAgcHJpbnQoIlshXSDojrflj5YgY29va2llIOWksei0pSIpCiAgICAgICAgcmV0dXJuIEZhbHNlCgoKZGVmIF9lbnN1cmVfY29va2llcyhzZXNzaW9uKToKICAgICIiIuehruS/nSBzZXNzaW9uIOacieacieaViOeahOW+ruWNmiBjb29raWUiIiIKICAgIGlmICJTVUIiIGluIHNlc3Npb24uY29va2llcyBhbmQgIlNVQlAiIGluIHNlc3Npb24uY29va2llczoKICAgICAgICByZXR1cm4gVHJ1ZQogICAgaWYgX2xvYWRfY29va2llcyhzZXNzaW9uKToKICAgICAgICByZXR1cm4gVHJ1ZQogICAgcmV0dXJuIF9nZXRfdmlzaXRvcl9jb29raWVzKHNlc3Npb24pCgoKZGVmIHJlc29sdmVfZnhfdXJsKHVybCwgc2Vzc2lvbj1Ob25lKToKICAgICIiIuino+aekCBtYXBwLmFwaS53ZWliby5jbi9meC8g5YiG5Lqr6ZO+5o6l5Li655yf5a6e5b6u5Y2a6ZO+5o6lIiIiCiAgICBzID0gc2Vzc2lvbiBvciByZXF1ZXN0cy5TZXNzaW9uKCkKICAgIHRyeToKICAgICAgICAjIOS4jei3n+i/m+mHjeWumuWQke+8jOebtOaOpeeciyBsb2NhdGlvbgogICAgICAgIHIgPSBzLmdldCh1cmwsIGhlYWRlcnM9SEVBREVSUywgYWxsb3dfcmVkaXJlY3RzPUZhbHNlLCB0aW1lb3V0PTEwKQogICAgICAgIGlmIHIuc3RhdHVzX2NvZGUgaW4gKDMwMSwgMzAyKSBhbmQgImxvY2F0aW9uIiBpbiByLmhlYWRlcnM6CiAgICAgICAgICAgIHJlYWxfdXJsID0gci5oZWFkZXJzWyJsb2NhdGlvbiJdCiAgICAgICAgICAgIHByaW50KGYiICDwn5SXIOWIhuS6q+mTvuaOpSDihpIge3JlYWxfdXJsfSIpCiAgICAgICAgICAgIHJldHVybiByZWFsX3VybAogICAgICAgICMg5aaC5p6c5rKh6YeN5a6a5ZCR77yM6ZmN5YiwIEhUTUwg6YeM5om+IHJldHVybl91cmwKICAgICAgICByID0gcy5nZXQodXJsLCBoZWFkZXJzPUhFQURFUlMsIHRpbWVvdXQ9MTApCiAgICAgICAgbSA9IHJlLnNlYXJjaChyJ3JldHVybl91cmxccyo9XHMqIihbXiJdKykiJywgci50ZXh0KQogICAgICAgIGlmIG06CiAgICAgICAgICAgIHByaW50KGYiICDwn5SXIOWIhuS6q+mTvuaOpSDihpIge20uZ3JvdXAoMSl9IikKICAgICAgICAgICAgcmV0dXJuIG0uZ3JvdXAoMSkKICAgICAgICByZXR1cm4gdXJsCiAgICBleGNlcHQgRXhjZXB0aW9uIGFzIGU6CiAgICAgICAgcHJpbnQoZiJbIV0g6Kej5p6Q5YiG5Lqr6ZO+5o6l5aSx6LSlOiB7ZX0iKQogICAgICAgIHJldHVybiB1cmwKCgpkZWYgZXh0cmFjdF9zdGF0dXNfaWQodXJsKToKICAgICIiIuS7juW+ruWNmumTvuaOpeS4reaPkOWPliBzdGF0dXNfaWQiIiIKICAgIHBhdHRlcm5zID0gWwogICAgICAgIHInd2VpYm9cLmNvbS9cZCsvKFthLXpBLVowLTldKyknLAogICAgICAgIHInd2VpYm9cLig/OmNvbXxjbikvZGV0YWlsLyhcZCspJywKICAgICAgICByJ21cLndlaWJvXC5jbi8oPzpzdGF0dXN8ZGV0YWlsKS8oXGQrKScsCiAgICBdCiAgICBmb3IgcCBpbiBwYXR0ZXJuczoKICAgICAgICBtID0gcmUuc2VhcmNoKHAsIHVybCkKICAgICAgICBpZiBtOgogICAgICAgICAgICByZXR1cm4gbS5ncm91cCgxKQogICAgcmV0dXJuIE5vbmUKCgpkZWYgX3NhZmVfbmFtZSh0ZXh0LCBtYXhfbGVuPTMwKToKICAgICIiIuWOu+mZpOmdnuazleWtl+espuOAgeaIquaWrSIiIgogICAgdGV4dCA9IHJlLnN1YihyJ1tcXC8qPzoiPD58XHJcblx0XScsICcnLCB0ZXh0KQogICAgdGV4dCA9IHJlLnN1YihyJ1xzKycsICcgJywgdGV4dCkuc3RyaXAoKQogICAgcmV0dXJuIHRleHRbOm1heF9sZW5dCgoKZGVmIGZldGNoX3N0YXR1cyhzZXNzaW9uLCBzdGF0dXNfaWQpOgogICAgIiIiCiAgICDojrflj5bljZXmnaHlvq7ljZrnmoTlqpLkvZPmlbDmja4KICAgIOi/lOWbnjogeyJzdWNjZXNzIjogYm9vbCwgImF1dGhvciI6IHN0ciwgInRleHQiOiBzdHIsICJmaWxlcyI6IFsuLi5dfQogICAgIiIiCiAgICByID0gc2Vzc2lvbi5nZXQoCiAgICAgICAgZiJodHRwczovL3dlaWJvLmNvbS9hamF4L3N0YXR1c2VzL3Nob3c/aWQ9e3N0YXR1c19pZH0maXNHZXRMb25nVGV4dD10cnVlIiwKICAgICAgICBoZWFkZXJzPUhFQURFUlMsCiAgICAgICAgdGltZW91dD0xNSwKICAgICkKCiAgICBpZiBub3Qgci50ZXh0OgogICAgICAgIHJldHVybiB7InN1Y2Nlc3MiOiBGYWxzZSwgImVycm9yIjogIkFQSSDov5Tlm57kuLrnqboifQoKICAgIHRyeToKICAgICAgICBkYXRhID0gci5qc29uKCkKICAgIGV4Y2VwdCBqc29uLkpTT05EZWNvZGVFcnJvcjoKICAgICAgICByZXR1cm4geyJzdWNjZXNzIjogRmFsc2UsICJlcnJvciI6ICJBUEkg6L+U5Zue6Z2eIEpTT04ifQoKICAgIGlmIGRhdGEuZ2V0KCJvayIpICE9IDE6CiAgICAgICAgcmV0dXJuIHsic3VjY2VzcyI6IEZhbHNlLCAiZXJyb3IiOiBkYXRhLmdldCgibXNnIikgb3IgZGF0YS5nZXQoIm1lc3NhZ2UiKSBvciAi5pyq55+l6ZSZ6K+vIn0KCiAgICB1c2VyID0gZGF0YS5nZXQoInVzZXIiLCB7fSkKICAgIGF1dGhvciA9IHVzZXIuZ2V0KCJzY3JlZW5fbmFtZSIsICLmnKrnn6UiKQogICAgdGV4dF9yYXcgPSBkYXRhLmdldCgidGV4dF9yYXciLCAiIikKICAgIHByZWZpeCA9IF9zYWZlX25hbWUodGV4dF9yYXcgb3IgYXV0aG9yLCAyMCkKCiAgICAjIC0tLS0g6Kej5p6Q5aqS5L2TIC0tLS0KICAgIGZpbGVzID0gW10KCiAgICAjIOaWsOeJiCBtaXhfbWVkaWFfaW5mbwogICAgbWl4ID0gZGF0YS5nZXQoIm1peF9tZWRpYV9pbmZvIikKICAgIGlmIG1peDoKICAgICAgICBmb3IgaXRlbSBpbiBtaXguZ2V0KCJpdGVtcyIsIFtdKToKICAgICAgICAgICAgdCA9IGl0ZW0uZ2V0KCJ0eXBlIikKICAgICAgICAgICAgZCA9IGl0ZW0uZ2V0KCJkYXRhIiwge30pCiAgICAgICAgICAgIGlmIHQgPT0gInBpYyI6CiAgICAgICAgICAgICAgICB1cmwgPSBkLmdldCgibGFyZ2VzdCIsIHt9KS5nZXQoInVybCIsICIiKQogICAgICAgICAgICAgICAgaWYgdXJsOgogICAgICAgICAgICAgICAgICAgIGZpbGVzLmFwcGVuZCh7InVybCI6IHVybCwgInR5cGUiOiAiaW1hZ2UifSkKICAgICAgICAgICAgZWxpZiB0ID09ICJ2aWRlbyI6CiAgICAgICAgICAgICAgICBtaSA9IGQuZ2V0KCJtZWRpYV9pbmZvIiwge30pCiAgICAgICAgICAgICAgICB1cmwgPSBtaS5nZXQoIm1wNF9oZF91cmwiKSBvciBtaS5nZXQoIm1wNF83MjBwX21wNCIpIG9yIG1pLmdldCgic3RyZWFtX3VybCIpIG9yICIiCiAgICAgICAgICAgICAgICBpZiB1cmw6CiAgICAgICAgICAgICAgICAgICAgZmlsZXMuYXBwZW5kKHsidXJsIjogdXJsLCAidHlwZSI6ICJ2aWRlbyJ9KQoKICAgICMg5pen54mIIHBpY19pZHMgKyBwaWNfaW5mb3PvvIjlhZzlupXvvIkKICAgIGlmIG5vdCBmaWxlczoKICAgICAgICBmb3IgcGljX2lkIGluIGRhdGEuZ2V0KCJwaWNfaWRzIiwgW10pOgogICAgICAgICAgICBwaWMgPSBkYXRhLmdldCgicGljX2luZm9zIiwge30pLmdldChwaWNfaWQsIHt9KQogICAgICAgICAgICBpZiBwaWMuZ2V0KCJ0eXBlIikgPT0gImdpZiIgYW5kIHBpYy5nZXQoInZpZGVvIik6CiAgICAgICAgICAgICAgICBmaWxlcy5hcHBlbmQoeyJ1cmwiOiBwaWNbInZpZGVvIl0sICJ0eXBlIjogInZpZGVvIn0pCiAgICAgICAgICAgIGVsc2U6CiAgICAgICAgICAgICAgICB1cmwgPSBwaWMuZ2V0KCJsYXJnZXN0Iiwge30pLmdldCgidXJsIiwgIiIpCiAgICAgICAgICAgICAgICBpZiB1cmw6CiAgICAgICAgICAgICAgICAgICAgZmlsZXMuYXBwZW5kKHsidXJsIjogdXJsLCAidHlwZSI6ICJpbWFnZSJ9KQoKICAgICMg54us56uL55qEIHBhZ2VfaW5mbyDop4bpopEKICAgIHBpID0gZGF0YS5nZXQoInBhZ2VfaW5mbyIsIHt9KQogICAgaWYgcGkuZ2V0KCJ0eXBlIikgPT0gInZpZGVvIjoKICAgICAgICBtaSA9IHBpLmdldCgibWVkaWFfaW5mbyIsIHt9KQogICAgICAgIHVybCA9IG1pLmdldCgibXA0X2hkX3VybCIpIG9yIG1pLmdldCgibXA0XzcyMHBfbXA0Iikgb3IgbWkuZ2V0KCJzdHJlYW1fdXJsIikgb3IgIiIKICAgICAgICBpZiB1cmwgYW5kIG5vdCBhbnkoZlsidXJsIl0gPT0gdXJsIGZvciBmIGluIGZpbGVzKToKICAgICAgICAgICAgZmlsZXMuYXBwZW5kKHsidXJsIjogdXJsLCAidHlwZSI6ICJ2aWRlbyJ9KQoKICAgICMg57yW5Y+35paH5Lu25ZCNCiAgICBmb3IgaSwgZiBpbiBlbnVtZXJhdGUoZmlsZXMsIDEpOgogICAgICAgIGV4dCA9ICJtcDQiIGlmIGZbInR5cGUiXSA9PSAidmlkZW8iIGVsc2UgImpwZyIKICAgICAgICBmWyJmaWxlbmFtZSJdID0gZiJ7cHJlZml4fV97aTowMmR9LntleHR9IgoKICAgICMg5Y+R5biD5pe26Ze077yaY3JlYXRlZF9hdCDmmK8gIlN1biBKdWwgMDUgMTU6MzM6MDAgKzA4MDAgMjAyNiIg5qC85byPCiAgICBjcmVhdGVkX2F0ID0gZGF0YS5nZXQoImNyZWF0ZWRfYXQiLCAiIikKICAgIHB1Ymxpc2hfdGltZV9zdHIgPSAiIgogICAgaWYgY3JlYXRlZF9hdDoKICAgICAgICB0cnk6CiAgICAgICAgICAgIGR0ID0gZGF0ZXRpbWUuc3RycHRpbWUoY3JlYXRlZF9hdCwgIiVhICViICVkICVIOiVNOiVTICV6ICVZIikKICAgICAgICAgICAgcHVibGlzaF90aW1lX3N0ciA9IGR0LnN0cmZ0aW1lKCIlWTolbTolZCAlSDolTTolUyIpCiAgICAgICAgZXhjZXB0IFZhbHVlRXJyb3I6CiAgICAgICAgICAgIHBhc3MKCiAgICByZXR1cm4gewogICAgICAgICJzdWNjZXNzIjogVHJ1ZSwKICAgICAgICAiYXV0aG9yIjogYXV0aG9yLAogICAgICAgICJ0ZXh0IjogdGV4dF9yYXcsCiAgICAgICAgImlkIjogc3RhdHVzX2lkLAogICAgICAgICJwdWJsaXNoX3RpbWVfc3RyIjogcHVibGlzaF90aW1lX3N0ciwKICAgICAgICAiZmlsZXMiOiBmaWxlcywKICAgIH0KCgpkZWYgZG93bmxvYWRfZmlsZShzZXNzaW9uLCB1cmwsIGZpbGVwYXRoKToKICAgICIiIuS4i+i9veWNleS4quaWh+S7tiIiIgogICAgdHJ5OgogICAgICAgIHByaW50KGYiICDirIcge29zLnBhdGguYmFzZW5hbWUoZmlsZXBhdGgpfSIsIGVuZD0iICIsIGZsdXNoPVRydWUpCiAgICAgICAgciA9IHNlc3Npb24uZ2V0KHVybCwgaGVhZGVycz1IRUFERVJTLCBzdHJlYW09VHJ1ZSwgdGltZW91dD02MCkKICAgICAgICByLnJhaXNlX2Zvcl9zdGF0dXMoKQogICAgICAgIHRvdGFsID0gaW50KHIuaGVhZGVycy5nZXQoImNvbnRlbnQtbGVuZ3RoIiwgMCkpCiAgICAgICAgZG93bmxvYWRlZCA9IDAKICAgICAgICB3aXRoIG9wZW4oZmlsZXBhdGgsICJ3YiIpIGFzIGY6CiAgICAgICAgICAgIGZvciBjaHVuayBpbiByLml0ZXJfY29udGVudCg4MTkyKToKICAgICAgICAgICAgICAgIGlmIGNodW5rOgogICAgICAgICAgICAgICAgICAgIGYud3JpdGUoY2h1bmspCiAgICAgICAgICAgICAgICAgICAgZG93bmxvYWRlZCArPSBsZW4oY2h1bmspCiAgICAgICAgICAgICAgICAgICAgaWYgdG90YWwgPiAwOgogICAgICAgICAgICAgICAgICAgICAgICBwY3QgPSBkb3dubG9hZGVkIC8gdG90YWwgKiAxMDAKICAgICAgICAgICAgICAgICAgICAgICAgcHJpbnQoZiJcciAg4qyHIHtvcy5wYXRoLmJhc2VuYW1lKGZpbGVwYXRoKX0gW3twY3Q6LjBmfSVdIiwgZW5kPSIiLCBmbHVzaD1UcnVlKQogICAgICAgIHNpemVfa2IgPSBkb3dubG9hZGVkIC8gMTAyNAogICAgICAgIHByaW50KGYiXHIgIOKchSB7b3MucGF0aC5iYXNlbmFtZShmaWxlcGF0aCl9ICh7c2l6ZV9rYjouMGZ9IEtCKSIpCiAgICAgICAgcmV0dXJuIFRydWUKICAgIGV4Y2VwdCBFeGNlcHRpb24gYXMgZToKICAgICAgICBwcmludChmIlxyICDinYwge29zLnBhdGguYmFzZW5hbWUoZmlsZXBhdGgpfToge2V9IikKICAgICAgICByZXR1cm4gRmFsc2UKCgpjbGFzcyBXZWlib0Rvd25sb2FkZXI6CiAgICAiIiLlvq7ljZrlqpLkvZPkuIvovb3lmagiIiIKCiAgICBkZWYgZG93bmxvYWQoc2VsZiwgdXJsLCBvdXRwdXRfZGlyPU5vbmUpOgogICAgICAgICIiIgogICAgICAgIOS4u+WFpeWPo++8muS4i+i9veW+ruWNmuWqkuS9kwogICAgICAgIOi/lOWbnjogeyJzdWNjZXNzIjogYm9vbCwgImZpbGVzIjogaW50LCAidG90YWwiOiBpbnQsICJkaXIiOiBzdHJ9CiAgICAgICAgIiIiCiAgICAgICAgaWYgb3V0cHV0X2RpciBpcyBOb25lOgogICAgICAgICAgICBvdXRwdXRfZGlyID0gb3MuZ2V0Y3dkKCkKICAgICAgICBvcy5tYWtlZGlycyhvdXRwdXRfZGlyLCBleGlzdF9vaz1UcnVlKQoKICAgICAgICBzZXNzaW9uID0gcmVxdWVzdHMuU2Vzc2lvbigpCiAgICAgICAgc2Vzc2lvbi5oZWFkZXJzLnVwZGF0ZShIRUFERVJTKQoKICAgICAgICBvcmlnaW5hbF91cmwgPSB1cmwKCiAgICAgICAgIyDlpITnkIYgZngg5YiG5Lqr6ZO+5o6lCiAgICAgICAgaWYgIm1hcHAuYXBpLndlaWJvLmNuL2Z4LyIgaW4gdXJsOgogICAgICAgICAgICB1cmwgPSByZXNvbHZlX2Z4X3VybCh1cmwsIHNlc3Npb24pCgogICAgICAgICMg5o+Q5Y+WIHN0YXR1c19pZAogICAgICAgIHN0YXR1c19pZCA9IGV4dHJhY3Rfc3RhdHVzX2lkKHVybCkKICAgICAgICBpZiBub3Qgc3RhdHVzX2lkOgogICAgICAgICAgICBwcmludChmIlshXSDml6Dms5Xmj5Dlj5blvq7ljZogSUQ6IHtvcmlnaW5hbF91cmx9IikKICAgICAgICAgICAgcmV0dXJuIHsic3VjY2VzcyI6IEZhbHNlLCAiZXJyb3IiOiAi5peg5pWI55qE5b6u5Y2a6ZO+5o6lIn0KCiAgICAgICAgcHJpbnQoZiJbK10g5bmz5Y+wOiDlvq7ljZoiKQogICAgICAgIHByaW50KGYiWytdIFN0YXR1cyBJRDoge3N0YXR1c19pZH0iKQoKICAgICAgICAjIOehruS/neaciSBjb29raWUKICAgICAgICBpZiBub3QgX2Vuc3VyZV9jb29raWVzKHNlc3Npb24pOgogICAgICAgICAgICBwcmludCgiWyFdIOaXoOazleiOt+WPluW+ruWNmuiuv+mXruWHreivgSIpCiAgICAgICAgICAgIHJldHVybiB7InN1Y2Nlc3MiOiBGYWxzZSwgImVycm9yIjogImNvb2tpZSDojrflj5blpLHotKUifQoKICAgICAgICAjIOiOt+WPluW+ruWNmuaVsOaNrgogICAgICAgIHJlc3VsdCA9IGZldGNoX3N0YXR1cyhzZXNzaW9uLCBzdGF0dXNfaWQpCiAgICAgICAgaWYgbm90IHJlc3VsdFsic3VjY2VzcyJdOgogICAgICAgICAgICBwcmludChmIlshXSDojrflj5blvq7ljZrlpLHotKU6IHtyZXN1bHQuZ2V0KCdlcnJvcicpfSIpCiAgICAgICAgICAgIHJldHVybiByZXN1bHQKCiAgICAgICAgcHJpbnQoZiJbK10g5L2c6ICFOiB7cmVzdWx0WydhdXRob3InXX0iKQogICAgICAgIHRleHRfcHJldmlldyA9IHJlc3VsdFsndGV4dCddWzo1MF0ucmVwbGFjZSgnXG4nLCAnICcpCiAgICAgICAgcHJpbnQoZiJbK10g5YaF5a65OiB7dGV4dF9wcmV2aWV3fXsnLi4uJyBpZiBsZW4ocmVzdWx0Wyd0ZXh0J10pPjUwIGVsc2UgJyd9IikKCiAgICAgICAgZmlsZXMgPSByZXN1bHRbImZpbGVzIl0KICAgICAgICBpZiBub3QgZmlsZXM6CiAgICAgICAgICAgIHByaW50KCJbIV0g5pyq5om+5Yiw5Y+v5LiL6L2955qE5aqS5L2T5paH5Lu2IikKICAgICAgICAgICAgcmV0dXJuIHsic3VjY2VzcyI6IEZhbHNlLCAiZmlsZXMiOiAwLCAidG90YWwiOiAwLCAiZGlyIjogb3V0cHV0X2Rpcn0KCiAgICAgICAgaW1nX24gPSBzdW0oMSBmb3IgZiBpbiBmaWxlcyBpZiBmWyd0eXBlJ10gPT0gJ2ltYWdlJykKICAgICAgICB2aWRfbiA9IHN1bSgxIGZvciBmIGluIGZpbGVzIGlmIGZbJ3R5cGUnXSA9PSAndmlkZW8nKQogICAgICAgIHByaW50KGYiWytdIOWFsSB7bGVuKGZpbGVzKX0g5Liq5paH5Lu2ICh7aW1nX259IOWbviwge3ZpZF9ufSDop4bpopEpIikKCiAgICAgICAgIyDlrZDnm67lvZUKICAgICAgICBhdXRob3JfZGlyID0gX3NhZmVfbmFtZShyZXN1bHRbImF1dGhvciJdLCAyMCkKICAgICAgICBzYXZlX2RpciA9IG9zLnBhdGguam9pbihvdXRwdXRfZGlyLCBmInthdXRob3JfZGlyfV97c3RhdHVzX2lkfSIpCiAgICAgICAgb3MubWFrZWRpcnMoc2F2ZV9kaXIsIGV4aXN0X29rPVRydWUpCgogICAgICAgICMg5LiL6L29CiAgICAgICAgZG93bmxvYWRlZF9maWxlcyA9IFtdCiAgICAgICAgZm9yIGYgaW4gZmlsZXM6CiAgICAgICAgICAgIGZpbGVwYXRoID0gb3MucGF0aC5qb2luKHNhdmVfZGlyLCBmWyJmaWxlbmFtZSJdKQogICAgICAgICAgICBpZiBkb3dubG9hZF9maWxlKHNlc3Npb24sIGZbInVybCJdLCBmaWxlcGF0aCk6CiAgICAgICAgICAgICAgICBkb3dubG9hZGVkX2ZpbGVzLmFwcGVuZChmaWxlcGF0aCkKICAgICAgICBzdWNjZXNzID0gbGVuKGRvd25sb2FkZWRfZmlsZXMpCgogICAgICAgICMg5LiA5q2l5Yiw5L2N77ya6Ieq5Yqo5YaZ5YWl5pe26Ze05oizCiAgICAgICAgaWYgZG93bmxvYWRlZF9maWxlcyBhbmQgcmVzdWx0LmdldCgicHVibGlzaF90aW1lX3N0ciIpOgogICAgICAgICAgICB3cml0ZV90aW1lc3RhbXBzKGRvd25sb2FkZWRfZmlsZXMsIHJlc3VsdFsicHVibGlzaF90aW1lX3N0ciJdKQoKICAgICAgICBwcmludChmIlxuW09LXSDlhajpg6jlrozmiJDvvIHmiJDlip8ge3N1Y2Nlc3N9L3tsZW4oZmlsZXMpfSIpCiAgICAgICAgcHJpbnQoZiLwn5OCIHtzYXZlX2Rpcn0iKQogICAgICAgIHJldHVybiB7InN1Y2Nlc3MiOiBzdWNjZXNzID4gMCwgImZpbGVzIjogc3VjY2VzcywgInRvdGFsIjogbGVuKGZpbGVzKSwgImRpciI6IHNhdmVfZGlyfQoKCmRlZiBkb3dubG9hZCh1cmwsIG91dHB1dF9kaXI9Tm9uZSk6CiAgICAiIiLkvr/mjbflh73mlbDvvJrkuIDplK7kuIvovb0iIiIKICAgIHJldHVybiBXZWlib0Rvd25sb2FkZXIoKS5kb3dubG9hZCh1cmwsIG91dHB1dF9kaXIpCg==
+# -*- coding: utf-8 -*-
+"""
+微博媒体下载器 - 核心模块
+纯 Python + requests，无外部依赖。
+
+下载原理：
+  1. 提取微博链接中的 status_id
+  2. 从 ~/.storage/weibo_cookies.pkl 加载 SUB/SUBP cookie
+  3. 失效/不存在时自动走访客系统获取（一年有效）
+  4. 请求 weibo.com/ajax/statuses/show 获取图文/视频 JSON
+  5. 提取图片大图 URL + 视频直链并下载
+
+支持链接格式：
+  - https://weibo.com/USER/STATUS_ID
+  - https://m.weibo.cn/status/STATUS_ID
+  - https://mapp.api.weibo.cn/fx/UUID.html
+"""
+
+import os
+import re
+import json
+import pickle
+import requests
+import subprocess
+from datetime import datetime
+
+EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
+
+
+def write_timestamps(filepaths, ts):
+    """用 exiftool 写入时间戳（一步到位）。
+    JPEG/HEIC 写 EXIF DateTimeOriginal/CreateDate，PNG 写 XMP:CreateDate，
+    touch -t 保底 mtime。ts 格式 "2026:07:05 15:33:12"（exiftool 直接可用）。"""
+    if not ts or not filepaths:
+        return
+    jpg_heic = [f for f in filepaths if f.lower().endswith((".jpg", ".jpeg", ".heic"))]
+    pngs = [f for f in filepaths if f.lower().endswith(".png")]
+    try:
+        if jpg_heic:
+            subprocess.run([EXIFTOOL, "-overwrite_original",
+                            f"-DateTimeOriginal={ts}", f"-CreateDate={ts}"] + jpg_heic,
+                           capture_output=True, timeout=60)
+        if pngs:
+            subprocess.run([EXIFTOOL, "-overwrite_original",
+                            f"-XMP:CreateDate={ts}"] + pngs,
+                           capture_output=True, timeout=60)
+        touch_ts = ts[0:4] + ts[5:7] + ts[8:10] + ts[11:13] + ts[14:16]
+        for f in filepaths:
+            subprocess.run(["touch", "-t", touch_ts, f], capture_output=True, timeout=10)
+        print(f"[+] 时间戳已写入 ({ts})")
+    except Exception as e:
+        print(f"[~] 时间戳写入失败: {e}")
+
+
+COOKIE_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "storage", "weibo_cookies.pkl"
+)
+
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/116.0.0.0 Mobile Safari/537.36"
+    ),
+    "Referer": "https://weibo.com/",
+}
+
+
+def _save_cookies(session):
+    """保存 SUB/SUBP cookie 到文件"""
+    os.makedirs(os.path.dirname(COOKIE_FILE), exist_ok=True)
+    cookies = {}
+    for name in ("SUB", "SUBP"):
+        if name in session.cookies:
+            c = session.cookies[name]
+            cookies[name] = {
+                "value": c,
+                "domain": session.cookies.list_domains(),
+            }
+    # 保存完整 cookie jar
+    with open(COOKIE_FILE, "wb") as f:
+        pickle.dump(session.cookies, f)
+    print(f"[+] cookie 已保存到 {COOKIE_FILE}")
+
+
+def _load_cookies(session):
+    """从文件加载 cookie"""
+    if not os.path.exists(COOKIE_FILE):
+        return False
+    try:
+        with open(COOKIE_FILE, "rb") as f:
+            jar = pickle.load(f)
+        session.cookies.update(jar)
+        # 检查 SUB 是否还在有效期内
+        if "SUB" in session.cookies:
+            print("[+] 从文件加载了微博 cookie ✅")
+            return True
+    except Exception:
+        pass
+    return False
+
+
+def _get_visitor_cookies(session):
+    """
+    绕过新浪访客系统，获取 SUB/SUBP cookie
+    SUB/SUBP 有效期为 365 天
+    """
+    print("[*] 正在获取访客 cookie...")
+
+    # Step 1: 获取访客凭证
+    r = session.post(
+        "https://passport.weibo.com/visitor/genvisitor2",
+        data={
+            "cb": "visitor_gray_callback",
+            "ver": "20250916",
+            "tid": "",
+            "from": "weibo",
+            "webdriver": "false",
+            "return_url": "https://weibo.com/",
+        },
+        headers={"Referer": "https://weibo.com/"},
+    )
+    m = re.search(r'\((.*?)\);\s*$', r.text)
+    if not m:
+        print("[!] 访客系统绕过失败: 无法解析 genvisitor2 响应")
+        return False
+
+    vd = json.loads(m.group(1)).get("data", {})
+    if not vd.get("tid"):
+        print("[!] 访客系统绕过失败: 未获取到 tid")
+        return False
+
+    # Step 2: 用 tid 换取 SUB/SUBP cookie
+    session.get(
+        "https://passport.weibo.com/visitor/visitor",
+        params={
+            "a": "crossdomain",
+            "t": vd["tid"],
+            "sp": vd["subp"],
+            "s": vd["sub"],
+            "from": "weibo",
+            "_rand": str(hash(str(vd)))[:8],
+            "url": "https://weibo.com/",
+        },
+        allow_redirects=False,
+    )
+
+    if "SUB" in session.cookies:
+        print("[+] 访客 cookie 获取成功 ✅ (有效期 ~365 天)")
+        _save_cookies(session)
+        return True
+    else:
+        print("[!] 获取 cookie 失败")
+        return False
+
+
+def _ensure_cookies(session):
+    """确保 session 有有效的微博 cookie"""
+    if "SUB" in session.cookies and "SUBP" in session.cookies:
+        return True
+    if _load_cookies(session):
+        return True
+    return _get_visitor_cookies(session)
+
+
+def resolve_fx_url(url, session=None):
+    """解析 mapp.api.weibo.cn/fx/ 分享链接为真实微博链接"""
+    s = session or requests.Session()
+    try:
+        # 不跟进重定向，直接看 location
+        r = s.get(url, headers=HEADERS, allow_redirects=False, timeout=10)
+        if r.status_code in (301, 302) and "location" in r.headers:
+            real_url = r.headers["location"]
+            print(f"  🔗 分享链接 → {real_url}")
+            return real_url
+        # 如果没重定向，降到 HTML 里找 return_url
+        r = s.get(url, headers=HEADERS, timeout=10)
+        m = re.search(r'return_url\s*=\s*"([^"]+)"', r.text)
+        if m:
+            print(f"  🔗 分享链接 → {m.group(1)}")
+            return m.group(1)
+        return url
+    except Exception as e:
+        print(f"[!] 解析分享链接失败: {e}")
+        return url
+
+
+def extract_status_id(url):
+    """从微博链接中提取 status_id"""
+    patterns = [
+        r'weibo\.com/\d+/([a-zA-Z0-9]+)',
+        r'weibo\.(?:com|cn)/detail/(\d+)',
+        r'm\.weibo\.cn/(?:status|detail)/(\d+)',
+    ]
+    for p in patterns:
+        m = re.search(p, url)
+        if m:
+            return m.group(1)
+    return None
+
+
+def _safe_name(text, max_len=30):
+    """去除非法字符、截断"""
+    text = re.sub(r'[\\/*?:"<>|\r\n\t]', '', text)
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text[:max_len]
+
+
+def fetch_status(session, status_id):
+    """
+    获取单条微博的媒体数据
+    返回: {"success": bool, "author": str, "text": str, "files": [...]}
+    """
+    r = session.get(
+        f"https://weibo.com/ajax/statuses/show?id={status_id}&isGetLongText=true",
+        headers=HEADERS,
+        timeout=15,
+    )
+
+    if not r.text:
+        return {"success": False, "error": "API 返回为空"}
+
+    try:
+        data = r.json()
+    except json.JSONDecodeError:
+        return {"success": False, "error": "API 返回非 JSON"}
+
+    if data.get("ok") != 1:
+        return {"success": False, "error": data.get("msg") or data.get("message") or "未知错误"}
+
+    user = data.get("user", {})
+    author = user.get("screen_name", "未知")
+    text_raw = data.get("text_raw", "")
+    prefix = _safe_name(text_raw or author, 20)
+
+    # ---- 解析媒体 ----
+    files = []
+
+    # 新版 mix_media_info
+    mix = data.get("mix_media_info")
+    if mix:
+        for item in mix.get("items", []):
+            t = item.get("type")
+            d = item.get("data", {})
+            if t == "pic":
+                url = d.get("largest", {}).get("url", "")
+                if url:
+                    files.append({"url": url, "type": "image"})
+            elif t == "video":
+                mi = d.get("media_info", {})
+                url = mi.get("mp4_hd_url") or mi.get("mp4_720p_mp4") or mi.get("stream_url") or ""
+                if url:
+                    files.append({"url": url, "type": "video"})
+
+    # 旧版 pic_ids + pic_infos（兜底）
+    if not files:
+        for pic_id in data.get("pic_ids", []):
+            pic = data.get("pic_infos", {}).get(pic_id, {})
+            if pic.get("type") == "gif" and pic.get("video"):
+                files.append({"url": pic["video"], "type": "video"})
+            else:
+                url = pic.get("largest", {}).get("url", "")
+                if url:
+                    files.append({"url": url, "type": "image"})
+
+    # 独立的 page_info 视频
+    pi = data.get("page_info", {})
+    if pi.get("type") == "video":
+        mi = pi.get("media_info", {})
+        url = mi.get("mp4_hd_url") or mi.get("mp4_720p_mp4") or mi.get("stream_url") or ""
+        if url and not any(f["url"] == url for f in files):
+            files.append({"url": url, "type": "video"})
+
+    # 编号文件名
+    for i, f in enumerate(files, 1):
+        ext = "mp4" if f["type"] == "video" else "jpg"
+        f["filename"] = f"{prefix}_{i:02d}.{ext}"
+
+    # 发布时间：created_at 是 "Sun Jul 05 15:33:00 +0800 2026" 格式
+    created_at = data.get("created_at", "")
+    publish_time_str = ""
+    if created_at:
+        try:
+            dt = datetime.strptime(created_at, "%a %b %d %H:%M:%S %z %Y")
+            publish_time_str = dt.strftime("%Y:%m:%d %H:%M:%S")
+        except ValueError:
+            pass
+
+    return {
+        "success": True,
+        "author": author,
+        "text": text_raw,
+        "id": status_id,
+        "publish_time_str": publish_time_str,
+        "files": files,
+    }
+
+
+def download_file(session, url, filepath):
+    """下载单个文件"""
+    try:
+        print(f"  ⬇ {os.path.basename(filepath)}", end=" ", flush=True)
+        r = session.get(url, headers=HEADERS, stream=True, timeout=60)
+        r.raise_for_status()
+        total = int(r.headers.get("content-length", 0))
+        downloaded = 0
+        with open(filepath, "wb") as f:
+            for chunk in r.iter_content(8192):
+                if chunk:
+                    f.write(chunk)
+                    downloaded += len(chunk)
+                    if total > 0:
+                        pct = downloaded / total * 100
+                        print(f"\r  ⬇ {os.path.basename(filepath)} [{pct:.0f}%]", end="", flush=True)
+        size_kb = downloaded / 1024
+        print(f"\r  ✅ {os.path.basename(filepath)} ({size_kb:.0f} KB)")
+        return True
+    except Exception as e:
+        print(f"\r  ❌ {os.path.basename(filepath)}: {e}")
+        return False
+
+
+class WeiboDownloader:
+    """微博媒体下载器"""
+
+    def download(self, url, output_dir=None):
+        """
+        主入口：下载微博媒体
+        返回: {"success": bool, "files": int, "total": int, "dir": str}
+        """
+        if output_dir is None:
+            output_dir = os.getcwd()
+        os.makedirs(output_dir, exist_ok=True)
+
+        session = requests.Session()
+        session.headers.update(HEADERS)
+
+        original_url = url
+
+        # 处理 fx 分享链接
+        if "mapp.api.weibo.cn/fx/" in url:
+            url = resolve_fx_url(url, session)
+
+        # 提取 status_id
+        status_id = extract_status_id(url)
+        if not status_id:
+            print(f"[!] 无法提取微博 ID: {original_url}")
+            return {"success": False, "error": "无效的微博链接"}
+
+        print(f"[+] 平台: 微博")
+        print(f"[+] Status ID: {status_id}")
+
+        # 确保有 cookie
+        if not _ensure_cookies(session):
+            print("[!] 无法获取微博访问凭证")
+            return {"success": False, "error": "cookie 获取失败"}
+
+        # 获取微博数据
+        result = fetch_status(session, status_id)
+        if not result["success"]:
+            print(f"[!] 获取微博失败: {result.get('error')}")
+            return result
+
+        print(f"[+] 作者: {result['author']}")
+        text_preview = result['text'][:50].replace('\n', ' ')
+        print(f"[+] 内容: {text_preview}{'...' if len(result['text'])>50 else ''}")
+
+        files = result["files"]
+        if not files:
+            print("[!] 未找到可下载的媒体文件")
+            return {"success": False, "files": 0, "total": 0, "dir": output_dir}
+
+        img_n = sum(1 for f in files if f['type'] == 'image')
+        vid_n = sum(1 for f in files if f['type'] == 'video')
+        print(f"[+] 共 {len(files)} 个文件 ({img_n} 图, {vid_n} 视频)")
+
+        # 子目录
+        author_dir = _safe_name(result["author"], 20)
+        save_dir = os.path.join(output_dir, f"{author_dir}_{status_id}")
+        os.makedirs(save_dir, exist_ok=True)
+
+        # 下载
+        downloaded_files = []
+        for f in files:
+            filepath = os.path.join(save_dir, f["filename"])
+            if download_file(session, f["url"], filepath):
+                downloaded_files.append(filepath)
+        success = len(downloaded_files)
+
+        # 一步到位：自动写入时间戳
+        if downloaded_files and result.get("publish_time_str"):
+            write_timestamps(downloaded_files, result["publish_time_str"])
+
+        print(f"\n[OK] 全部完成！成功 {success}/{len(files)}")
+        print(f"📂 {save_dir}")
+        return {"success": success > 0, "files": success, "total": len(files), "dir": save_dir}
+
+
+def download(url, output_dir=None):
+    """便捷函数：一键下载"""
+    return WeiboDownloader().download(url, output_dir)
