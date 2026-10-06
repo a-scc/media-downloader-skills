@@ -46,7 +46,7 @@ def write_timestamps(filepaths, ts):
     jpg_heic = [f for f in filepaths if f.lower().endswith((".jpg", ".jpeg", ".heic"))]
     pngs = [f for f in filepaths if f.lower().endswith(".png")]
     # XMP 需要 ISO 8601 带时区格式：2026-10-02T18:26:12+08:00
-    ts_xmp = ts[0:4] + "-" + ts[5:7] + "-" + ts[8:10] + "T" + ts[11:16] + ":00+08:00"
+    ts_xmp = ts[0:4] + "-" + ts[5:7] + "-" + ts[8:10] + "T" + ts[11:19] + "+08:00"
     try:
         if jpg_heic:
             subprocess.run([EXIFTOOL, "-overwrite_original",
@@ -63,6 +63,14 @@ def write_timestamps(filepaths, ts):
         print(f"[+] 时间戳已写入 ({ts})", file=sys.stderr)
     except Exception as e:
         print(f"[~] 时间戳写入失败: {e}", file=sys.stderr)
+
+
+def _safe_name(text: str, max_len: int = 30) -> str:
+    """去除非法字符、多余符号、截断（Windows 文件名不认 \\/*?:\"<>|）"""
+    text = re.sub(r'[#@&]', '', text)
+    text = re.sub(r'[\\/*?:"<>|\r\n\t]', '', text)
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text[:max_len] if len(text) > max_len else text
 
 
 def extract_share_url(text: str) -> str:
@@ -270,6 +278,7 @@ def download_first_working(
     candidates: Iterable[str],
     out_dir: str,
     index: int,
+    filename_prefix: str = "",
 ) -> Dict:
     failures = []
     for url in candidates:
@@ -283,7 +292,12 @@ def download_first_working(
 
             # 注意：content-type 不可靠（如标 image/jpeg 实际是 HEIF/PNG），后缀一律按魔数判定
             ext = sniff_ext(response.content)
-            path = os.path.join(out_dir, f"{index:02d}{ext}")
+            # 文件名：{作者}_{标题}_{序号}_{日期}.{真实后缀}，prefix 为空时回退到序号
+            if filename_prefix:
+                filename = f"{filename_prefix}{ext}"
+            else:
+                filename = f"{index:02d}{ext}"
+            path = os.path.join(out_dir, filename)
             with open(path, "wb") as f:
                 f.write(response.content)
 
@@ -327,11 +341,20 @@ def main() -> None:
     if not images:
         raise SystemExit("no note images found")
 
+    # 文件名：{作者}_{标题}_{序号}_{日期}.{真实后缀}
+    # 日期用 YYYYMMDD（Windows 文件名不认冒号），标题用 _safe_name 清洗
+    author = (note.get("user") or {}).get("nickname") or "未知作者"
+    title = note.get("title") or "无标题"
+    name_part = _safe_name(author, 12)
+    title_part = _safe_name(title, 18)
+    date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
+
     os.makedirs(args.out_dir, exist_ok=True)
     results = []
     for index, image in enumerate(images, 1):
         candidates = image_candidates(image)
-        result = download_first_working(session, candidates, args.out_dir, index)
+        filename_prefix = f"{name_part}_{title_part}_{index:02d}_{date_part}"
+        result = download_first_working(session, candidates, args.out_dir, index, filename_prefix)
         result.update(
             {
                 "index": index,
