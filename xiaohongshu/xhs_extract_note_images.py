@@ -39,20 +39,23 @@ EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 def write_timestamps(filepaths, ts):
     """用 exiftool 写入时间戳（一步到位）。
-    JPEG/HEIC 写 EXIF DateTimeOriginal/CreateDate，PNG 写 XMP:CreateDate，
-    touch -t 保底 mtime。ts 格式 "2026:10:02 18:26:12"（exiftool 直接可用）。"""
+    JPEG/HEIC 写 EXIF DateTimeOriginal/CreateDate + 时区偏移，PNG 写 XMP:CreateDate（含时区），
+    touch -t 保底 mtime。ts 格式 "2026:10:02 18:26:12"（东八区，exiftool 直接可用）。"""
     if not ts or not filepaths:
         return
     jpg_heic = [f for f in filepaths if f.lower().endswith((".jpg", ".jpeg", ".heic"))]
     pngs = [f for f in filepaths if f.lower().endswith(".png")]
+    # XMP 需要 ISO 8601 带时区格式：2026-10-02T18:26:12+08:00
+    ts_xmp = ts[0:4] + "-" + ts[5:7] + "-" + ts[8:10] + "T" + ts[11:16] + ":00+08:00"
     try:
         if jpg_heic:
             subprocess.run([EXIFTOOL, "-overwrite_original",
-                            f"-DateTimeOriginal={ts}", f"-CreateDate={ts}"] + jpg_heic,
+                            f"-DateTimeOriginal={ts}", f"-CreateDate={ts}",
+                            "-OffsetTimeOriginal=+08:00", "-OffsetTimeDigitized=+08:00"] + jpg_heic,
                            capture_output=True, timeout=60)
         if pngs:
             subprocess.run([EXIFTOOL, "-overwrite_original",
-                            f"-XMP:CreateDate={ts}"] + pngs,
+                            f"-XMP:CreateDate={ts_xmp}"] + pngs,
                            capture_output=True, timeout=60)
         touch_ts = ts[0:4] + ts[5:7] + ts[8:10] + ts[11:13] + ts[14:16]
         for f in filepaths:
