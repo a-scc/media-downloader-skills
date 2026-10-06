@@ -1,1 +1,189 @@
-IyDlsI/nuqLkuabljp/lm77kuIvovb0KCi0g4o+wICoq6Ieq5Yqo5pe26Ze05oizKirvvJrkuIvovb3lkI7oh6rliqjnlKggZXhpZnRvb2wg5YaZ5YWl5Y+R5biD5pe26Ze0CgojIHhpYW9ob25nc2h1LW9yaWdpbmFsLWltYWdlcwoK55So5LqOICoq5o+Q5Y+W5bm25LiL6L295bCP57qi5Lmm56yU6K6w5Y6f5Zu+Kiog55qEIE9wZW5DbGF3IFNraWxs44CCCgrmoLjlv4Pnm67moIfvvJoKCi0g5LyY5YWI6I635Y+W5Y6f5Zu+Ci0g5bC96YeP6YG/5YWN5rC05Y2w5Zu+IC8g6aKE6KeI5Zu+IC8g5Y6L57yp5Zu+Ci0g5YeP5bCR5rWP6KeI5Zmo5b6A6L+UCi0g5o+Q6auY5LiL6L2956iz5a6a5oCnCgotLS0KCiMjIDEuIOmDqOe9suWIsCBPcGVuQ2xhdwoKIyMjIOaWueW8j+S4gO+8muebtOaOpeaUvuWIsOacrOWcsCBza2lsbHMg55uu5b2VCgrmiormlbTkuKrmioDog73nm67lvZXmlL7liLDkvaDnmoQgT3BlbkNsYXcgc2tpbGxzIOebruW9leS4i++8jOS+i+Wmgu+8mgoKYGBgdGV4dAp+Ly5vcGVuY2xhdy93b3Jrc3BhY2Uvc2tpbGxzL3hpYW9ob25nc2h1LW9yaWdpbmFsLWltYWdlcwpgYGAKCuebruW9lee7k+aehOW6lOS/neaMgeWmguS4i++8mgoKYGBgdGV4dAp4aWFvaG9uZ3NodS1vcmlnaW5hbC1pbWFnZXMvCuKUnOKUgCBTS0lMTC5tZArilJzilIAgcmVmZXJlbmNlcy8K4pSCICDilJTilIAgdXJsLXBhdHRlcm5zLm1kCuKUlOKUgCBzY3JpcHRzLwogICDilJTilIAgeGhzX2Rvd25sb2FkX2ltYWdlcy5weQpgYGAKCuaUvuWlveWQju+8jE9wZW5DbGF3IOWcqOWMuemFjeWIsOebuOWFs+ivt+axguaXtuWwseWPr+S7peinpuWPkei/meS4qiBza2lsbOOAggoKLS0tCgojIyMg5pa55byP5LqM77ya5L2c5Li65LuT5bqT5ouJ5Yiw5L2g55qE5bel5L2c5Yy6CgrlpoLmnpzkvaDmg7Pku44gR2l0SHViIOaLieWPlu+8mgoKYGBgYmFzaApnaXQgY2xvbmUgaHR0cHM6Ly9naXRodWIuY29tL3BoeWxpczcveGlhb2hvbmdzaHUtb3JpZ2luYWwtaW1hZ2VzLXNraWxsLmdpdApgYGAKCueEtuWQjuaKiuWFtuS4reeahOaKgOiDveebruW9leaUvuWIsOS9oOeahCBPcGVuQ2xhdyBza2lsbHMg55uu5b2V5LiL77yaCgpgYGB0ZXh0CnhpYW9ob25nc2h1LW9yaWdpbmFsLWltYWdlcy1za2lsbC94aWFvaG9uZ3NodS1vcmlnaW5hbC1pbWFnZXMKYGBgCgrlpI3liLbliLDvvJoKCmBgYHRleHQKfi8ub3BlbmNsYXcvd29ya3NwYWNlL3NraWxscy8KYGBgCgrmnIDnu4jnm67moIfku43nhLbmmK/vvJoKCmBgYHRleHQKfi8ub3BlbmNsYXcvd29ya3NwYWNlL3NraWxscy94aWFvaG9uZ3NodS1vcmlnaW5hbC1pbWFnZXMKYGBgCgotLS0KCiMjIDIuIOinpuWPkeaWueW8jwoK5b2T55So5oi35Y+R6YCB5bCP57qi5Lmm6ZO+5o6l77yM5bm26KGo6L6+57G75Ly85oSP5Zu+5pe26YCC55So77yaCgotIOW4ruaIkeS4i+i9vei/meS4quWwj+e6ouS5pueslOiusOeahOWOn+WbvgotIOaKiui/meS4quWwj+e6ouS5pumTvuaOpemHjOeahOWbvueJh+WOn+WbvuWPkeaIkQotIOS/neWtmOi/meS4quWwj+e6ouS5puW4luWtkOmHjOeahOWOn+WbvgoKLS0tCgojIyAzLiDlt6XkvZzljp/nkIYKClNraWxsIOeahOS8mOWFiOa1geeoi++8mgoKMS4g5omT5byA5bCP57qi5Lmm5YiG5Lqr6ZO+5o6lCjIuIOi3s+i9rOWIsOacgOe7iOeslOiusOmhtSBgL2V4cGxvcmUvPG5vdGVfaWQ+YAozLiDkuIDmrKHmgKfmj5Dlj5bvvJoKICAgLSBgc291cmNlX25vdGVfaWRgCiAgIC0gYHhzZWNfdG9rZW5gCiAgIC0gYHhzZWNfc291cmNlYAogICAtIFNTUiDlm77niYfkv6Hmga8KICAgLSBmZWVkIOi/lOWbnue7k+aenAo0LiDkvJjlhYjkvb/nlKggYGZlZWRSYXdLZXlzYAo1LiBmZWVkIOS4jeWPr+eUqOaXtu+8jOmAgOWbniBgc3NyUmF3S2V5c2AKNi4g6LCD55So5LiL6L296ISa5pys55Sf5oiQ5Y6f5Zu+5paH5Lu2CgotLS0KCiMjIDQuIOebtOaOpeS9v+eUqOiEmuacrAoK6ISa5pys5L2N572u77yaCgpgYGB0ZXh0CnNjcmlwdHMveGhzX2Rvd25sb2FkX2ltYWdlcy5weQpgYGAKCiMjIyDmjqLmtYvpk77mjqXmmK/lkKblj6/ov5jljp/kuLrljp/lm74KCmBgYGJhc2gKcHl0aG9uIHNjcmlwdHMveGhzX2Rvd25sb2FkX2ltYWdlcy5weSAtLXByb2JlLW9ubHkgLS11cmwgIjzlm77niYfpk77mjqU+IgpgYGAKCiMjIyDmjIkgcmF3X2tleSDkuIvovb0KCmBgYGJhc2gKcHl0aG9uIHNjcmlwdHMveGhzX2Rvd25sb2FkX2ltYWdlcy5weSAtLW91dC1kaXIgdG1wL3hocyAtLWtleSAiPHJhd19rZXlfMT4iIC0ta2V5ICI8cmF3X2tleV8yPiIKYGBgCgojIyMg5oyJIFVSTCDnm7TmjqXkuIvovb0KCmBgYGJhc2gKcHl0aG9uIHNjcmlwdHMveGhzX2Rvd25sb2FkX2ltYWdlcy5weSAtLW91dC1kaXIgdG1wL3hocyAtLXVybCAiPHByZXZpZXdfb3JfcmF3X3VybD4iCmBgYAoKLS0tCgojIyA1LiDmlofku7bor7TmmI4KCi0gYFNLSUxMLm1kYO+8mlNraWxsIOS4u+mAu+i+keS4juaJp+ihjOivtOaYjgotIGByZWZlcmVuY2VzL3VybC1wYXR0ZXJucy5tZGDvvJpVUkwgLyByYXdfa2V5IOivhuWIq+inhOWImQotIGBzY3JpcHRzL3hoc19kb3dubG9hZF9pbWFnZXMucHlg77ya5Y6f5Zu+5o6i5rWL5LiO5LiL6L296ISa5pysCgotLS0KCiMjIDYuIOS9v+eUqOaXtueahOWIpOaWreagh+WHhgoK5LiL6L295a6M5oiQ5ZCO77yM5bu66K6u56Gu6K6k77yaCgotIOaWh+S7tuecn+WunuWtmOWcqAotIOaWh+S7tuexu+Wei+S4uiBgaW1hZ2UvKmAKLSDliIbovqjnjofkuI3mmK/nvKnnlaXlm77lsLrlr7gKLSDpk77mjqXkuI3ljIXlkKvku6XkuIvpooTop4jnibnlvoHvvJoKICAtIGBzbnMtd2VicGljYAogIC0gYGltYWdlVmlldzJgCiAgLSBgIW5kX3BydmAKICAtIGAhbmRfZGZ0YAogIC0gYFdCX1BSVmAKICAtIGBXQl9ERlRgCgrlpoLmnpzljIXlkKvov5nkupvnibnlvoHvvIzpgJrluLjkuI3mmK/nkIbmg7Pljp/lm77jgIIKCi0tLQoKIyMgNy4g6YCC55So6IyD5Zu0CgrpgILlkIjvvJoKCi0g5bCP57qi5Lmm5YiG5Lqr6ZO+5o6l5Y6f5Zu+5o+Q5Y+WCi0g5peg5rC05Y2w5LyY5YWI5LiL6L29Ci0g6L+U5Zue5pu05riF5pmw55qE5Zu+54mH5paH5Lu2CgrkuI3pgILlkIjvvJoKCi0g6KeG6aKR5oqT5Y+WCi0g6auY5by65bqm5om56YeP54is5Y+WCi0g57uV6L+H5bmz5Y+w6aOO5o6n55qE6Ieq5Yqo5YyW5oqT5Y+WCgotLS0KCiMjIDguIOS4gOWPpeivneivtOaYjgoK6L+Z5piv5LiA5Liq5LiT6Zeo57uZIE9wZW5DbGF3IOeUqOeahCBza2lsbO+8jOeUqOadpeaKiuWwj+e6ouS5pueslOiusOmHjOeahOWbvueJh+WwvemHj+i/mOWOn+aIkOWOn+WbvuW5tuS4i+i9veS4i+adpeOAggoKLS0tCgojIyA5LiDlhY3otKPlo7DmmI4KCuacrOaKgOiDveaYr+S4uiBPcGVuQ2xhdyDlubPlj7DnvJblhpnnmoTmjqXlj6Pnuqflt6XlhbfjgILor7fku4XlnKjkvaDlhbflpIfnm7jlhbPlhoXlrrnniYjmnYPmiJbmjojmnYPjgIHlubbpgbXlrojlsI/nuqLkuabmnI3liqHmnaHmrL7nmoTliY3mj5DkuIvov5DooYzvvJvpgb/lhY3nlKjkuo7kvrXmnYPjgIHop4Tpgb/lubPlj7DnrZbnlaXmiJbmibnph4/ov53op4TmipPlj5bjgILkvZzogIXkuI3lr7nku7vkvZXnrKzkuInmlrnlm6Dkvb/nlKjmnKzmioDog73pgKDmiJDnmoTniYjmnYPkuonorq7miJblubPlj7DpmZDliLbotJ/otKPjgIIKCuS9v+eUqOW7uuiuru+8mgoKLSDku4XlnKjlkIjop4TjgIHoh6rnlKjjgIHlrabkuaDmiJbnu4/mmI7noa7mjojmnYPnmoTlnLrmma/kuIvosIPnlKjjgIIKLSDku7vkvZXllYbkuJrljJbliIblj5HjgIHlhazlhbHkvKDmkq3miJbmibnph4/mj5Dlj5bliY3lhYjojrflvpfnm67moIflubPlj7DmiJblhoXlrrnmlrnmibnlh4bjgIIKLSDlpoLmnpzpgYfliLDlsIHnpoEv5oqV6K+J77yM5YWI5YGc5q2i6Ieq5Yqo5YyW77yM5YaN6YeN5paw6K+E5Lyw562W55Wl44CCCgojIyDml7bpl7TmiLMKCi0gbWFuaWZlc3QuanNvbiDljIXlkKsgYHB1Ymxpc2hfdGltZWDvvIhVbml4IOaXtumXtOaIs++8jOWFvOWuueenki/mr6vnp5LvvInlkowgYHB1Ymxpc2hfdGltZV9zdHJg77yIIjIwMjY6MTA6MDIgMTg6MjY6MTIi77yM5Lic5YWr5Yy677yMZXhpZnRvb2wg55u05o6l5Y+v55So77yJCi0g5LiL6L295a6M5oiQ5ZCO6Ieq5Yqo5YaZ5YWl5paH5Lu277yM5peg6ZyA5omL5Yqo6LeRIGV4aWZ0b29sCg==
+# 小红书原图下载
+
+- ⏰ **自动时间戳**：下载后自动用 exiftool 写入发布时间
+
+# xiaohongshu-original-images
+
+用于 **提取并下载小红书笔记原图** 的 OpenClaw Skill。
+
+核心目标：
+
+- 优先获取原图
+- 尽量避免水印图 / 预览图 / 压缩图
+- 减少浏览器往返
+- 提高下载稳定性
+
+---
+
+## 1. 部署到 OpenClaw
+
+### 方式一：直接放到本地 skills 目录
+
+把整个技能目录放到你的 OpenClaw skills 目录下，例如：
+
+```text
+~/.openclaw/workspace/skills/xiaohongshu-original-images
+```
+
+目录结构应保持如下：
+
+```text
+xiaohongshu-original-images/
+├─ SKILL.md
+├─ references/
+│  └─ url-patterns.md
+└─ scripts/
+   └─ xhs_download_images.py
+```
+
+放好后，OpenClaw 在匹配到相关请求时就可以触发这个 skill。
+
+---
+
+### 方式二：作为仓库拉到你的工作区
+
+如果你想从 GitHub 拉取：
+
+```bash
+git clone https://github.com/phylis7/xiaohongshu-original-images-skill.git
+```
+
+然后把其中的技能目录放到你的 OpenClaw skills 目录下：
+
+```text
+xiaohongshu-original-images-skill/xiaohongshu-original-images
+```
+
+复制到：
+
+```text
+~/.openclaw/workspace/skills/
+```
+
+最终目标仍然是：
+
+```text
+~/.openclaw/workspace/skills/xiaohongshu-original-images
+```
+
+---
+
+## 2. 触发方式
+
+当用户发送小红书链接，并表达类似意图时适用：
+
+- 帮我下载这个小红书笔记的原图
+- 把这个小红书链接里的图片原图发我
+- 保存这个小红书帖子里的原图
+
+---
+
+## 3. 工作原理
+
+Skill 的优先流程：
+
+1. 打开小红书分享链接
+2. 跳转到最终笔记页 `/explore/<note_id>`
+3. 一次性提取：
+   - `source_note_id`
+   - `xsec_token`
+   - `xsec_source`
+   - SSR 图片信息
+   - feed 返回结果
+4. 优先使用 `feedRawKeys`
+5. feed 不可用时，退回 `ssrRawKeys`
+6. 调用下载脚本生成原图文件
+
+---
+
+## 4. 直接使用脚本
+
+脚本位置：
+
+```text
+scripts/xhs_download_images.py
+```
+
+### 探测链接是否可还原为原图
+
+```bash
+python scripts/xhs_download_images.py --probe-only --url "<图片链接>"
+```
+
+### 按 raw_key 下载
+
+```bash
+python scripts/xhs_download_images.py --out-dir tmp/xhs --key "<raw_key_1>" --key "<raw_key_2>"
+```
+
+### 按 URL 直接下载
+
+```bash
+python scripts/xhs_download_images.py --out-dir tmp/xhs --url "<preview_or_raw_url>"
+```
+
+---
+
+## 5. 文件说明
+
+- `SKILL.md`：Skill 主逻辑与执行说明
+- `references/url-patterns.md`：URL / raw_key 识别规则
+- `scripts/xhs_download_images.py`：原图探测与下载脚本
+
+---
+
+## 6. 使用时的判断标准
+
+下载完成后，建议确认：
+
+- 文件真实存在
+- 文件类型为 `image/*`
+- 分辨率不是缩略图尺寸
+- 链接不包含以下预览特征：
+  - `sns-webpic`
+  - `imageView2`
+  - `!nd_prv`
+  - `!nd_dft`
+  - `WB_PRV`
+  - `WB_DFT`
+
+如果包含这些特征，通常不是理想原图。
+
+---
+
+## 7. 适用范围
+
+适合：
+
+- 小红书分享链接原图提取
+- 无水印优先下载
+- 返回更清晰的图片文件
+
+不适合：
+
+- 视频抓取
+- 高强度批量爬取
+- 绕过平台风控的自动化抓取
+
+---
+
+## 8. 一句话说明
+
+这是一个专门给 OpenClaw 用的 skill，用来把小红书笔记里的图片尽量还原成原图并下载下来。
+
+---
+
+## 9. 免责声明
+
+本技能是为 OpenClaw 平台编写的接口级工具。请仅在你具备相关内容版权或授权、并遵守小红书服务条款的前提下运行；避免用于侵权、规避平台策略或批量违规抓取。作者不对任何第三方因使用本技能造成的版权争议或平台限制负责。
+
+使用建议：
+
+- 仅在合规、自用、学习或经明确授权的场景下调用。
+- 任何商业化分发、公共传播或批量提取前先获得目标平台或内容方批准。
+- 如果遇到封禁/投诉，先停止自动化，再重新评估策略。
+
+## 时间戳
+
+- manifest.json 包含 `publish_time`（Unix 时间戳，兼容秒/毫秒）和 `publish_time_str`（"2026:10:02 18:26:12"，东八区，exiftool 直接可用）
+- 下载完成后自动写入文件，无需手动跑 exiftool
