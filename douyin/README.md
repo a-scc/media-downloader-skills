@@ -1,1 +1,83 @@
-IyDmipbpn7Pml6DmsLTljbDkuIvovb3lmaggKERvdXlpbiBEb3dubG9hZGVyIFNraWxsKQoK5LiA6ZSu5LiL6L295oqW6Z+z6KeG6aKR77yI5peg5rC05Y2wIE1QNO+8ieWSjOWbvuaWh++8iOWOn+WbviBKUEVH77yJ77yM57qvIFB5dGhvbiDlrp7njrDvvIzml6DpnIDlpJbpg6jlt6XlhbfjgIIKCiMjIOWKn+iDvQoKLSDwn46sICoq6KeG6aKR5LiL6L29KirvvJrnnJ/ljp/nlLvvvIh2MGQwMCBVUkkgKyByYXRpbz1kZWZhdWx077yM5YWN55m75b2V77yJ4oaSIOmZjee6p+WIsOaXoOawtOWNsOi9rOeggeeJiAotIPCflrzvuI8gKirlm77mlofkuIvovb0qKu+8muWOn+WbvuS4i+i9ve+8iC5qcGVn77yM5pyA6auY5YiG6L6o546H77yJCi0g8J+kliAqKuiHquWKqOivhuWIqyoq77ya6Ieq5Yqo5Yik5pat6ZO+5o6l5piv6KeG6aKR6L+Y5piv5Zu+5paHCi0g8J+TiyAqKuaJuemHj+S4i+i9vSoq77ya5pSv5oyB5LuOIHR4dCDmlofku7bmibnph4/lr7zlhaUKLSDwn5SEICoq6Ieq5Yqo6ZmN57qnKirvvJrnnJ/ljp/nlLsg4oaSIGllc2RvdXlpbiDpobXpnaIg4oaSIGRldGFpbCBKU09OIEFQSSDkuInlsYIKLSDij7AgKiroh6rliqjml7bpl7TmiLMqKu+8muS4i+i9veWQjuiHquWKqOeUqCBleGlmdG9vbCDlhpnlhaXlj5HluIPml7bpl7TvvIhKUEVHIOWGmSBFWElG77yMUE5HIOWGmSBYTVDvvIx0b3VjaCAtdCDkv53lupXvvIkKCiMjIOS9v+eUqOaWueazlQoKYGBgYmFzaAojIOS4i+i9veWNleS4qu+8iOS7juWIhuS6q+mTvuaOpeaIluWIhuS6q+aWh+acrO+8iQpweXRob24zIHNjcmlwdHMvZG93bmxvYWQucHkgImh0dHBzOi8vdi5kb3V5aW4uY29tL3h4eHgvIiAtLW91dC1kaXIgL3RtcC9kb3V5aW4KCiMg5om56YeP5LiL6L29CnB5dGhvbjMgc2NyaXB0cy9kb3dubG9hZC5weSAtLWJhdGNoIGxpbmtzLnR4dCAtLW91dC1kaXIgL3RtcC9kb3V5aW4KYGBgCgrmlK/mjIHku6XkuIvovpPlhaXmoLzlvI/vvJoKLSDmipbpn7Pnn63pk77vvJpgaHR0cHM6Ly92LmRvdXlpbi5jb20veHh4eC9gCi0g5a6M5pW05YiG5Lqr5paH5pys77yaYDAuMjgg5aSN5Yi25omT5byA5oqW6Z+zLi4uIGh0dHBzOi8vdi5kb3V5aW4uY29tL3h4eHgvIGJAYS5OSiAuLi5gCi0g6ZW/6ZO+5o6l77yaYGh0dHBzOi8vd3d3LmRvdXlpbi5jb20vdmlkZW8veHh4eGAKCiMjIOi+k+WHugoKLSAqKuinhumikSoq77yaYHvmoIfpoph9X3t2aWRlb19pZH0ubXA0YO+8iHF1YWxpdHkg5a2X5q615qCH5piOIHRydWVfb3JpZ2luYWwg5oiWIHRyYW5zY29kZWTvvIkKLSAqKuaXtumXtOaIsyoq77yacHVibGlzaF90aW1l77yIVW5peCDnp5LvvIkrIHB1Ymxpc2hfdGltZV9zdHLvvIgiMjAyNjowMToyMiAxODoxNzowMCLvvIxleGlmdG9vbCDnm7TmjqXlj6/nlKjvvIkKLSAqKuWbvuaWhyoq77ya5L+d5a2Y5ZyoIGB75qCH6aKYfV97bm90ZV9pZH0vYCDnm67lvZXvvIzlm77niYflkb3lkI3kuLogYHvkvZzogIV9X3vmj4/ov7B9X3vluo/lj7d9LmpwZWdgCgojIyDmioDmnK/or7TmmI4KCjEuIOaPkOWPluWIhuS6q+mTvuaOpSDihpIgMzAxIOmHjeWumuWQkSDihpIg6I635Y+W55yf5a6eIFVSTAoyLiDor4bliKsgY29udGVudF90eXBl77yIdmlkZW8vbm90Ze+8iQozLiDnrKwx5bGC77ya6K+35rGCIGllc2RvdXlpbi5jb20g5YiG5Lqr6aG1IOKGkiDop6PmnpAgYHdpbmRvdy5fUk9VVEVSX0RBVEFgIEpTT04KNC4g56ysMuWxgu+8iOmZjee6p++8ie+8muiHquWKqOWIh+aNoiBgd3d3LmRvdXlpbi5jb20vYXdlbWUvdjEvd2ViL2F3ZW1lL2RldGFpbC9gIEFQSe+8jOe8uiB0dHdpZCBjb29raWUg5pe26Ieq5Yqo5rOo5YaM5ZCO6YeN6K+VCjUuIOesrDDlsYLvvIjop4bpopHkvJjlhYjvvInvvJrlj5bop4bpopHpobXmupDnoIHmkJwgdjBkMDAg4oaSIGBhd2VtZS5zbnNzZGsuY29tL2F3ZW1lL3YxL3BsYXkvP3ZpZGVvX2lkPTx2MGQwMD4mcmF0aW89ZGVmYXVsdGAg4oaSIDMwMiDot7PnnJ/ljp/nlLvnm7Tpk77vvIjlhY3nmbvlvZXvvIkKNi4g6KeG6aKR77ya55yf5Y6f55S75aSx6LSl5pe26ZmN57qn5YiwIHBsYXlfYWRkciDovaznoIHniYgKNy4g5Zu+5paH77ya5o+Q5Y+WIGltYWdlc1tdIOKGkiDljp/lm77kuIvovb3vvIjkvJjlhYggSlBFR++8iQo4LiDml7bpl7TmiLPvvJpkZXRhaWwgQVBJIOeahCBgYXdlbWVfZGV0YWlsLmNyZWF0ZV90aW1lYCDihpIg6Ieq5Yqo5YaZ5YWlIGV4aWZ0b29sCgojIyDms6jmhI/kuovpobnvvIjlnZHngrnvvIkKCi0gKioyMDI2LTA4LTEyIOi1tyBpZXNkb3V5aW4gU1NSIOaOpeWPo+WPmOabtCoq77ya5YiG5Lqr6aG15LiN5YaN6L+U5ZueIGBfUk9VVEVSX0RBVEFgIOaVsOaNru+8iOWPque7meWjs++8ie+8jOiEmuacrOiHquWKqOi1sOesrCAyIOWxgiBkZXRhaWwgQVBJCi0gKipkZXRhaWwgQVBJIOmmluasoei/lOWbnuepuioq77ya5Y6f5Zug5piv57y6ICoqdHR3aWQgY29va2llKirvvIjkuI3mmK/pmZDpgJ/vvInvvIzohJrmnKzlt7LlhoXnva7oh6rliqjms6jlhozigJTigJRQT1NUIGB0dHdpZC5ieXRlZGFuY2UuY29tL3R0d2lkL3VuaW9uL3JlZ2lzdGVyL2Ag5ou/IHRpY2tldCDihpIg6LWwIGl4aWd1YSBjYWxsYmFjayDmi78gdHR3aWQg4oaSIOW4piBgQ29va2llOiB0dHdpZD0uLi5gIOmHjeivlQotIOinhumikSvlm77mloflnYfmlK/mjIHnrKwgMiDlsYLpmY3nuqfvvJvku4XlvZMgdHR3aWQg5rOo5YaM5ZCOIGRldGFpbCBBUEkg5LuN5Li656m677yM5omN5pivIGllc2RvdXlpbiDpl7TmrYfmgKcgV0FGIOmZkOmAn++8iEJ5dGVEYW5jZSBBY3Jhd2xlcu+8ie+8jOetieS4gOauteaXtumXtOmHjeivleWNs+WPrwotIOS+nei1luS7hemcgCBgcmVxdWVzdHNgIOW6k++8jOmAmui/hyBgcmVxdWlyZW1lbnRzLnR4dGAgKyBTSEEyNTYgaGFzaCDmoKHpqozlronoo4UKCiMjIOaWh+S7tue7k+aehAoKYGBgCmRvdXlpbi1kb3dubG9hZGVyLXNraWxsLwrilJzilIDilIAgUkVBRE1FLm1kCuKUnOKUgOKUgCBTS0lMTC5tZArilJzilIDilIAgcmVxdWlyZW1lbnRzLnR4dArilJTilIDilIAgc2NyaXB0cy8KICAgIOKUlOKUgOKUgCBkb3dubG9hZC5weSAgICAgICAjIOaguOW/g+S4i+i9veiEmuacrApgYGAKCiMjIOiuuOWPrwoKTUlUCgojIyDml6XluLjvvIjop4bpopHvvIkKCueUqCBgc3RvcnkucHlg77yI6ZyA55m75b2VIENvb2tpZe+8ie+8mgoKYGBgYmFzaAojIENvb2tpZSDlrZjliLAgfi8uY29uZmlnL2RvdXlpbi9jb29raWUudHh077yIU3RyZWFtIOaKk+WMheiOt+WPlu+8jOe6r+aWh+acrOS4gOihjO+8iQpweXRob24zIGRvdXlpbi9zdG9yeS5weSAtLW91dC1kaXIgL3RtcC9kb3V5aW5fc3RvcnkKCiMg5oyH5a6a5L2c6ICFCnB5dGhvbjMgZG91eWluL3N0b3J5LnB5IC0tc2VjLXVpZCA8c2VjX3VpZD4gLS1vdXQtZGlyIC90bXAvZG91eWluX3N0b3J5CmBgYAoKLSDmi78gVVJJ77yaYGF3ZW1lLnNuc3Nkay5jb20vYXdlbWUvdjEvc3RvcnkvcHJvZmlsZS9saXN0L2DvvIhDb29raWUgKyBYLUdvcmdvbiDnrb7lkI3vvIkKLSDkuIvovb3vvJp2MDMwMCBVUkkgKyBgcmF0aW89ZGVmYXVsdGDvvIjlhY3nmbvlvZXvvIzkuI7kvZzlk4HlkIzkuIDlhazlvI/vvIkKLSBDb29raWUg6L+H5pyf77ya5o6l5Y+j6L+U5Zue56m65YiX6KGo5Y2z6L+H5pyf77yM6ZyA6YeN5paw5oqT5YyFCi0g5pe26Ze05oiz77ya5q+P5p2h5oyJ5ZCE6IeqIGBjcmVhdGVfdGltZWAg6Ieq5Yqo5YaZ5YWlCg==
+# 抖音无水印下载器 (Douyin Downloader Skill)
+
+一键下载抖音视频（无水印 MP4）和图文（原图 JPEG），纯 Python 实现，无需外部工具。
+
+## 功能
+
+- 🎬 **视频下载**：真原画（v0d00 URI + ratio=default，免登录）→ 降级到无水印转码版
+- 🖼️ **图文下载**：原图下载（.jpeg，最高分辨率）
+- 🤖 **自动识别**：自动判断链接是视频还是图文
+- 📋 **批量下载**：支持从 txt 文件批量导入
+- 🔄 **自动降级**：真原画 → iesdouyin 页面 → detail JSON API 三层
+- ⏰ **自动时间戳**：下载后自动用 exiftool 写入发布时间（JPEG 写 EXIF，PNG 写 XMP，touch -t 保底）
+
+## 使用方法
+
+```bash
+# 下载单个（从分享链接或分享文本）
+python3 scripts/download.py "https://v.douyin.com/xxxx/" --out-dir /tmp/douyin
+
+# 批量下载
+python3 scripts/download.py --batch links.txt --out-dir /tmp/douyin
+```
+
+支持以下输入格式：
+- 抖音短链：`https://v.douyin.com/xxxx/`
+- 完整分享文本：`0.28 复制打开抖音... https://v.douyin.com/xxxx/ b@a.NJ ...`
+- 长链接：`https://www.douyin.com/video/xxxx`
+
+## 输出
+
+- **视频**：`{标题}_{video_id}.mp4`（quality 字段标明 true_original 或 transcoded）
+- **时间戳**：publish_time（Unix 秒）+ publish_time_str（"2026:01:22 18:17:00"，exiftool 直接可用）
+- **图文**：保存在 `{标题}_{note_id}/` 目录，图片命名为 `{作者}_{描述}_{序号}.jpeg`
+
+## 技术说明
+
+1. 提取分享链接 → 301 重定向 → 获取真实 URL
+2. 识别 content_type（video/note）
+3. 第1层：请求 iesdouyin.com 分享页 → 解析 `window._ROUTER_DATA` JSON
+4. 第2层（降级）：自动切换 `www.douyin.com/aweme/v1/web/aweme/detail/` API，缺 ttwid cookie 时自动注册后重试
+5. 第0层（视频优先）：取视频页源码搜 v0d00 → `aweme.snssdk.com/aweme/v1/play/?video_id=<v0d00>&ratio=default` → 302 跳真原画直链（免登录）
+6. 视频：真原画失败时降级到 play_addr 转码版
+7. 图文：提取 images[] → 原图下载（优先 JPEG）
+8. 时间戳：detail API 的 `aweme_detail.create_time` → 自动写入 exiftool
+
+## 注意事项（坑点）
+
+- **2026-08-12 起 iesdouyin SSR 接口变更**：分享页不再返回 `_ROUTER_DATA` 数据（只给壳），脚本自动走第 2 层 detail API
+- **detail API 首次返回空**：原因是缺 **ttwid cookie**（不是限速），脚本已内置自动注册——POST `ttwid.bytedance.com/ttwid/union/register/` 拿 ticket → 走 ixigua callback 拿 ttwid → 带 `Cookie: ttwid=...` 重试
+- 视频+图文均支持第 2 层降级；仅当 ttwid 注册后 detail API 仍为空，才是 iesdouyin 间歇性 WAF 限速（ByteDance Acrawler），等一段时间重试即可
+- 依赖仅需 `requests` 库，通过 `requirements.txt` + SHA256 hash 校验安装
+
+## 文件结构
+
+```
+douyin-downloader-skill/
+├── README.md
+├── SKILL.md
+├── requirements.txt
+└── scripts/
+    └── download.py       # 核心下载脚本
+```
+
+## 许可
+
+MIT
+
+## 日常（视频）
+
+用 `story.py`（需登录 Cookie）：
+
+```bash
+# Cookie 存到 ~/.config/douyin/cookie.txt（Stream 抓包获取，纯文本一行）
+python3 douyin/story.py --out-dir /tmp/douyin_story
+
+# 指定作者
+python3 douyin/story.py --sec-uid <sec_uid> --out-dir /tmp/douyin_story
+```
+
+- 拿 URI：`aweme.snssdk.com/aweme/v1/story/profile/list/`（Cookie + X-Gorgon 签名）
+- 下载：v0300 URI + `ratio=default`（免登录，与作品同一公式）
+- Cookie 过期：接口返回空列表即过期，需重新抓包
+- 时间戳：每条按各自 `create_time` 自动写入
