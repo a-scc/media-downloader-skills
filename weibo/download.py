@@ -1,1 +1,115 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwoiIiIK5b6u5Y2a5aqS5L2T5LiL6L295ZmoCue6ryBQeXRob24g5a6e546w77yM5LiA6ZSu5LiL6L295b6u5Y2a5Zu+54mHK+inhumikeOAggoK55So5rOVOiBweXRob24zIGRvd25sb2FkLnB5IDzlvq7ljZrpk77mjqU+IFvkv53lrZjnm67lvZVdCiAgICAgcHl0aG9uMyBkb3dubG9hZC5weSAtLWJhdGNoIGxpbmtzLnR4dCBb5L+d5a2Y55uu5b2VXQoK5pSv5oyB6ZO+5o6l5qC85byPOgogIOKAoiDmoIflh4blvq7ljZo6ICAgaHR0cHM6Ly93ZWliby5jb20vVVNFUi9TVEFUVVNfSUQKICDigKIg5YiG5Lqr6ZO+5o6lOiAgIGh0dHBzOi8vbWFwcC5hcGkud2VpYm8uY24vZngvWFhYWC5odG1sCiAg4oCiIOenu+WKqOerrzogICAgIGh0dHBzOi8vbS53ZWliby5jbi9zdGF0dXMvU1RBVFVTX0lECiIiIgoKaW1wb3J0IHN5cwppbXBvcnQgb3MKCmZyb20gd2VpYm9fY29yZSBpbXBvcnQgV2VpYm9Eb3dubG9hZGVyCgoKZGVmIGRvd25sb2FkX3dlaWJvKHVybCwgb3V0cHV0X2Rpcj1Ob25lKToKICAgICIiIuS4i+i9veWNleadoeW+ruWNmuWqkuS9kyIiIgogICAgZGwgPSBXZWlib0Rvd25sb2FkZXIoKQogICAgcmVzdWx0ID0gZGwuZG93bmxvYWQodXJsLCBvdXRwdXRfZGlyKQogICAgcmV0dXJuIHJlc3VsdC5nZXQoInN1Y2Nlc3MiLCBGYWxzZSksIHJlc3VsdC5nZXQoImZpbGVzIiwgMCksIHJlc3VsdC5nZXQoImRpciIsIG91dHB1dF9kaXIgb3Igb3MuZ2V0Y3dkKCkpCgoKZGVmIGRvd25sb2FkX2JhdGNoKGJhdGNoX2ZpbGUsIG91dHB1dF9kaXI9Tm9uZSk6CiAgICAiIiLmibnph4/kuIvovb0iIiIKICAgIGlmIG5vdCBvcy5wYXRoLmV4aXN0cyhiYXRjaF9maWxlKToKICAgICAgICBwcmludChmIuKdjCDmibnlpITnkIbmlofku7bkuI3lrZjlnKg6IHtiYXRjaF9maWxlfSIpCiAgICAgICAgcmV0dXJuIEZhbHNlLCAwCgogICAgd2l0aCBvcGVuKGJhdGNoX2ZpbGUsICdyJywgZW5jb2Rpbmc9J3V0Zi04JykgYXMgZjoKICAgICAgICB1cmxzID0gW2xpbmUuc3RyaXAoKSBmb3IgbGluZSBpbiBmIGlmIGxpbmUuc3RyaXAoKSBhbmQgbm90IGxpbmUuc3RhcnRzd2l0aCgnIycpXQoKICAgIHByaW50KGYi8J+TiyDmibnph4/kuIvovb06IHtsZW4odXJscyl9IOS4qumTvuaOpVxuIikKCiAgICB0b3RhbF9maWxlcyA9IDAKICAgIHN1Y2Nlc3MgPSAwCiAgICBmYWlsID0gMAoKICAgIGZvciBpLCB1cmwgaW4gZW51bWVyYXRlKHVybHMsIDEpOgogICAgICAgIHByaW50KGYiW3tpfS97bGVuKHVybHMpfV0gIiwgZW5kPScnKQogICAgICAgIG9rLCBjb3VudCwgXyA9IGRvd25sb2FkX3dlaWJvKHVybCwgb3V0cHV0X2RpcikKICAgICAgICBpZiBvazoKICAgICAgICAgICAgc3VjY2VzcyArPSAxCiAgICAgICAgICAgIHRvdGFsX2ZpbGVzICs9IGNvdW50CiAgICAgICAgZWxzZToKICAgICAgICAgICAgZmFpbCArPSAxCiAgICAgICAgcHJpbnQoKQoKICAgIHByaW50KGYieyfilZAnICogNTB9IikKICAgIHByaW50KGYi8J+TiiDmibnph4/kuIvovb3nu5/orqE6IikKICAgIHByaW50KGYiICAg4pyFIOaIkOWKnzoge3N1Y2Nlc3N9L3tsZW4odXJscyl9IikKICAgIHByaW50KGYiICAg4p2MIOWksei0pToge2ZhaWx9L3tsZW4odXJscyl9IikKICAgIHByaW50KGYiICAg8J+TpiDmgLvmlofku7bmlbA6IHt0b3RhbF9maWxlc30iKQogICAgcmV0dXJuIGZhaWwgPT0gMCwgdG90YWxfZmlsZXMKCgpkZWYgc2hvd19oZWxwKCk6CiAgICBwcmludCgiIiLwn5OxIOW+ruWNmuWqkuS9k+S4i+i9veWZqArilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIEK57qvIFB5dGhvbiDlrp7njrDvvIzkuIDplK7kuIvovb3lvq7ljZrlm77niYcr6KeG6aKRCgrmlK/mjIHpk77mjqXmoLzlvI86CiAg4oCiIOagh+WHhuW+ruWNmjogICBodHRwczovL3dlaWJvLmNvbS9VU0VSL1NUQVRVU19JRAogIOKAoiDliIbkuqvpk77mjqU6ICAgaHR0cHM6Ly9tYXBwLmFwaS53ZWliby5jbi9meC9YWFhYLmh0bWwKICDigKIg56e75Yqo56uvOiAgICAgaHR0cHM6Ly9tLndlaWJvLmNuL3N0YXR1cy9TVEFUVVNfSUQKCueUqOazlToKICBweXRob24zIGRvd25sb2FkLnB5IDzpk77mjqU+IFvkv53lrZjnm67lvZVdCiAgcHl0aG9uMyBkb3dubG9hZC5weSAtLWJhdGNoIGxpbmtzLnR4dCBb5L+d5a2Y55uu5b2VXQoK56S65L6LOgogIHB5dGhvbjMgZG93bmxvYWQucHkgImh0dHBzOi8vd2VpYm8uY29tL3VzZXIvMTIzNDU2IgogIHB5dGhvbjMgZG93bmxvYWQucHkgImh0dHBzOi8vbWFwcC5hcGkud2VpYm8uY24vZngveHh4eC5odG1sIiAvdG1wL3dlaWJvCiAgcHl0aG9uMyBkb3dubG9hZC5weSAtLWJhdGNoIHdlaWJvX2xpbmtzLnR4dArilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIEiIiIpCgoKZGVmIG1haW4oKToKICAgIGlmIGxlbihzeXMuYXJndikgPCAyIG9yIHN5cy5hcmd2WzFdIGluICgnLWgnLCAnLS1oZWxwJyk6CiAgICAgICAgc2hvd19oZWxwKCkKICAgICAgICByZXR1cm4KCiAgICAjIOaUr+aMgSAtLW91dC1kaXIg5Y+C5pWw77yI5LiO5YW25LuW5Lik5Liq6ISa5pys57uf5LiA77yJCiAgICBhcmdzID0gc3lzLmFyZ3ZbMTpdCiAgICBvdXRwdXRfZGlyID0gTm9uZQogICAgaWYgIi0tb3V0LWRpciIgaW4gYXJnczoKICAgICAgICBpZHggPSBhcmdzLmluZGV4KCItLW91dC1kaXIiKQogICAgICAgIGlmIGlkeCArIDEgPCBsZW4oYXJncyk6CiAgICAgICAgICAgIG91dHB1dF9kaXIgPSBhcmdzW2lkeCArIDFdCiAgICAgICAgYXJncyA9IGFyZ3NbOmlkeF0gKyBhcmdzW2lkeCArIDI6XQoKICAgIGlmIG5vdCBhcmdzOgogICAgICAgIHNob3dfaGVscCgpCiAgICAgICAgcmV0dXJuCgogICAgaWYgYXJnc1swXSA9PSAnLS1iYXRjaCc6CiAgICAgICAgYmF0Y2hfZmlsZSA9IGFyZ3NbMV0gaWYgbGVuKGFyZ3MpID4gMSBlbHNlICdsaW5rcy50eHQnCiAgICAgICAgIyDlhbzlrrnml6fnmoTkvY3nva7lj4LmlbAKICAgICAgICBpZiBsZW4oYXJncykgPiAyIGFuZCBvdXRwdXRfZGlyIGlzIE5vbmU6CiAgICAgICAgICAgIG91dHB1dF9kaXIgPSBhcmdzWzJdCiAgICAgICAgZG93bmxvYWRfYmF0Y2goYmF0Y2hfZmlsZSwgb3V0cHV0X2RpcikKICAgIGVsc2U6CiAgICAgICAgdXJsID0gYXJnc1swXQogICAgICAgICMg5YW85a655pen55qE5L2N572u5Y+C5pWwCiAgICAgICAgaWYgbGVuKGFyZ3MpID4gMSBhbmQgb3V0cHV0X2RpciBpcyBOb25lOgogICAgICAgICAgICBvdXRwdXRfZGlyID0gYXJnc1sxXQogICAgICAgIGRvd25sb2FkX3dlaWJvKHVybCwgb3V0cHV0X2RpcikKCgppZiBfX25hbWVfXyA9PSAnX19tYWluX18nOgogICAgbWFpbigpCg==
+#!/usr/bin/env python3
+"""
+微博媒体下载器
+纯 Python 实现，一键下载微博图片+视频。
+
+用法: python3 download.py <微博链接> [保存目录]
+     python3 download.py --batch links.txt [保存目录]
+
+支持链接格式:
+  • 标准微博:   https://weibo.com/USER/STATUS_ID
+  • 分享链接:   https://mapp.api.weibo.cn/fx/XXXX.html
+  • 移动端:     https://m.weibo.cn/status/STATUS_ID
+"""
+
+import sys
+import os
+
+from weibo_core import WeiboDownloader
+
+
+def download_weibo(url, output_dir=None):
+    """下载单条微博媒体"""
+    dl = WeiboDownloader()
+    result = dl.download(url, output_dir)
+    return result.get("success", False), result.get("files", 0), result.get("dir", output_dir or os.getcwd())
+
+
+def download_batch(batch_file, output_dir=None):
+    """批量下载"""
+    if not os.path.exists(batch_file):
+        print(f"❌ 批处理文件不存在: {batch_file}")
+        return False, 0
+
+    with open(batch_file, 'r', encoding='utf-8') as f:
+        urls = [line.strip() for line in f if line.strip() and not line.startswith('#')]
+
+    print(f"📋 批量下载: {len(urls)} 个链接\n")
+
+    total_files = 0
+    success = 0
+    fail = 0
+
+    for i, url in enumerate(urls, 1):
+        print(f"[{i}/{len(urls)}] ", end='')
+        ok, count, _ = download_weibo(url, output_dir)
+        if ok:
+            success += 1
+            total_files += count
+        else:
+            fail += 1
+        print()
+
+    print(f"{'═' * 50}")
+    print(f"📊 批量下载统计:")
+    print(f"   ✅ 成功: {success}/{len(urls)}")
+    print(f"   ❌ 失败: {fail}/{len(urls)}")
+    print(f"   📦 总文件数: {total_files}")
+    return fail == 0, total_files
+
+
+def show_help():
+    print("""📱 微博媒体下载器
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+纯 Python 实现，一键下载微博图片+视频
+
+支持链接格式:
+  • 标准微博:   https://weibo.com/USER/STATUS_ID
+  • 分享链接:   https://mapp.api.weibo.cn/fx/XXXX.html
+  • 移动端:     https://m.weibo.cn/status/STATUS_ID
+
+用法:
+  python3 download.py <链接> [保存目录]
+  python3 download.py --batch links.txt [保存目录]
+
+示例:
+  python3 download.py "https://weibo.com/user/123456"
+  python3 download.py "https://mapp.api.weibo.cn/fx/xxxx.html" /tmp/weibo
+  python3 download.py --batch weibo_links.txt
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━""")
+
+
+def main():
+    if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
+        show_help()
+        return
+
+    # 支持 --out-dir 参数（与其他两个脚本统一）
+    args = sys.argv[1:]
+    output_dir = None
+    if "--out-dir" in args:
+        idx = args.index("--out-dir")
+        if idx + 1 < len(args):
+            output_dir = args[idx + 1]
+        args = args[:idx] + args[idx + 2:]
+
+    if not args:
+        show_help()
+        return
+
+    if args[0] == '--batch':
+        batch_file = args[1] if len(args) > 1 else 'links.txt'
+        # 兼容旧的位置参数
+        if len(args) > 2 and output_dir is None:
+            output_dir = args[2]
+        download_batch(batch_file, output_dir)
+    else:
+        url = args[0]
+        # 兼容旧的位置参数
+        if len(args) > 1 and output_dir is None:
+            output_dir = args[1]
+        download_weibo(url, output_dir)
+
+
+if __name__ == '__main__':
+    main()
