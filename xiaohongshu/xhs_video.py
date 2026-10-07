@@ -28,27 +28,13 @@ from datetime import datetime, timezone, timedelta
 
 import requests
 
+# 接入公共模块：智能时间戳
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from common.timestamps import write_timestamps_smart
 
 UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15"
 REFERER = "https://www.xiaohongshu.com/"
 EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
-
-
-def write_timestamps(filepaths, ts):
-    """用 exiftool 写入时间戳（一步到位，带东八区时区偏移），touch -t 保底 mtime。"""
-    if not ts or not filepaths:
-        return
-    try:
-        subprocess.run([EXIFTOOL, "-overwrite_original",
-                        f"-DateTimeOriginal={ts}", f"-CreateDate={ts}",
-                        "-OffsetTimeOriginal=+08:00", "-OffsetTimeDigitized=+08:00"] + filepaths,
-                       capture_output=True, timeout=60)
-        touch_ts = ts[0:4] + ts[5:7] + ts[8:10] + ts[11:13] + ts[14:16]
-        for f in filepaths:
-            subprocess.run(["touch", "-t", touch_ts, f], capture_output=True, timeout=10)
-        print(f"[+] 时间戳已写入 ({ts})", file=sys.stderr)
-    except Exception as e:
-        print(f"[~] 时间戳写入失败: {e}", file=sys.stderr)
 
 
 def _safe_name(text: str, max_len: int = 30) -> str:
@@ -246,7 +232,7 @@ def main() -> None:
 
     # 一步到位：自动写入时间戳
     if publish_time_str:
-        write_timestamps([out_path], publish_time_str)
+        write_timestamps_smart([out_path], publish_time_str, kind="video")
 
     print(json.dumps({"manifest": manifest_path, "status": manifest["status"],
                       "file": out_path, "md5_match": md5_match}, ensure_ascii=False))
