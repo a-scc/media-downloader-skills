@@ -11,6 +11,7 @@ Cookie 获取：用户用 Stream 抓包，从请求头复制 Cookie 字符串，
 存到 ~/.config/douyin/cookie.txt（或用 --cookie 参数指定文件）。
 """
 import os
+import shutil
 import sys
 import json
 import time
@@ -32,7 +33,7 @@ except ImportError:
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from common.timestamps import write_timestamps_smart
 
-EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
+EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 COOKIE_FILE = os.path.expanduser("~/.config/douyin/cookie.txt")
 
 API_HOST = "https://aweme.snssdk.com"
