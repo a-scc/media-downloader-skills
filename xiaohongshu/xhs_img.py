@@ -33,12 +33,13 @@ from datetime import datetime, timezone, timedelta
 
 import requests
 
-# 接入公共模块：智能时间戳
+# 接入公共模块：统一请求头 / 可配置限流 / 指数退避重试 / 智能时间戳
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from common.headers import XIAOHONGSHU as COMMON_HEADERS
+from common.config import RATE_LIMITS, MAX_RETRIES
+from common.retry import with_retry, check_response, RetryableHTTPError
 from common.timestamps import write_timestamps_smart
 
-UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15"
-REFERER = "https://www.xiaohongshu.com/"
 EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 
@@ -59,10 +60,7 @@ def extract_share_url(text: str) -> str:
 
 def make_session() -> requests.Session:
     session = requests.Session()
-    session.headers.update({
-        "User-Agent": UA,
-        "Referer": REFERER,
-    })
+    session.headers.update(COMMON_HEADERS)
     return session
 
 
@@ -81,27 +79,15 @@ def resolve_short_url(session: requests.Session, share_url: str) -> tuple:
     return note_id, token
 
 
-def fetch_note_page(session: requests.Session, note_id: str, token: str,
-                    max_retries: int = 3) -> str:
-    """带 Referer 抓笔记页。WAF 拦截（403/429/空页）时指数退避重试。"""
+@with_retry(max_retries=MAX_RETRIES)
+def fetch_note_page(session: requests.Session, note_id: str, token: str) -> str:
+    """带 Referer 抓笔记页。WAF 拦截（403/429/空页）时指数退避重试（common.retry）。"""
     enc = urllib.parse.quote(token, safe='')
     page_url = f"https://www.xiaohongshu.com/explore/{note_id}?xsec_token={enc}&xsec_source=pc_search"
-    last_exc = None
-    for attempt in range(max_retries):
-        try:
-            r = session.get(page_url, timeout=40)
-            if r.status_code in (403, 429) or len(r.text) < 10000:
-                raise requests.HTTPError(f"WAF block/empty: {r.status_code} size={len(r.text)}")
-            r.raise_for_status()
-            return r.text
-        except (requests.RequestException, requests.HTTPError) as e:
-            last_exc = e
-            if attempt < max_retries - 1:
-                wait = 2 ** attempt
-                print(f"[~] 笔记页被拦 ({e})，{wait}s 后重试 ({attempt + 2}/{max_retries})…",
-                      file=sys.stderr)
-                time.sleep(wait)
-    raise last_exc
+    r = session.get(page_url, timeout=40)
+    if len(r.text) < 10000:
+        raise RetryableHTTPError(429, f"WAF empty page: status={r.status_code} size={len(r.text)}")
+    return check_response(r).text
 
 
 def parse_initial_state(html_text: str) -> dict:
@@ -209,13 +195,14 @@ def main() -> None:
     title_part = _safe_name(title, 18)
     date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
 
-    # 4+5. 下载（每张间隔 3 秒，防 CDN 降级）
-    print("[4/5] 下载 HEIF 原图（每张间隔 3 秒防降级）...", file=sys.stderr)
+    # 4+5. 下载（图片间隔见 common/config.py，防 CDN 降级）
+    img_interval = RATE_LIMITS.get("xiaohongshu_image", 3)
+    print(f"[4/5] 下载 HEIF 原图（每张间隔 {img_interval} 秒防降级）...", file=sys.stderr)
     os.makedirs(args.out_dir, exist_ok=True)
     results = []
     for n, fid in enumerate(file_ids, 1):
         if n > 1:
-            time.sleep(3)
+            time.sleep(img_interval)
         filename = f"{name_part}_{title_part}_{date_part}_{note_id[:8]}_{n:02d}.heic"
         out_path = os.path.join(args.out_dir, filename)
         try:
