@@ -16,6 +16,7 @@ import shutil
 # 接入公共模块：统一请求头 / 指数退避重试
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from common.headers import DOUYIN as COMMON_HEADERS
+from common.config import MAX_RETRIES
 from common.retry import with_retry, check_response
 from common.timestamps import write_timestamps_smart
 
@@ -533,7 +534,7 @@ def sniff_image_size(content: bytes):
 
 
 def download_file(url: str, filepath: str, is_image: bool = False,
-                  expected_size: tuple = None, max_retries: int = 3) -> bool:
+                  expected_size: tuple = None, max_retries: int = MAX_RETRIES) -> bool:
     """下载单个文件（视频流式+进度条，图片直接下载）。
     图片：下载后验尺寸，若小于 expected_size 则重下（抖音 CDN 档位不稳定）。
     无 expected_size 时：连下多次取尺寸最大者。"""
