@@ -29,12 +29,13 @@ from datetime import datetime, timezone, timedelta
 
 import requests
 
-# 接入公共模块：智能时间戳
+# 接入公共模块：统一请求头 / 指数退避重试 / 智能时间戳
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from common.headers import XIAOHONGSHU as COMMON_HEADERS
+from common.config import MAX_RETRIES
+from common.retry import with_retry, check_response, RetryableHTTPError
 from common.timestamps import write_timestamps_smart
 
-UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15"
-REFERER = "https://www.xiaohongshu.com/"
 EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 
@@ -55,10 +56,7 @@ def extract_share_url(text: str) -> str:
 
 def make_session() -> requests.Session:
     session = requests.Session()
-    session.headers.update({
-        "User-Agent": UA,
-        "Referer": REFERER,
-    })
+    session.headers.update(COMMON_HEADERS)
     return session
 
 
@@ -74,27 +72,15 @@ def resolve_short_url(session: requests.Session, share_url: str) -> tuple:
     return note_id, token
 
 
-def fetch_note_page(session: requests.Session, note_id: str, token: str,
-                    max_retries: int = 3) -> str:
-    """带 Referer 抓笔记页。WAF 拦截时指数退避重试。"""
+@with_retry(max_retries=MAX_RETRIES)
+def fetch_note_page(session: requests.Session, note_id: str, token: str) -> str:
+    """带 Referer 抓笔记页。WAF 拦截时指数退避重试（common.retry）。"""
     enc = urllib.parse.quote(token, safe='') if token else ''
     page_url = f"https://www.xiaohongshu.com/explore/{note_id}?xsec_token={enc}&xsec_source=pc_search"
-    last_exc = None
-    for attempt in range(max_retries):
-        try:
-            r = session.get(page_url, timeout=40)
-            if r.status_code in (403, 429) or len(r.text) < 10000:
-                raise requests.HTTPError(f"WAF block/empty: {r.status_code} size={len(r.text)}")
-            r.raise_for_status()
-            return r.text
-        except (requests.RequestException, requests.HTTPError) as e:
-            last_exc = e
-            if attempt < max_retries - 1:
-                wait = 2 ** attempt
-                print(f"[~] 笔记页被拦 ({e})，{wait}s 后重试 ({attempt + 2}/{max_retries})…",
-                      file=sys.stderr)
-                time.sleep(wait)
-    raise last_exc
+    r = session.get(page_url, timeout=40)
+    if len(r.text) < 10000:
+        raise RetryableHTTPError(429, f"WAF empty page: status={r.status_code} size={len(r.text)}")
+    return check_response(r).text
 
 
 def parse_initial_state(html_text: str) -> dict:
