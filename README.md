@@ -1,62 +1,63 @@
-# Media Downloader Skills（三平台原图下载）
+# orig-dl（三平台原画下载）
 
-抖音 / 微博 / 小红书原图（真原画）下载脚本合集，纯 Python，无需登录。
+抖音 / 微博 / 小红书原图（真原画）下载脚本合集，纯 Python。
 
-## 目录
+## 目录结构
 
-- `douyin/` — 抖音视频真原画 + 图文原图 + 日常视频（`story.py`，需登录 Cookie）
-- `weibo/` — 微博原图（largest 档）
-- `xiaohongshu/` — 小红书 CDN 源文件（HEIC/PNG/JPEG 原样）
+```
+douyin/
+  dy.py          # 作品视频真原画 + 图文原图
+  dy_story.py    # 日常视频（需登录 Cookie）
+weibo/
+  wb.py          # 主入口
+  wb_core.py     # 核心模块（图片 large + 视频 1440p）
+xiaohongshu/
+  xhs_img.py     # HEIF 高画质图片（format/heif + q100）
+  xhs_video.py   # 视频原画（originVideoKey）
+common/          # 公共模块（待建）
+  headers.py     # 统一 UA + Referer
+  config.py      # 可配置限流
+  retry.py       # 指数退避重试
+```
 
 ## 通用特性
 
+- 🛡️ **反爬防护**：统一浏览器 UA + Referer，可配置限流间隔，429/403 指数退避重试
 - ⏰ **自动时间戳**：下载后自动用 exiftool 写入发布时间
-  - JPEG/HEIC：`-DateTimeOriginal` / `-CreateDate`
-  - PNG：`-XMP:CreateDate`
+  - JPEG/HEIC：`-DateTimeOriginal` / `-CreateDate` + 时区偏移
+  - PNG：`-XMP:CreateDate`（带时区）
   - `touch -t` 保底 mtime
-  - exiftool 路径：`~/workspace/tools/Image-ExifTool-13.59/exiftool`
-- 📅 **时间戳自动抓取**（东八区，格式 `2026:10:02 18:26:12`，exiftool 直接可用）：
-  - 抖音：`aweme_detail.create_time`
-  - 微博：`created_at` 字符串转换
-  - 小红书：`note.time`（兼容秒/毫秒）
 
 ## 各平台说明
 
 ### 抖音 (`douyin/`)
 
-- 视频：真原画优先（v0d00 URI + `ratio=default`，免登录）→ H.265 高码率 → H.264 转码，三层降级
-- 图文：q75 原图（服务器最高档）
-- 时间戳：`aweme_detail.create_time`
-
-```bash
-python3 douyin/download.py "<分享链接>" --out-dir /tmp/douyin
-```
-
-日常视频（需 Cookie）：
-```bash
-python3 douyin/story.py --out-dir /tmp/douyin_story
-```
+- 视频：真原画（`ratio=default`，v0d00 URI，免登录）
+- 图文：q75（服务器最高档）
+- 日常：`dy_story.py`，需 Cookie + X-Gorgon
 
 ### 微博 (`weibo/`)
 
-- 图片：`largest` 原图档，带 Referer 下载
-- 时间戳：`created_at` 字符串自动转换
-
-```bash
-python3 weibo/download.py "<微博链接>" --out-dir /tmp/weibo
-```
+- 图片：`large` 原图
+- 视频：1440p（`playback_list` 最高档，转码）
 
 ### 小红书 (`xiaohongshu/`)
 
-- 直接拿 CDN 源文件（HEIC/PNG/JPEG 原样）
-- 原理：从 `__INITIAL_STATE__` 提取裸 fileId，剥掉图片处理参数，直取对象存储源文件
-- 按文件魔数判定真实后缀，不信 CDN 的 content-type
-- 时间戳：`note.time`
+- 图片：HEIF 高画质（`imageView2/2/w/0/format/heif` + q100，3秒间隔防降级）
+- 视频：真原画（`originVideoKey`，MD5 验证）
+
+## 用法
 
 ```bash
-python3 xiaohongshu/xhs_extract_note_images.py "<分享链接>" --out-dir /tmp/xhs
+# 小红书图片
+python3 xiaohongshu/xhs_img.py "https://xhslink.cn/o/xxx"
+
+# 小红书视频
+python3 xiaohongshu/xhs_video.py "https://xhslink.cn/o/xxx"
+
+# 抖音
+python3 douyin/dy.py "分享链接"
+
+# 微博
+python3 weibo/wb.py "https://weibo.com/..."
 ```
-
-## 维护记录
-
-- 2026-10-06：三平台合并为单一仓库；视频真原画链路；自动时间戳；H.265 优先；时区修复（东八区显式）
