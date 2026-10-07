@@ -18,6 +18,7 @@ import argparse
 import html
 import json
 import os
+import shutil
 import re
 import subprocess
 import sys
@@ -34,7 +35,7 @@ from common.timestamps import write_timestamps_smart
 
 UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15"
 REFERER = "https://www.xiaohongshu.com/"
-EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
+EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 
 def _safe_name(text: str, max_len: int = 30) -> str:
@@ -195,7 +196,7 @@ def main() -> None:
     r.raise_for_status()
     content = r.content
     ext = sniff_video_ext(content)
-    filename = f"{name_part}_{title_part}_{date_part}{ext}"
+    filename = f"{name_part}_{title_part}_{date_part}_{note_id[:8]}_01{ext}"
     os.makedirs(args.out_dir, exist_ok=True)
     out_path = os.path.join(args.out_dir, filename)
     with open(out_path, "wb") as f:
