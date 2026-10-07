@@ -12,7 +12,7 @@
   - 必须带 Referer，否则可能被拦
 
 用法:
-  python3 xhs_video_download.py "https://xhslink.cn/o/xxx" --out-dir DIR
+  python3 xhs_video.py "https://xhslink.cn/o/xxx" --out-dir DIR
 """
 import argparse
 import html
