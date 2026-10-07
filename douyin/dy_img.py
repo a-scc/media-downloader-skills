@@ -13,6 +13,7 @@
 """
 import sys
 import os
+import shutil
 
 # 接入公共模块：统一请求头 / 可配置限流 / 指数退避重试
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -46,7 +47,7 @@ import time
 import subprocess
 from datetime import datetime, timezone, timedelta
 
-EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
+EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 
 HEADERS = dict(COMMON_HEADERS)  # 统一请求头见 common/headers.py
@@ -271,7 +272,8 @@ def parse_detail_api(data: dict) -> dict | None:
                 desc_part = _safe_name(desc, 18)
                 # 日期用 YYYYMMDD（Windows 文件名不认冒号）
                 date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
-                filename = f"{name_part}_{desc_part}_{i + 1}_{date_part}.{ext}"
+                aweme_id = ad.get("aweme_id", "")
+                filename = f"{name_part}_{desc_part}_{date_part}_{aweme_id[:8]}_{i + 1:02d}.{ext}"
                 # 期望尺寸（API 自带，用于校验 CDN 档位）
                 exp_w = img.get("width") or 0
                 exp_h = img.get("height") or 0
