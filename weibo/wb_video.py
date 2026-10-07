@@ -24,7 +24,6 @@ import re
 import sys
 import json
 import time
-import json
 import argparse
 import subprocess
 from datetime import datetime
