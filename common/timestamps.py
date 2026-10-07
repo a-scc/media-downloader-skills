@@ -8,9 +8,10 @@
 实测：exiftool 只改元数据段，像素 MD5 不变，画质无损。
 """
 import os
+import shutil
 import subprocess
 
-EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
+EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 
 def has_original_time(filepath):
