@@ -19,6 +19,7 @@
 """
 
 import os
+import shutil
 import re
 import sys
 import json
@@ -37,7 +38,7 @@ from common.config import MAX_RETRIES
 from common.retry import with_retry, check_response
 from common.timestamps import write_timestamps_smart
 
-EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
+EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 COOKIE_FILE = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -242,7 +243,7 @@ def fetch_status_videos(session, status_id):
                  if publish_time_str else "nodate")
 
     for i, f in enumerate(files, 1):
-        f["filename"] = f"{prefix}_{i:02d}_{date_part}.mp4"
+        f["filename"] = f"{prefix}_{date_part}_{status_id[:8]}_{i:02d}.mp4"
 
     return {
         "success": True,
