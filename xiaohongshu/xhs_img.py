@@ -184,6 +184,9 @@ def main() -> None:
 
     state = parse_initial_state(page_html)
     note = note_from_state(state, note_id)
+    if note.get("type") == "video":
+        print("这是视频笔记，请用 xhs_video.py 下载", file=sys.stderr)
+        sys.exit(1)
     author = note_author(note)
     title = note_title(note)
     publish_ts = note.get("time")
