@@ -31,6 +31,7 @@ except ImportError:
 
 # 接入公共模块：智能时间戳
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from common.headers import DOUYIN as COMMON_HEADERS
 from common.timestamps import write_timestamps_smart
 
 EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
@@ -39,13 +40,7 @@ COOKIE_FILE = os.path.expanduser("~/.config/douyin/cookie.txt")
 API_HOST = "https://aweme.snssdk.com"
 STORY_LIST_API = "/aweme/v1/story/profile/list/"
 
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) "
-        "AppleWebKit/605.1.15 (KHTML, like Gecko) "
-        "Version/16.0 Mobile/15E148 Safari/604.1"
-    ),
-}
+HEADERS = COMMON_HEADERS
 
 
 def load_cookie(cookie_file=None):
