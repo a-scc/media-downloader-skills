@@ -28,6 +28,10 @@ except ImportError:
     print("[!] 找不到 signer，请确认 ~/workspace/douyin-stories/src/signer/ 存在")
     sys.exit(1)
 
+# 接入公共模块：智能时间戳
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from common.timestamps import write_timestamps_smart
+
 EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 COOKIE_FILE = os.path.expanduser("~/.config/douyin/cookie.txt")
 
@@ -145,23 +149,6 @@ def download_true_original(uri, filepath):
         return False
 
 
-def write_timestamps(filepaths, ts):
-    """用 exiftool 写入时间戳（与 dy.py 同一规范，带东八区时区偏移）"""
-    if not ts or not filepaths:
-        return
-    try:
-        subprocess.run([EXIFTOOL, "-overwrite_original",
-                        f"-DateTimeOriginal={ts}", f"-CreateDate={ts}",
-                        "-OffsetTimeOriginal=+08:00", "-OffsetTimeDigitized=+08:00"] + filepaths,
-                       capture_output=True, timeout=60)
-        touch_ts = ts[0:4] + ts[5:7] + ts[8:10] + ts[11:13] + ts[14:16]
-        for f in filepaths:
-            subprocess.run(["touch", "-t", touch_ts, f], capture_output=True, timeout=10)
-        print(f"[+] 时间戳已写入 ({ts})")
-    except Exception as e:
-        print(f"[~] 时间戳写入失败: {e}")
-
-
 def main():
     parser = argparse.ArgumentParser(description="抖音日常（视频）原画下载")
     parser.add_argument("--sec-uid", help="作者 sec_uid（可选，不填则用 Cookie 对应的账号）")
@@ -202,7 +189,7 @@ def main():
     # 按各自时间戳写入（日常每条时间不同）
     for filepath, ts in downloaded:
         if ts:
-            write_timestamps([filepath], ts)
+            write_timestamps_smart([filepath], ts, kind="video")
 
     print(f"\n[OK] 完成 {len(downloaded)}/{len(items)}")
 
