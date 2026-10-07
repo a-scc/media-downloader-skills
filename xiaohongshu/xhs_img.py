@@ -17,12 +17,13 @@
   - 本版走 imageView2 服务转 HEIF，iPhone 直出格式，体积合理、压缩更少
 
 用法:
-  python3 xhs_heif_images.py "https://xhslink.cn/o/xxx" --out-dir DIR
+  python3 xhs_img.py "https://xhslink.cn/o/xxx" --out-dir DIR
 """
 import argparse
 import html
 import json
 import os
+import shutil
 import re
 import subprocess
 import sys
@@ -38,7 +39,7 @@ from common.timestamps import write_timestamps_smart
 
 UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15"
 REFERER = "https://www.xiaohongshu.com/"
-EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
+EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 
 def _safe_name(text: str, max_len: int = 30) -> str:
@@ -215,7 +216,7 @@ def main() -> None:
     for n, fid in enumerate(file_ids, 1):
         if n > 1:
             time.sleep(3)
-        filename = f"{name_part}_{title_part}_{n:02d}_{date_part}.heic"
+        filename = f"{name_part}_{title_part}_{date_part}_{note_id[:8]}_{n:02d}.heic"
         out_path = os.path.join(args.out_dir, filename)
         try:
             result = download_heif(session, fid, out_path)
