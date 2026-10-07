@@ -11,6 +11,7 @@
 """
 import sys
 import os
+import shutil
 
 # 接入公共模块：统一请求头 / 指数退避重试
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -43,7 +44,7 @@ import time
 import subprocess
 from datetime import datetime, timezone, timedelta
 
-EXIFTOOL = os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
+EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 
 HEADERS = dict(COMMON_HEADERS)  # 统一请求头见 common/headers.py
@@ -201,7 +202,8 @@ def extract_v0d00_uri(page_html: str) -> str | None:
 
 def get_true_original_url(video_id: str) -> str | None:
     """获取作品视频真原画下载地址（免登录）。
-    流程：取视频页源码 → 搜 v0d00 URI → 拼 aweme.snssdk.com + ratio=default。
+    流程：取视频页源码 → 搜 v0d00 URI → 主备域名试 ratio=default。
+    主：www.douyin.com（自研逆向实测）；备：aweme.snssdk.com（SDK 域名）。
     返回 302 跳转后的直链，或 None（失败时调用方降级到转码版）。"""
     # 1. 取视频页源码（不登录）
     page_urls = [
@@ -227,14 +229,21 @@ def get_true_original_url(video_id: str) -> str | None:
         return None
 
     # 3. 拼真原画地址（不带 Cookie，302 跳 CDN 直链）
-    true_url = f"https://aweme.snssdk.com/aweme/v1/play/?video_id={v0d00}&ratio=default"
-    try:
-        r = requests.head(true_url, headers=HEADERS, allow_redirects=True, timeout=15)
-        if r.status_code == 200:
-            print(f"[+] 真原画链路成功 (v0d00={v0d00[:20]}...)")
-            return r.url  # 302 后的最终 CDN 直链
-    except Exception as e:
-        print(f"[~] 真原画地址请求失败 ({e})，降级到转码版")
+    # 主备域名：先 www.douyin.com，失败则 aweme.snssdk.com
+    play_hosts = [
+        "https://www.douyin.com/aweme/v1/play/",
+        "https://aweme.snssdk.com/aweme/v1/play/",
+    ]
+    for host in play_hosts:
+        true_url = f"{host}?video_id={v0d00}&ratio=default"
+        try:
+            r = requests.head(true_url, headers=HEADERS, allow_redirects=True, timeout=15)
+            if r.status_code == 200:
+                print(f"[+] 真原画链路成功 ({host.split('/')[2]}, v0d00={v0d00[:20]}...)")
+                return r.url  # 302 后的最终 CDN 直链
+        except Exception as e:
+            print(f"[~] {host.split('/')[2]} 请求失败 ({e})，试下一个")
+    print("[~] 真原画主备域名均失败，降级到转码版")
     return None
 
 
@@ -268,7 +277,8 @@ def parse_detail_api(data: dict) -> dict | None:
                 desc_part = _safe_name(desc, 18)
                 # 日期用 YYYYMMDD（Windows 文件名不认冒号）
                 date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
-                filename = f"{name_part}_{desc_part}_{i + 1}_{date_part}.{ext}"
+                aweme_id = ad.get("aweme_id", "")
+                filename = f"{name_part}_{desc_part}_{date_part}_{aweme_id[:8]}_{i + 1:02d}.{ext}"
                 # 期望尺寸（API 自带，用于校验 CDN 档位）
                 exp_w = img.get("width") or 0
                 exp_h = img.get("height") or 0
@@ -424,7 +434,8 @@ def parse_content(data: dict) -> dict | None:
                 ext = "jpeg" if (".jpeg?" in best_url or ".jpg?" in best_url) else "webp"
                 name_part = _safe_name(nickname, 12)
                 desc_part = _safe_name(desc, 18)
-                filename = f"{name_part}_{desc_part}_{i + 1}_{date_part}.{ext}"
+                aweme_id = item.get("aweme_id", "")
+                filename = f"{name_part}_{desc_part}_{date_part}_{aweme_id[:8]}_{i + 1:02d}.{ext}"
                 # 期望尺寸（API 自带，用于校验 CDN 档位）
                 exp_w = img.get("width") or 0
                 exp_h = img.get("height") or 0
