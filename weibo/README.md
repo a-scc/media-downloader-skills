@@ -22,16 +22,16 @@
 pip install requests
 
 # 下载单条微博
-python3 scripts/download.py "https://weibo.com/USER/STATUS_ID"
+python3 wb_img.py "https://weibo.com/USER/STATUS_ID"
 
 # fx 分享链接（自动解析）
-python3 scripts/download.py "https://mapp.api.weibo.cn/fx/XXXX.html"
+python3 wb_img.py "https://mapp.api.weibo.cn/fx/XXXX.html"
 
 # 指定保存目录
-python3 scripts/download.py "https://weibo.com/USER/123456" /tmp/output
+python3 wb_img.py "https://weibo.com/USER/123456" /tmp/output
 
 # 批量下载
-python3 scripts/download.py --batch links.txt --out-dir /tmp/weibo
+python3 wb_img.py --batch links.txt --out-dir /tmp/weibo
 ```
 
 ## 支持的链接格式
@@ -58,7 +58,7 @@ python3 scripts/download.py --batch links.txt --out-dir /tmp/weibo
 ## 技术说明
 
 1. **访客绕过** — 自动调用 `passport.weibo.com/visitor/genvisitor2` 获取访客凭证
-2. **Cookie 管理** — 首次获取后保存到 `storage/weibo_cookies.pkl`，365 天有效
+2. **Cookie 管理** — 首次获取后保存到 `storage/weibo_cookies.json`，365 天有效
 3. **API 调用** — `weibo.com/ajax/statuses/show?id=xxx` 获取微博详情
 4. **媒体解析** — 支持新版 `mix_media_info` 和旧版 `pic_ids` 两种数据格式
 5. **视频兜底** — `mp4_hd_url` → `mp4_720p_mp4` → `stream_url` 三级降级
