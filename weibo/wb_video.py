@@ -4,7 +4,7 @@
 
 原理：
   1. 提取微博链接中的 status_id
-  2. 访客 cookie（~/.storage/weibo_cookies.pkl，不存在自动获取）
+  2. 访客 cookie（~/.storage/weibo_cookies.json，不存在自动获取）
   3. weibo.com/ajax/statuses/show 拿 mix_media_info / page_info
   4. 视频地址优先取 media_info.playback_list 最高档（1440p），
      兜底 mp4_hd_url → mp4_720p_mp4 → stream_url
@@ -24,7 +24,7 @@ import re
 import sys
 import json
 import time
-import pickle
+import json
 import argparse
 import subprocess
 from datetime import datetime
@@ -42,14 +42,14 @@ EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Ima
 
 COOKIE_FILE = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "storage", "weibo_cookies.pkl"
+    "storage", "weibo_cookies.json"
 )
 
 
 def _save_cookies(session):
     os.makedirs(os.path.dirname(COOKIE_FILE), exist_ok=True)
-    with open(COOKIE_FILE, "wb") as f:
-        pickle.dump(session.cookies, f)
+    with open(COOKIE_FILE, "w") as f:
+        json.dump(requests.utils.dict_from_cookiejar(session.cookies), f)
     print(f"[+] cookie 已保存到 {COOKIE_FILE}")
 
 
@@ -57,8 +57,8 @@ def _load_cookies(session):
     if not os.path.exists(COOKIE_FILE):
         return False
     try:
-        with open(COOKIE_FILE, "rb") as f:
-            jar = pickle.load(f)
+        with open(COOKIE_FILE) as f:
+            jar = json.load(f)
         session.cookies.update(jar)
         if "SUB" in session.cookies:
             print("[+] 从文件加载了微博 cookie ✅")
