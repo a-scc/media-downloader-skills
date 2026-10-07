@@ -32,7 +32,8 @@ except ImportError:
 # 接入公共模块：智能时间戳
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from common.headers import DOUYIN as COMMON_HEADERS
-from common.retry import with_retry, MAX_RETRIES
+from common.config import MAX_RETRIES
+from common.retry import with_retry
 from common.timestamps import write_timestamps_smart
 
 EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
