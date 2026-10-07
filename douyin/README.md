@@ -15,10 +15,10 @@
 
 ```bash
 # 下载单个（从分享链接或分享文本）
-python3 scripts/download.py "https://v.douyin.com/xxxx/" --out-dir /tmp/douyin
+python3 dy_video.py "https://v.douyin.com/xxxx/" --out-dir /tmp/douyin
 
 # 批量下载
-python3 scripts/download.py --batch links.txt --out-dir /tmp/douyin
+python3 dy_img.py --batch links.txt --out-dir /tmp/douyin
 ```
 
 支持以下输入格式：
@@ -53,12 +53,12 @@ python3 scripts/download.py --batch links.txt --out-dir /tmp/douyin
 ## 文件结构
 
 ```
-douyin-downloader-skill/
+douyin/
 ├── README.md
-├── SKILL.md
 ├── requirements.txt
-└── scripts/
-    └── download.py       # 核心下载脚本
+├── dy_img.py           # 图文原图
+├── dy_video.py         # 视频真原画
+└── dy_story.py         # 日常（需 Cookie）
 ```
 
 ## 许可
@@ -67,14 +67,14 @@ MIT
 
 ## 日常（视频）
 
-用 `story.py`（需登录 Cookie）：
+用 `dy_story.py`（需登录 Cookie）：
 
 ```bash
 # Cookie 存到 ~/.config/douyin/cookie.txt（Stream 抓包获取，纯文本一行）
-python3 douyin/story.py --out-dir /tmp/douyin_story
+python3 douyin/dy_story.py --out-dir /tmp/douyin_story
 
 # 指定作者
-python3 douyin/story.py --sec-uid <sec_uid> --out-dir /tmp/douyin_story
+python3 douyin/dy_story.py --sec-uid <sec_uid> --out-dir /tmp/douyin_story
 ```
 
 - 拿 URI：`aweme.snssdk.com/aweme/v1/story/profile/list/`（Cookie + X-Gorgon 签名）
