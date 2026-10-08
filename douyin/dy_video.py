@@ -2,7 +2,8 @@
 """抖音作品视频真原画下载器（视频专用）。
 
 下载原理（三层）：
-  0. 真原画直取：页面源码搜 v0d00 URI → aweme/v1/play/?video_id=...&ratio=default（免登录）
+  0. 真原画直取：页面源码搜 v0d00/v0300 URI → aweme/v1/play/?video_id=...&ratio=default（免登录）
+     v0300 是新链路（4K H.265 作品也走 v0300，若若 2026-10-08 验证）
   1. iesdouyin 页面解析：window._ROUTER_DATA → H.265 优先
   2. 降级：www.douyin.com/aweme/v1/web/aweme/detail/ API
 
@@ -147,6 +148,25 @@ def get_ttwid() -> str | None:
     return None
 
 
+def get_workers_video_id(content_id: str) -> str | None:
+    """Workers 降级：主链路被 Argus 拦时调第三方 workers 拿 video_id。
+    若若 2026-10-08 验证：超时 30 秒（15 秒不够，后端慢），只取 data.video_id。
+    """
+    url = f"https://black-lab-dd4b.in1996.workers.dev/?apikey=DYYY&aweme_id={content_id}"
+    try:
+        r = requests.get(url, timeout=30)
+        if r.status_code == 200:
+            data = r.json()
+            vid = data.get("data", {}).get("video_id")
+            if vid:
+                print(f"[+] workers 返回 vid: {vid[:20]}...")
+                return vid
+        print(f"[~] workers 无 vid (status={r.status_code})")
+    except Exception as e:
+        print(f"[~] workers 请求失败: {e}")
+    return None
+
+
 def get_detail_api(content_id: str) -> dict | None:
     """降级方案：从 douyin.com 的 detail JSON API 获取内容信息（视频+图文）。
 
@@ -164,7 +184,9 @@ def get_detail_api(content_id: str) -> dict | None:
             "AppleWebKit/605.1.15 (KHTML, like Gecko) "
             "Version/16.0 Mobile/15E148 Safari/604.1"
         ),
-        "Referer": "https://www.douyin.com/",
+        # 若若 2026-10-08：加 Origin + 改 Referer，否则返回 0 字节
+        "Origin": "https://open.douyin.com",
+        "Referer": "https://open.douyin.com/",
     }
     for attempt in range(2):
         try:
@@ -192,10 +214,11 @@ def get_detail_api(content_id: str) -> dict | None:
 
 
 def extract_v0d00_uri(page_html: str) -> str | None:
-    """从视频页源码提取 v0d00 真原画 URI（2026-10-04 实测：公开视频免登录）。
-    v0d00 是源文件 URI，配合 ratio=default 可拿真原画。"""
-    # v0d00 后跟 32 位左右的 base62 字符串
-    m = re.search(r'v0d00[a-zA-Z0-9_-]{20,40}', page_html)
+    """从视频页源码提取真原画 URI（2026-10-04 实测：公开视频免登录）。
+    v0d00 是老链路源文件 URI，v0300 是新链路（4K H.265 作品也走 v0300，若若 2026-10-08 验证）。
+    两者配合 ratio=default 都能拿真原画。"""
+    # v0d00/v0300 后跟 32 位左右的 base62 字符串
+    m = re.search(r'v0(?:d00|300)[a-zA-Z0-9_-]{20,40}', page_html)
     if m:
         return m.group(0)
     return None
@@ -250,6 +273,13 @@ def get_true_original_url(video_id: str) -> str | None:
 
 def parse_detail_api(data: dict) -> dict | None:
     """从 detail JSON API 响应中提取内容信息（视频或图文）。"""
+    # 若若 2026-10-08：story_25_filter 检测——服务端内容过滤，永久拦死，直接跳过
+    ad_check = data.get("aweme_detail")
+    fd = data.get("filter_detail", {})
+    if ad_check is None and fd.get("filter_reason"):
+        # filter_reason 如 "story_25_filter"，别重试、别降级、别等 WAF
+        print(f"[!] 内容被过滤 ({fd.get('filter_reason')})，跳过")
+        return None
     try:
         ad = data["aweme_detail"]
         desc = ad.get("desc", "无标题")
