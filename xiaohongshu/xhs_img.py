@@ -6,7 +6,8 @@
   → 先取裸链判格式 → PNG 才转 HEIF，其余直接存裸链
 
 要点：
-  - 域名主备：sns-img-hw.xhscdn.com（主）、sns-na-i1.xhscdn.com（备）
+  - 域名主备：sns-img-hw.xhscdn.com（主）、sns-na-i1.xhscdn.com（备）；
+    下载链路用 failover 代替退避（主域异常切备域）
   - 智能策略：裸链按魔数判格式；PNG → ?imageView2/2/format/heic/q/100 转 HEIF；
     HEIF/JPEG/WebP 直接存裸链，不转码（转码只有代价无收益）
   - 必须带 Referer: https://www.xiaohongshu.com/，否则 403
@@ -161,7 +162,8 @@ def detect_format(content: bytes) -> str:
 
 def download_smart(session: requests.Session, file_id: str, out_path_base: str) -> dict:
     """智能下载：裸链判格式 → PNG 才转 HEIF，其余存裸链。
-    主备域名自动切换。返回含 method/format/domain 的结果字典。"""
+    主备域名 failover（不挂 retry 装饰器，异常由内层 except 处理后切备域）。
+    返回含 method/format/domain 的结果字典。"""
     # 第一步：裸链首取（主备域名循环）
     bare_domain = None
     bare_content = None
