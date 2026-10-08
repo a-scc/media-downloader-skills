@@ -151,12 +151,18 @@ def get_ttwid() -> str | None:
 def get_workers_video_id(content_id: str) -> str | None:
     """Workers 降级：主链路被 Argus 拦时调第三方 workers 拿 video_id。
     若若 2026-10-08 验证：超时 30 秒（15 秒不够，后端慢），只取 data.video_id。
+    apikey 从环境变量 DOUYIN_WORKERS_KEY 取，默认 DYYY。
     """
-    url = f"https://black-lab-dd4b.in1996.workers.dev/?apikey=DYYY&aweme_id={content_id}"
+    apikey = os.environ.get("DOUYIN_WORKERS_KEY", "DYYY")
+    url = f"https://black-lab-dd4b.in1996.workers.dev/?apikey={apikey}&aweme_id={content_id}"
     try:
         r = requests.get(url, timeout=30)
         if r.status_code == 200:
             data = r.json()
+            # 若若建议：先判 code==0，报错更准
+            if data.get("code") != 0:
+                print(f"[~] workers 返回 code={data.get('code')}, msg={data.get('msg', '')}")
+                return None
             vid = data.get("data", {}).get("video_id")
             if vid:
                 print(f"[+] workers 返回 vid: {vid[:20]}...")
@@ -691,6 +697,41 @@ def run(raw_input: str, output_dir: str = None) -> bool:
             info = parse_detail_api(data2)
             if info:
                 print("[~] detail API 降级成功 ✅")
+
+    # ---- 第2.5层（workers 降级）：主链路被 Argus 拦时调第三方 workers ----
+    # 若若 2026-10-08：只取 data.video_id，用 vid 拼 ratio=default 拿真原画
+    if not info and content_type == "video":
+        print("[~] 尝试 workers 降级...")
+        vid = get_workers_video_id(content_id)
+        if vid:
+            # 用 vid 拼 ratio=default → 302 跟随 → CDN 直链
+            play_url = f"https://www.douyin.com/aweme/v1/play/?video_id={vid}&ratio=default&line=0"
+            try:
+                r = requests.head(play_url, headers=COMMON_HEADERS, allow_redirects=True, timeout=30)
+                cdn_url = r.url
+                if cdn_url and "douyinvod.com" in cdn_url:
+                    print(f"[+] workers 降级成功 ✅")
+                    # 需要元数据，尝试从 detail API 拿（失败也继续，用默认名）
+                    data2 = get_detail_api(content_id)
+                    meta = parse_detail_api(data2) if data2 else None
+                    desc = meta["desc"] if meta else f"video_{content_id}"
+                    nickname = meta["nickname"] if meta else "未知作者"
+                    info = {
+                        "type": "video",
+                        "desc": desc,
+                        "nickname": nickname,
+                        "publish_time": meta.get("publish_time") if meta else "",
+                        "publish_time_str": meta.get("publish_time_str") if meta else "",
+                        "quality": "true_original_via_workers",
+                        "media": [{
+                            "url": cdn_url,
+                            "filename": f"{_safe_name(desc)}_{content_id}.mp4",
+                        }],
+                    }
+                else:
+                    print(f"[~] workers vid 未解析出 CDN 直链")
+            except Exception as e:
+                print(f"[~] workers 降级失败: {e}")
 
     # 都失败了
     if not info:
