@@ -236,7 +236,7 @@ def get_true_original_url(video_id: str) -> str | None:
         "https://aweme.snssdk.com/aweme/v1/play/",
     ]
     for host in play_hosts:
-        true_url = f"{host}?video_id={v0d00}&ratio=default"
+        true_url = f"{host}?video_id={v0d00}&ratio=default&line=0"
         try:
             r = requests.head(true_url, headers=HEADERS, allow_redirects=True, timeout=15)
             if r.status_code == 200:
