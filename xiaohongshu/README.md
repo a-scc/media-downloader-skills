@@ -1,33 +1,60 @@
-# 小红书原图下载
+# 小红书下载器 / Xiaohongshu Downloader
 
-- ⏰ **自动时间戳**：下载后自动用 exiftool 写入发布时间（东八区，PNG 写 XMP）
-- 📝 **文件名**：`{作者}_{标题}_{序号}_{发布日期}.{后缀}`（用户 2026-10-05 规范）
+一键下载小红书图文+视频，纯 Python 实现，无需外部工具。
 
-## 新版管线（用户 2026-10-07 逆向，推荐）
+## 功能
 
-### 图片：`xhs_img.py` —— HEIF 高画质版
+- 🖼️ **图片下载**：智能原图（裸链判格式，PNG 转 HEIF q100，其余存原格式）
+- 🎬 **视频下载**：真原画（originVideoKey 直连，MD5 验证）
+- 🔗 **短链解析**：自动解析 xhslink.cn 短链
+- ⏰ **自动时间戳**：下载后自动用 exiftool 写入发布时间（东八区）
 
-```bash
-python3 xhs_img.py "https://xhslink.cn/o/xxx" --out-dir DIR
-```
-
-原理：短链 → 带 Referer 抓笔记页 → `__INITIAL_STATE__` 提 fileId
-→ `https://sns-img-hw.xhscdn.com/<fileId>?imageView2/2/w/0/q/100/format/heif`
-
-要点（用户实测）：
-- `format/heif` 必须是**斜杠**，`format=heif`（等号）服务器直接无视，返回原生 PNG/JPEG
-- 必须带 `Referer: https://www.xiaohongshu.com/`，否则 403
-- 每张间隔 3 秒，否则 CDN 降级返回 PNG/JPEG
-- 下载后验 ftyp 文件头，不是 HEIF 就标 FAIL
-- q/100 为 imageView2 接口最高档（q50→0.9MB、q75→2.8MB、默认→4.6MB、q100→7.5MB）
-
-### 视频：`xhs_video.py` —— 原画直连版（新增能力）
+## 使用方法
 
 ```bash
-python3 xhs_video.py "https://xhslink.cn/o/xxx" --out-dir DIR
+# 下载图片（单条笔记）
+python3 xhs_img.py "https://xhslink.cn/o/xxx" --out-dir /tmp/xhs
+
+# 下载视频（单条笔记）
+python3 xhs_video.py "https://xhslink.cn/o/xxx" --out-dir /tmp/xhs
 ```
 
-原理：`__INITIAL_STATE__` 提 `originVideoKey` → `https://sns-video-hw.xhscdn.com/<key>`（免签名裸 key）。
-下载后自动比对页面 MD5：一致即服务器原始文件（已验证 4K 99MB iPhone 原生 MOV）。
-yt-dlp 也有此接口（`format_id='direct'`），第三方验证通过。
+支持以下输入格式：
+- 小红书短链：`https://xhslink.cn/o/xxx`
+- 完整笔记链接：`https://www.xiaohongshu.com/explore/xxx`
 
+## 输出
+
+- **图片**：`{作者}_{标题}_{发布日期}_{note_id[:8]}_{序号}.{后缀}`（智能格式：JPEG/HEIC/PNG 按原格式）
+- **视频**：`{作者}_{标题}_{发布日期}_{note_id[:8]}_01.mov`（真原画，MD5 验证）
+- **时间戳**：发布时间（Unix 秒）→ exiftool 自动写入（带 +08:00 时区）
+
+## 技术说明
+
+1. 短链解析 → 301 重定向 → 获取 note_id
+2. 带 `Referer: https://www.xiaohongshu.com/` 抓笔记页 → `__INITIAL_STATE__` 提 fileId / originVideoKey
+3. 图片：`https://sns-img-hw.xhscdn.com/<fileId>` 裸链先取 → 魔数判格式 → 仅 PNG 转 `?imageView2/2/w/0/q/100/format/heif`
+4. 视频：`https://sns-video-hw.xhscdn.com/<originVideoKey>`（免签名裸 key）→ 下载后比对页面 MD5
+5. 单域名（华为云），无备域；图片间隔 3 秒，视频无间隔要求
+
+## 注意事项（坑点）
+
+- **必须带 Referer**：否则 403
+- **format/heif 必须是斜杠**：`format=heif`（等号）会被服务器无视，返回原格式
+- **图片间隔 3 秒**：否则 CDN 降级返回低质量
+- **q/100 仅转码时生效**：裸链下载时 q 参数无效
+- 依赖仅需 `requests` 库
+
+## 文件结构
+
+```
+xiaohongshu/
+├── README.md
+├── requirements.txt
+├── xhs_img.py      # 图片智能下载
+└── xhs_video.py    # 视频原画下载
+```
+
+## 许可
+
+MIT
