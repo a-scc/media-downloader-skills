@@ -311,6 +311,9 @@ def parse_detail_api(data: dict) -> dict | None:
         aweme_id = ad.get("aweme_id", "")
         true_url = get_true_original_url(aweme_id) if aweme_id else None
         if true_url:
+            name_part = _safe_name(nickname, 12)
+            desc_part = _safe_name(desc, 18)
+            date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
             return {
                 "type": "video",
                 "desc": desc,
@@ -320,7 +323,7 @@ def parse_detail_api(data: dict) -> dict | None:
                 "quality": "true_original",
                 "media": [{
                     "url": true_url,
-                    "filename": f"{_safe_name(desc)}_{aweme_id}.mp4",
+                    "filename": f"{name_part}_{desc_part}_{date_part}_{aweme_id[:8]}_01.mp4",
                 }],
             }
 
@@ -335,6 +338,9 @@ def parse_detail_api(data: dict) -> dict | None:
             url_list[0]
         )
 
+        name_part = _safe_name(nickname, 12)
+        desc_part = _safe_name(desc, 18)
+        date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
         return {
             "type": "video",
             "desc": desc,
@@ -344,7 +350,7 @@ def parse_detail_api(data: dict) -> dict | None:
             "quality": "transcoded",
             "media": [{
                 "url": best_url,
-                "filename": f"{_safe_name(desc)}_{ad.get('aweme_id', '')}.mp4",
+                "filename": f"{name_part}_{desc_part}_{date_part}_{ad.get('aweme_id', '')[:8]}_01.mp4",
             }],
         }
     except Exception as e:
@@ -466,7 +472,7 @@ def parse_content(data: dict) -> dict | None:
                     "desc": desc,
                     "nickname": nickname,
                     "quality": "true_original",
-                    "media": [{"url": true_url, "filename": f"{_safe_name(desc)}_{aweme_id}.mp4"}],
+                    "media": [{"url": true_url, "filename": f"{_safe_name(nickname, 12)}_{_safe_name(desc, 18)}_{date_part}_{aweme_id[:8]}_01.mp4"}],
                 }
 
             # 降级：转码版
@@ -476,7 +482,7 @@ def parse_content(data: dict) -> dict | None:
                 "desc": desc,
                 "nickname": nickname,
                 "quality": "transcoded",
-                "media": [{"url": download_url, "filename": f"{_safe_name(desc)}_{aweme_id}.mp4"}],
+                "media": [{"url": download_url, "filename": f"{_safe_name(nickname, 12)}_{_safe_name(desc, 18)}_{date_part}_{aweme_id[:8]}_01.mp4"}],
             }
 
     except Exception as e:
