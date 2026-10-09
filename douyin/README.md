@@ -55,7 +55,6 @@ douyin/
 ├── requirements.txt
 ├── dy_img.py           # 图文原图
 ├── dy_video.py         # 视频真原画
-└── dy_story.py         # 日常（需 Cookie）
 ```
 
 ## 许可
@@ -63,16 +62,6 @@ douyin/
 MIT
 
 ## 日常（视频）
-
-用 `dy_story.py`（需登录 Cookie）：
-
-```bash
-# Cookie 存到 ~/.config/douyin/cookie.txt（Stream 抓包获取，纯文本一行）
-python3 douyin/dy_story.py --out-dir /tmp/douyin_story
-
-# 指定作者
-python3 douyin/dy_story.py --sec-uid <sec_uid> --out-dir /tmp/douyin_story
-```
 
 - 拿 URI：`aweme.snssdk.com/aweme/v1/story/profile/list/`（Cookie + X-Gorgon 签名）
 - 下载：v0300 URI + `ratio=default`（免登录，与作品同一公式）
