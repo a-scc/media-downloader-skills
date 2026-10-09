@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 """抖音作品视频真原画下载器（视频专用）。
 
-下载原理（三层）：
-  0. 真原画直取：页面源码搜 v0d00/v0300 URI → aweme/v1/play/?video_id=...&ratio=default（免登录）
-     v0300 是新链路（4K H.265 作品也走 v0300，若若 2026-10-08 验证）
-  1. iesdouyin 页面解析：window._ROUTER_DATA → H.265 优先
-  2. 降级：www.douyin.com/aweme/v1/web/aweme/detail/ API
+下载原理（单层真原画，2026-10-09 定案）：
+  detail API 取元数据 + 视频 URI（v0d00/v0300）
+  → aweme/v1/play/?video_id={uri}&ratio=default&line=0（免登录）
+  → 302 跟随拿 CDN 直链 → 下载源文件
+
+  v0300 是新链路（4K H.265 作品也走 v0300，若若 2026-10-08 验证）。
+  2026-10-09 三层对比实测（Norbb「我真的没有办法」）：
+    - 第1层 iesdouyin 已死：_ROUTER_DATA 无 item_list（2026-08 起 SSR 改版），删
+    - 第2层转码最佳仅 1440p/2.3Mbps，真原画 4K/41Mbps，差 18 倍，删
+    - 第0层原"页面取 URI"被 JSVM bot-gated，改从 detail API 的 video.uri 取
+  失败即判 WAF，等 1 小时，不降级、不绕行。
 
 反爬：统一 UA + Referer（common.headers），
 429/403 指数退避重试（common.retry）。
@@ -104,29 +110,6 @@ def get_content_id(real_url: str) -> tuple[str | None, str | None]:
     return None, None
 
 
-def get_router_data(content_id: str, content_type: str) -> dict | None:
-    """请求详情页并解析 _ROUTER_DATA JSON（自动尝试 video/note 两种路径）"""
-    urls_to_try = [
-        f"https://www.iesdouyin.com/share/{content_type}/{content_id}/",
-        f"https://www.iesdouyin.com/share/{'note' if content_type == 'video' else 'video'}/{content_id}/",
-    ]
-
-    for url in urls_to_try:
-        try:
-            r = requests.get(url, headers=HEADERS, timeout=15)
-            r.raise_for_status()
-            m = re.search(r"window\._ROUTER_DATA\s*=\s*(.*?)</script>", r.text, re.DOTALL)
-            if m:
-                data = json.loads(m.group(1).strip())
-                if _has_item_list(data):
-                    return data
-        except Exception:
-            continue
-
-    print("[!] 页面中未找到有效 _ROUTER_DATA")
-    return None
-
-
 def get_ttwid() -> str | None:
     """注册匿名 ttwid cookie（2026-08 起 detail API 必须携带，否则返回空）。"""
     try:
@@ -149,10 +132,10 @@ def get_ttwid() -> str | None:
 
 
 def get_detail_api(content_id: str) -> dict | None:
-    """降级方案：从 douyin.com 的 detail JSON API 获取内容信息（视频+图文）。
+    """主路径：从 douyin.com 的 detail JSON API 获取视频元数据与 URI。
 
-    2026-08 起 iesdouyin SSR 不再返回 item_list；detail API 需带 ttwid cookie，
-    首次返回空时自动注册 ttwid 后重试。
+    2026-10-09 起为唯一上游（iesdouyin 第1层已死、视频页被 JSVM bot-gated）。
+    2026-08 起 detail API 需带 ttwid cookie，首次返回空时自动注册 ttwid 后重试。
     """
     api_url = (
         "https://www.douyin.com/aweme/v1/web/aweme/detail/"
@@ -194,66 +177,51 @@ def get_detail_api(content_id: str) -> dict | None:
     return None
 
 
-def extract_v0d00_uri(page_html: str) -> str | None:
-    """从视频页源码提取真原画 URI（2026-10-04 实测：公开视频免登录）。
+def extract_v0d00_uri(text: str) -> str | None:
+    """提取/校验真原画 URI（2026-10-04 实测：公开视频免登录）。
     v0d00 是老链路源文件 URI，v0300 是新链路（4K H.265 作品也走 v0300，若若 2026-10-08 验证）。
     两者配合 ratio=default 都能拿真原画。"""
     # v0d00/v0300 后跟 32 位左右的 base62 字符串
-    m = re.search(r'v0(?:d00|300)[a-zA-Z0-9_-]{20,40}', page_html)
+    m = re.search(r'v0(?:d00|300)[a-zA-Z0-9_-]{20,40}', text)
     if m:
         return m.group(0)
     return None
 
 
-def get_true_original_url(video_id: str) -> str | None:
-    """获取作品视频真原画下载地址（免登录）。
-    流程：取视频页源码 → 搜 v0d00 URI → 主备域名试 ratio=default。
-    主：www.douyin.com（自研逆向实测）；备：aweme.snssdk.com（SDK 域名）。
-    返回 302 跳转后的直链，或 None（失败时调用方降级到转码版）。"""
-    # 1. 取视频页源码（不登录）
-    page_urls = [
-        f"https://www.douyin.com/video/{video_id}/",
-        f"https://www.iesdouyin.com/share/video/{video_id}/",
-    ]
-    html = None
-    for url in page_urls:
-        try:
-            r = requests.get(url, headers=HEADERS, timeout=15)
-            if r.status_code == 200 and len(r.text) > 10000:
-                html = r.text
-                break
-        except Exception:
-            continue
-    if not html:
+def resolve_true_original(uri: str) -> str | None:
+    """由视频 URI 解析真原画 CDN 直链（免登录）。
+    拼 play/?video_id={uri}&ratio=default&line=0，302 跟随拿最终直链。
+    URI 从 detail API 的 video.play_addr_265.uri（或 play_addr.uri）取，
+    不再走视频页（www.douyin.com/video/ 已被 JSVM bot-gated，2026-10-09 实测）。
+    主备域名：先 www.douyin.com，失败则 aweme.snssdk.com。
+    返回 302 跳转后的直链，或 None。"""
+    if not uri:
         return None
-
-    # 2. 提取 v0d00 URI
-    v0d00 = extract_v0d00_uri(html)
-    if not v0d00:
-        print("[~] 页面源码未找到 v0d00 URI，降级到转码版")
-        return None
-
-    # 3. 拼真原画地址（不带 Cookie，302 跳 CDN 直链）
-    # 主备域名：先 www.douyin.com，失败则 aweme.snssdk.com
     play_hosts = [
         "https://www.douyin.com/aweme/v1/play/",
         "https://aweme.snssdk.com/aweme/v1/play/",
     ]
     for host in play_hosts:
-        true_url = f"{host}?video_id={v0d00}&ratio=default&line=0"
+        true_url = f"{host}?video_id={uri}&ratio=default&line=0"
         try:
             r = requests.head(true_url, headers=HEADERS, allow_redirects=True, timeout=15)
             if r.status_code == 200:
-                print(f"[+] 真原画链路成功 ({host.split('/')[2]}, v0d00={v0d00[:20]}...)")
+                print(f"[+] 真原画链路成功 ({host.split('/')[2]}, uri={uri[:20]}...)")
                 return r.url  # 302 后的最终 CDN 直链
         except Exception as e:
             print(f"[~] {host.split('/')[2]} 请求失败 ({e})，试下一个")
-    print("[~] 真原画主备域名均失败，降级到转码版")
+    print("[~] 真原画主备域名均失败")
     return None
 
 
 def parse_detail_api(data: dict) -> dict | None:
-    """从 detail JSON API 响应中提取内容信息（视频或图文）。"""
+    """从 detail JSON API 响应中提取视频真原画信息（单层，无转码降级）。
+
+    2026-10-09 定案：转码版（最佳 1440p/2.3Mbps）相对真原画（4K/41Mbps）
+    画质差 18 倍，按用户指令移除，不再提供转码分支。
+    URI 直接从 video.play_addr_265.uri（或 play_addr.uri）取，
+    不再走视频页（JSVM bot-gated）。
+    """
     # 若若 2026-10-08：story_25_filter 检测——服务端内容过滤，永久拦死，直接跳过
     ad_check = data.get("aweme_detail")
     fd = data.get("filter_detail", {})
@@ -270,87 +238,26 @@ def parse_detail_api(data: dict) -> dict | None:
         tz_sh = timezone(timedelta(hours=8))
         publish_time_str = datetime.fromtimestamp(publish_ts, tz_sh).strftime("%Y:%m:%d %H:%M:%S") if publish_ts else ""
 
-        # ---- 图文 ----
-        images = ad.get("images", [])
-        if images:
-            media_list = []
-            for i, img in enumerate(images):
-                best_url = None
-                for u in img.get("url_list", []):
-                    if ".jpeg?" in u or ".jpg?" in u:
-                        best_url = u
-                        break
-                if not best_url and img.get("url_list"):
-                    best_url = img["url_list"][0]
-                if not best_url:
-                    continue
-                ext = "jpeg" if (".jpeg?" in best_url or ".jpg?" in best_url) else "webp"
-                name_part = _safe_name(nickname, 12)
-                desc_part = _safe_name(desc, 18)
-                # 日期用 YYYYMMDD（Windows 文件名不认冒号）
-                date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
-                aweme_id = ad.get("aweme_id", "")
-                filename = f"{name_part}_{desc_part}_{date_part}_{aweme_id[:8]}_{i + 1:02d}.{ext}"
-                # 期望尺寸（API 自带，用于校验 CDN 档位）
-                exp_w = img.get("width") or 0
-                exp_h = img.get("height") or 0
-                media_list.append({
-                    "url": best_url,
-                    "filename": filename,
-                    "expected_size": (exp_w, exp_h) if exp_w and exp_h else None,
-                })
-            if media_list:
-                return {
-                    "type": "image",
-                    "desc": desc,
-                    "nickname": nickname,
-                    "publish_time": publish_ts,
-                    "publish_time_str": publish_time_str,
-                    "media": media_list,
-                }
-            print("[!] detail API 图文未找到图片地址")
+        # 图文走 dy_img.py，这里直接拒
+        if ad.get("images"):
+            print("[!] 这是图文链接，请用 dy_img.py 下载")
             return None
 
-        # ---- 视频 ----
+        # ---- 视频：真原画唯一路径 ----
         video_info = ad.get("video", {})
-        # H.265 优先（play_addr_265 码率高一截），降级到 H.264（play_addr）
-        play_addr_265 = video_info.get("play_addr_265", {})
-        play_addr = video_info.get("play_addr", {})
-        url_list_265 = play_addr_265.get("url_list", [])
-        url_list = play_addr.get("url_list", [])
-        # 优先用 265 的 url_list
-        if url_list_265:
-            url_list = url_list_265
-            print("[+] 使用 H.265 (play_addr_265) 高码率版本")
-
-        # 优先尝试真原画（v0d00 + ratio=default，免登录）
-        # 2026-10-04 实测：公开视频可用，拿不到 v0d00 时降级到转码版
-        aweme_id = ad.get("aweme_id", "")
-        true_url = get_true_original_url(aweme_id) if aweme_id else None
-        if true_url:
-            return {
-                "type": "video",
-                "desc": desc,
-                "nickname": nickname,
-                "publish_time": publish_ts,
-                "publish_time_str": publish_time_str,
-                "quality": "true_original",
-                "media": [{
-                    "url": true_url,
-                    "filename": f"{_safe_name(desc)}_{aweme_id}.mp4",
-                }],
-            }
-
-        # 降级：转码版
-        if not url_list:
-            print("[!] detail API 中未找到视频地址")
+        uri = (video_info.get("play_addr_265", {}).get("uri")
+               or video_info.get("play_addr", {}).get("uri"))
+        if not uri:
+            print("[!] detail API 中未找到视频 URI")
             return None
+        # 格式校验：v0d00 老链路 / v0300 新链路（4K H.265 作品）
+        if not extract_v0d00_uri(uri):
+            print(f"[~] URI 格式非 v0d00/v0300（{uri[:20]}...），仍尝试 ratio=default")
 
-        # 优先选 douyinvod.com 直链（已是无水印），否则取第一个
-        best_url = next(
-            (u for u in url_list if "douyinvod.com" in u),
-            url_list[0]
-        )
+        aweme_id = ad.get("aweme_id", "")
+        true_url = resolve_true_original(uri)
+        if not true_url:
+            return None
 
         return {
             "type": "video",
@@ -358,147 +265,14 @@ def parse_detail_api(data: dict) -> dict | None:
             "nickname": nickname,
             "publish_time": publish_ts,
             "publish_time_str": publish_time_str,
-            "quality": "transcoded",
+            "quality": "true_original",
             "media": [{
-                "url": best_url,
-                "filename": f"{_safe_name(desc)}_{ad.get('aweme_id', '')}.mp4",
+                "url": true_url,
+                "filename": f"{_safe_name(desc)}_{aweme_id}.mp4",
             }],
         }
     except Exception as e:
         print(f"[!] 解析 detail API 内容出错: {e}")
-        return None
-
-
-def _has_item_list(data: dict) -> bool:
-    """检查 _ROUTER_DATA 中是否包含有效的 item_list"""
-    try:
-        loader = data.get("loaderData", {})
-        for k, v in loader.items():
-            if not isinstance(v, dict):
-                continue
-            for k2, v2 in v.items():
-                if isinstance(v2, dict) and "item_list" in v2 and v2["item_list"]:
-                    return True
-        return False
-    except Exception:
-        return False
-
-
-def _find_item(data: dict) -> dict | None:
-    """从 _ROUTER_DATA 中挖出第一个 item"""
-    loader = data.get("loaderData", {})
-    for k, v in loader.items():
-        if not isinstance(v, dict):
-            continue
-        for k2, v2 in v.items():
-            if isinstance(v2, dict) and "item_list" in v2:
-                items = v2["item_list"]
-                if items:
-                    return items[0]
-    return None
-
-
-def parse_content(data: dict) -> dict | None:
-    """
-    从 JSON 数据中提取内容信息，自动判断视频还是图文。
-    返回格式：
-    {
-        "type": "video" | "image",
-        "desc": str,
-        "nickname": str,
-        "media": [
-            {"url": "...", "filename": "..."},
-            ...
-        ]
-    }
-    """
-    try:
-        item = _find_item(data)
-        if not item:
-            print("[!] 未找到 item")
-            return None
-
-        desc = item.get("desc", "无标题")
-        nickname = item.get("author", {}).get("nickname", "未知作者")
-        # 发布时间（Unix 秒），转 YYYYMMDD（Windows 文件名不认冒号）
-        create_ts = item.get("create_time")
-        if create_ts:
-            dt = datetime.fromtimestamp(create_ts, timezone(timedelta(hours=8)))
-            date_part = dt.strftime("%Y%m%d")
-        else:
-            date_part = "nodate"
-
-        # 判断类型：有 images 就是图文，否则是视频
-        images = item.get("images", [])
-        if images:
-            # ---- 图文 ----
-            media_list = []
-            for i, img in enumerate(images):
-                # 优先选 jpeg/jpg 后缀（清晰度最高），其次第一个
-                best_url = None
-                for u in img.get("url_list", []):
-                    if ".jpeg?" in u or ".jpg?" in u:
-                        best_url = u
-                        break
-                if not best_url:
-                    best_url = img["url_list"][0]
-
-                ext = "jpeg" if (".jpeg?" in best_url or ".jpg?" in best_url) else "webp"
-                name_part = _safe_name(nickname, 12)
-                desc_part = _safe_name(desc, 18)
-                aweme_id = item.get("aweme_id", "")
-                filename = f"{name_part}_{desc_part}_{date_part}_{aweme_id[:8]}_{i + 1:02d}.{ext}"
-                # 期望尺寸（API 自带，用于校验 CDN 档位）
-                exp_w = img.get("width") or 0
-                exp_h = img.get("height") or 0
-                media_list.append({
-                    "url": best_url,
-                    "filename": filename,
-                    "expected_size": (exp_w, exp_h) if exp_w and exp_h else None,
-                })
-
-            return {
-                "type": "image",
-                "desc": desc,
-                "nickname": nickname,
-                "media": media_list,
-            }
-        else:
-            # ---- 视频 ----
-            # H.265 优先（play_addr_265），降级到 H.264（play_addr）
-            video_data = item.get("video", {})
-            uri_265 = video_data.get("play_addr_265", {}).get("uri")
-            uri = uri_265 or video_data.get("play_addr", {}).get("uri")
-            if uri_265:
-                print("[+] 使用 H.265 URI")
-            if not uri:
-                print("[!] 未找到视频 URI")
-                return None
-
-            aweme_id = item.get("aweme_id", "")
-            # 优先真原画（v0d00 + ratio=default，免登录）
-            true_url = get_true_original_url(aweme_id) if aweme_id else None
-            if true_url:
-                return {
-                    "type": "video",
-                    "desc": desc,
-                    "nickname": nickname,
-                    "quality": "true_original",
-                    "media": [{"url": true_url, "filename": f"{_safe_name(desc)}_{aweme_id}.mp4"}],
-                }
-
-            # 降级：转码版
-            download_url = f"https://www.douyin.com/aweme/v1/play/?video_id={uri}"
-            return {
-                "type": "video",
-                "desc": desc,
-                "nickname": nickname,
-                "quality": "transcoded",
-                "media": [{"url": download_url, "filename": f"{_safe_name(desc)}_{aweme_id}.mp4"}],
-            }
-
-    except Exception as e:
-        print(f"[!] 解析内容出错: {e}")
         return None
 
 
@@ -608,7 +382,7 @@ def download_file(url: str, filepath: str, is_image: bool = False,
 
 
 def run(raw_input: str, output_dir: str = None) -> bool:
-    """主流程：输入分享链接/文本，自动下载视频或图文"""
+    """主流程：输入分享链接/文本，下载视频真原画（单层，无转码降级）。"""
     if output_dir is None:
         output_dir = os.path.dirname(os.path.abspath(__file__))
     os.makedirs(output_dir, exist_ok=True)
@@ -630,81 +404,31 @@ def run(raw_input: str, output_dir: str = None) -> bool:
 
     print(f"[+] 内容ID: {content_id} (类型: {content_type})")
 
-    info = None
+    # ---- 单层：detail API 取元数据+URI → play ratio=default 取真原画 ----
+    # 2026-10-09 定案：第1层 iesdouyin 已死、第2层转码画质差 18 倍，均移除。
+    # 失败即判 WAF，等 1 小时，不降级、不绕行。
+    print("[+] 请求 detail API 取元数据与视频 URI...")
+    data = get_detail_api(content_id)
+    info = parse_detail_api(data) if data else None
 
-    # ---- 第0层（视频优先）：真原画直取（v0d00 + ratio=default，免登录）----
-    # 不依赖 iesdouyin/detail API，WAF 拦了后面两层也能走
-    if content_type == "video":
-        print("[+] 尝试真原画链路 (v0d00)...")
-        true_url = get_true_original_url(content_id)
-        if true_url:
-            # 需要 desc/nickname，走 detail API 拿元数据（只取元数据，不下载）
-            data2 = get_detail_api(content_id)
-            if data2:
-                meta = parse_detail_api(data2)
-                if meta:
-                    info = {
-                        "type": "video",
-                        "desc": meta["desc"],
-                        "nickname": meta["nickname"],
-                        "publish_time": meta.get("publish_time"),
-                        "publish_time_str": meta.get("publish_time_str"),
-                        "quality": "true_original",
-                        "media": [{
-                            "url": true_url,
-                            "filename": f"{_safe_name(meta['desc'])}_{content_id}.mp4",
-                        }],
-                    }
-                    print("[+] 真原画链路成功 ✅")
-
-    # ---- 第1层：iesdouyin 页面解析 ----
-    if not info:
-        data = get_router_data(content_id, content_type)
-
-        if data:
-            info = parse_content(data)
-
-    # ---- 第2层（降级）：detail JSON API（视频+图文） ----
-    if not info:
-        print("[~] iesdouyin 页面解析失败，尝试降级到 detail JSON API...")
-        data2 = get_detail_api(content_id)
-        if data2:
-            info = parse_detail_api(data2)
-            if info:
-                print("[~] detail API 降级成功 ✅")
-
-    # 都失败了
     if not info:
         print()
         print("=" * 50)
-        print("⚠️  下载失败：抖音 iesdouyin 触发了 WAF 限速防护。")
+        print("⚠️  下载失败：抖音触发了 WAF 限速防护。")
         print("   这是抖音服务端的间歇性限速，非脚本故障。")
-        print("   建议稍等几分钟到几小时后再重试即可恢复。")
+        print("   按规矩等 1 小时后再试，期间不探测。")
         print("=" * 50)
         return False
 
-    if info["type"] != "video":
-        print("[!] 这是图文链接，请用 dy_img.py 下载")
-        return False
-    content_type_cn = "视频"
-    print(f"[+] {content_type_cn}: {info['desc']} | 作者: {info['nickname']}")
-    if info.get("quality"):
-        print(f"[+] 画质: {info['quality']}")
+    print(f"[+] 视频: {info['desc']} | 作者: {info['nickname']}")
+    print(f"[+] 画质: {info['quality']}")
     print(f"[+] 共 {len(info['media'])} 个文件待下载")
-
-    # 图文专用子目录
-    if info["type"] == "image":
-        safe_prefix = _safe_name(info["desc"])
-        output_dir = os.path.join(output_dir, f"{safe_prefix}_{content_id}")
-        os.makedirs(output_dir, exist_ok=True)
 
     success_count = 0
     downloaded_files = []
     for media in info["media"]:
         filepath = os.path.join(output_dir, media["filename"])
-        is_image = info["type"] == "image"
-        if download_file(media["url"], filepath, is_image=is_image,
-                         expected_size=media.get("expected_size")):
+        if download_file(media["url"], filepath, is_image=False):
             success_count += 1
             downloaded_files.append(filepath)
 
