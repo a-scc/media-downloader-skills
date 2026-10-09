@@ -3,7 +3,7 @@
 
 原理：
   短链 → 带 Referer 抓笔记页 → __INITIAL_STATE__ 提 originVideoKey
-  → https://sns-video-bd.xhscdn.com/<originVideoKey>（免签名，裸 key 直连）
+  → https://sns-video-hw.xhscdn.com/<originVideoKey>（免签名，裸 key 直连）
 
 要点（用户实测，2026-10-07）：
   - originVideoKey 在 video.consumer 分支
@@ -180,7 +180,7 @@ def main() -> None:
 
     # 4. 下载原视频（免签名裸 key 直连）
     print("[4/4] 下载原视频...", file=sys.stderr)
-    url = f"https://sns-video-bd.xhscdn.com/{key}"
+    url = f"https://sns-video-hw.xhscdn.com/{key}"
     r = session.get(url, timeout=300, stream=True)
     r.raise_for_status()
     content = r.content
