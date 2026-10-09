@@ -10,10 +10,7 @@
 - 📋 **批量下载** — 支持从 txt 文件批量导入
 - 🍃 **零外部依赖** — 仅 `requests`，不依赖 gallery-dl/yt-dlp 等工具
 - 🔒 **自包含** — 访客 cookie 自动管理，365天有效
-
-## 功能
-
-- ⏰ **自动时间戳**：下载后自动用 exiftool 写入发布时间（JPEG 写 EXIF，touch -t 保底 mtime）
+- ⏰ **自动时间戳** — 下载后自动用 exiftool 写入发布时间（JPEG 写 EXIF，touch -t 保底 mtime）
 
 ## 使用方法
 
