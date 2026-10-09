@@ -203,7 +203,10 @@ def fetch_status_videos(session, status_id):
     user = data.get("user", {})
     author = user.get("screen_name", "未知")
     text_raw = data.get("text_raw", "")
-    prefix = _safe_name(text_raw or author, 20)
+    # 文件名规范：{作者12}_{标题18}_{日期}_{id8}_{序号02d}
+    name_part = _safe_name(author, 12)
+    title_part = _safe_name(text_raw or author, 18)
+    prefix = f"{name_part}_{title_part}"
 
     files = []
     # 新版 mix_media_info（仅视频）
