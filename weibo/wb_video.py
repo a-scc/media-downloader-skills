@@ -159,28 +159,33 @@ def _safe_name(text, max_len=30):
 
 
 def _pick_best_video_url(mi):
-    """从 media_info 选最高档视频地址。
+    """从 media_info 选最高档视频地址（单链路，无降级）。
 
-    优先 playback_list（按 label 找 1440p，否则取第一档），
-    兜底 mp4_hd_url → mp4_720p_mp4 → stream_url。
-    返回 (url, quality_label)。
+    只从 playback_list 取最高码率那档（优先 1440p，否则取第一档，通常已按清晰度降序）；
+    playback_list 不存在时只取 mp4_hd_url。拿不到就返回空，不往下找低档。
+    返回 (url, quality_label)，拿不到时 url 为空字符串。
     """
     pb = mi.get("playback_list") or []
     if pb:
-        # 先找 1440p
+        # 先找 1440p（最高档）
         for item in pb:
             label = str(item.get("label", ""))
             if "1440" in label:
                 url = item.get("play_url") or item.get("url") or ""
                 if url:
                     return url, "1440p"
-        # 兜底：第一档（通常已按清晰度降序）
+        # 取第一档（通常已按清晰度降序，即最高档）
         first = pb[0]
         url = first.get("play_url") or first.get("url") or ""
         if url:
             return url, str(first.get("label", "playback"))
-    url = mi.get("mp4_hd_url") or mi.get("mp4_720p_mp4") or mi.get("stream_url") or ""
-    return url, "720p_fallback"
+        # playback_list 存在但取不到地址，直接报错，不降级
+        return "", "unavailable"
+    # 无 playback_list 时只取 mp4_hd_url，不往下找低档
+    url = mi.get("mp4_hd_url") or ""
+    if url:
+        return url, "mp4_hd"
+    return "", "unavailable"
 
 
 @with_retry(max_retries=MAX_RETRIES)
