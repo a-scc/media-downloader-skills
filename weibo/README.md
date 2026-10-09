@@ -31,18 +31,16 @@ python3 wb_img.py "https://weibo.com/USER/123456" /tmp/output
 python3 wb_img.py --batch links.txt --out-dir /tmp/weibo
 ```
 
-## 支持的链接格式
-
-| 格式 | 示例 | 说明 |
-|------|------|------|
-| 标准微博 | `https://weibo.com/USER/STATUS_ID` | ✅ 最常用 |
-| 分享链接 | `https://mapp.api.weibo.cn/fx/XXXX.html` | ✅ 自动 302 重定向解析 |
-| 移动端 | `https://m.weibo.cn/status/STATUS_ID` | ✅ 移动端链接 |
+支持以下输入格式：
+- 标准微博：`https://weibo.com/USER/STATUS_ID`
+- 分享链接：`https://mapp.api.weibo.cn/fx/XXXX.html`（自动 302 重定向解析）
+- 移动端：`https://m.weibo.cn/status/STATUS_ID`
 
 ## 输出
 
+- **图片**：`{作者}_{标题}_{序号}.jpg`（原图，large 档）
+- **视频**：`{作者}_{标题}_{序号}.mp4`（1440p 最高档，转码）
 - **时间戳**：publish_time_str（"2026:07:05 15:33:12"，exiftool 直接可用，自动写入文件）
-示例
 
 ```
 ./author_name_statusid/
@@ -54,12 +52,29 @@ python3 wb_img.py --batch links.txt --out-dir /tmp/weibo
 
 ## 技术说明
 
-1. **访客绕过** — 自动调用 `passport.weibo.com/visitor/genvisitor2` 获取访客凭证
-2. **Cookie 管理** — 首次获取后保存到 `storage/weibo_cookies.json`，365 天有效
-3. **API 调用** — `weibo.com/ajax/statuses/show?id=xxx` 获取微博详情
-4. **媒体解析** — 支持新版 `mix_media_info` 和旧版 `pic_ids` 两种数据格式
-5. **视频兜底** — `mp4_hd_url` → `mp4_720p_mp4` → `stream_url` 三级降级
+1. 访客绕过 — 自动调用 `passport.weibo.com/visitor/genvisitor2` 获取访客凭证
+2. Cookie 管理 — 首次获取后保存到 `storage/weibo_cookies.json`，365 天有效
+3. API 调用 — `weibo.com/ajax/statuses/show?id=xxx` 获取微博详情
+4. 媒体解析 — 支持新版 `mix_media_info` 和旧版 `pic_ids` 两种数据格式
+5. 图片：`wx1.sinaimg.cn/large/{fileId}.jpg`（large=original，微博天花板）
+6. 视频：`playback_list` 取 1440p 最高档（转码，非原画）
 
-## 许可证
+## 注意事项（坑点）
+
+- **必须用 HTTP**：`https://wx*.sinaimg.cn` 会被 CDN 拒（ACCESS DENIED），改 `http://`
+- **水印去不掉**：微博图片水印焊死在像素里，无解
+- 依赖仅需 `requests` 库
+
+## 文件结构
+
+```
+weibo/
+├── README.md
+├── requirements.txt
+├── wb_img.py       # 图片原图下载
+└── wb_video.py     # 视频 1440p 下载
+```
+
+## 许可
 
 MIT
