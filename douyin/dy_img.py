@@ -631,6 +631,11 @@ def run(raw_input: str, output_dir: str = None) -> bool:
             if data2:
                 meta = parse_detail_api(data2)
                 if meta:
+                    # 文件名规范：{作者12}_{标题18}_{YYYYMMDD}_{id8}_{序号02d}
+                    _name = _safe_name(meta["nickname"], 12)
+                    _title = _safe_name(meta["desc"], 18)
+                    _pts = meta.get("publish_time_str", "")
+                    _date = _pts[0:4] + _pts[5:7] + _pts[8:10] if _pts else "nodate"
                     info = {
                         "type": "video",
                         "desc": meta["desc"],
@@ -640,7 +645,7 @@ def run(raw_input: str, output_dir: str = None) -> bool:
                         "quality": "true_original",
                         "media": [{
                             "url": true_url,
-                            "filename": f"{_safe_name(meta['desc'])}_{content_id}.mp4",
+                            "filename": f"{_name}_{_title}_{_date}_{content_id[:8]}_01.mp4",
                         }],
                     }
                     print("[+] 真原画链路成功 ✅")
