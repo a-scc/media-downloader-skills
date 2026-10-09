@@ -5,19 +5,20 @@
 ## 目录结构
 
 ```
+common/
+  headers.py     # 各平台统一 UA + Referer
+  config.py      # 可配置限流间隔
+  retry.py       # 429/403 指数退避重试
 douyin/
-  dy.py          # 作品视频真原画 + 图文原图
+  dy_img.py      # 图文原图（q75，图文专用）
+  dy_video.py    # 作品视频真原画（ratio=default，视频专用）
   dy_story.py    # 日常视频（需登录 Cookie）
 weibo/
-  wb.py          # 主入口
-  wb_core.py     # 核心模块（图片 large + 视频 1440p）
+  wb_img.py      # 图片 large 原图
+  wb_video.py    # 视频 1440p（playback_list 最高档，转码）
 xiaohongshu/
   xhs_img.py     # HEIF 高画质图片（format/heif + q100）
   xhs_video.py   # 视频原画（originVideoKey）
-common/          # 公共模块（待建）
-  headers.py     # 统一 UA + Referer
-  config.py      # 可配置限流
-  retry.py       # 指数退避重试
 ```
 
 ## 通用特性
@@ -56,8 +57,10 @@ python3 xiaohongshu/xhs_img.py "https://xhslink.cn/o/xxx"
 python3 xiaohongshu/xhs_video.py "https://xhslink.cn/o/xxx"
 
 # 抖音
-python3 douyin/dy.py "分享链接"
+python3 douyin/dy_video.py "分享链接"
+python3 douyin/dy_img.py "图文链接"
 
 # 微博
-python3 weibo/wb.py "https://weibo.com/..."
+python3 weibo/wb_img.py "https://weibo.com/..."
+python3 weibo/wb_video.py "https://weibo.com/..."
 ```
