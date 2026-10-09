@@ -7,7 +7,7 @@
   2. 访客 cookie（~/.storage/weibo_cookies.json，不存在自动获取）
   3. weibo.com/ajax/statuses/show 拿 mix_media_info / page_info
   4. 视频地址优先取 media_info.playback_list 最高档（1440p），
-     兜底 mp4_hd_url → mp4_720p_mp4 → stream_url
+     只取最高档，拿不到就报错，不降级
   5. 注意：1440p 为平台转码（encoder=Lavf60.3.100），非上传原文件，
      但已是微博能给的最高清晰度
 
