@@ -31,7 +31,6 @@ from datetime import datetime, timezone, timedelta
 
 import requests
 
-# 单域名（华为云）
 # 单域名（华为云），2026-10-09 精简：备域从未触发，不记
 IMG_DOMAINS = ["sns-img-hw.xhscdn.com"]
 
