@@ -12,7 +12,6 @@ common/
 douyin/
   dy_img.py      # 图文原图（q75，图文专用）
   dy_video.py    # 作品视频真原画（ratio=default，视频专用）
-  dy_story.py    # 日常视频（需登录 Cookie）
 weibo/
   wb_img.py      # 图片 large 原图
   wb_video.py    # 视频 1440p（playback_list 最高档，转码）
@@ -35,7 +34,6 @@ xiaohongshu/
 
 - 视频：真原画（`ratio=default`，v0d00 URI，免登录）
 - 图文：q75（服务器最高档）
-- 日常：`dy_story.py`，需 Cookie + X-Gorgon
 
 ### 微博 (`weibo/`)
 
