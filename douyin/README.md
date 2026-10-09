@@ -61,9 +61,3 @@ douyin/
 
 MIT
 
-## 日常（视频）
-
-- 拿 URI：`aweme.snssdk.com/aweme/v1/story/profile/list/`（Cookie + X-Gorgon 签名）
-- 下载：v0300 URI + `ratio=default`（免登录，与作品同一公式）
-- Cookie 过期：接口返回空列表即过期，需重新抓包
-- 时间戳：每条按各自 `create_time` 自动写入
