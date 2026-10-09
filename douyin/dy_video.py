@@ -259,6 +259,10 @@ def parse_detail_api(data: dict) -> dict | None:
         if not true_url:
             return None
 
+        # 文件名规范：{作者12}_{标题18}_{发布日期YYYYMMDD}_{note_id[:8]}_{序号02d}.{后缀}
+        name_part = _safe_name(nickname, 12)
+        title_part = _safe_name(desc, 18)
+        date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
         return {
             "type": "video",
             "desc": desc,
@@ -268,7 +272,7 @@ def parse_detail_api(data: dict) -> dict | None:
             "quality": "true_original",
             "media": [{
                 "url": true_url,
-                "filename": f"{_safe_name(desc)}_{aweme_id}.mp4",
+                "filename": f"{name_part}_{title_part}_{date_part}_{aweme_id[:8]}_01.mp4",
             }],
         }
     except Exception as e:
