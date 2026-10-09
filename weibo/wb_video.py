@@ -152,6 +152,7 @@ def extract_status_id(url):
 
 
 def _safe_name(text, max_len=30):
+    text = re.sub(r'[#@&]', '', text)
     text = re.sub(r'[\\/*?:"<>|\r\n\t]', '', text)
     text = re.sub(r'\s+', ' ', text).strip()
     return text[:max_len]
