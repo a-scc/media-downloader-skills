@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""小红书视频原画下载 —— 用户 2026-10-07 逆向方法。
+"""小红书视频原画下载 —— 逆向方法。
 
 原理：
   短链 → 抓笔记页 → __INITIAL_STATE__ 提 originVideoKey
   → https://sns-video-hw.xhscdn.com/<originVideoKey>（免签名，裸 key 直连）
 
-要点（用户实测，2026-10-07；临时员工 2026-10-10 独立复现）：
+要点：
   - originVideoKey 在 video.consumer 分支
   - 已验证：4K 99MB iPhone 原生 MOV，页面 MD5 与下载 MD5 一致，真原文件
   - 带 Referer（common.headers），无害且保险；实测无 Referer 也能通
@@ -25,12 +25,27 @@ from datetime import datetime, timezone, timedelta
 
 import requests
 
-# 接入公共模块：统一请求头 / 指数退避重试 / 智能时间戳
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from common.headers import XIAOHONGSHU as COMMON_HEADERS
-from common.config import MAX_RETRIES
-from common.retry import with_retry, check_response, RetryableHTTPError
-from common.timestamps import write_timestamps_smart
+# 接入公共模块（仓库内运行时用）；单文件分发时缺 common/ 则用内置默认值
+try:
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from common.headers import XIAOHONGSHU as COMMON_HEADERS
+    from common.config import MAX_RETRIES
+    from common.retry import with_retry, check_response, RetryableHTTPError
+    from common.timestamps import write_timestamps_smart
+    _HAS_COMMON = True
+except ImportError:
+    _HAS_COMMON = False
+    COMMON_HEADERS = {
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
+        "Referer": "https://www.xiaohongshu.com/",
+    }
+    MAX_RETRIES = 3
+    class RetryableHTTPError(Exception): pass
+    def with_retry(*a, **k):
+        def deco(f): return f
+        return deco
+    def check_response(r): r.raise_for_status()
+    def write_timestamps_smart(files, timestr, kind="video"): pass
 
 
 def _safe_name(text: str, max_len: int = 30) -> str:
@@ -88,7 +103,7 @@ def parse_initial_state(html_text: str) -> dict:
 
 
 def note_from_state(state: dict, note_id: str) -> dict:
-    # 新版 SSR 结构（2026-10-07 起）：noteData.data.noteData
+    # 新版 SSR 结构：noteData.data.noteData
     nd = state.get("noteData", {}).get("data", {}).get("noteData", {})
     if nd:
         return nd
