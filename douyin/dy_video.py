@@ -10,9 +10,8 @@
   4K 转码与原画同分辨率同帧率，码率差 16 倍，只看标签会拿错）。
   原画校验：URL 无 br= 参数、桶名为 tos-cn-v-（转码在 tos-cn-ve-）。
 
-  主链 detail API 被 WAF 拦时走 ParseDock 备链（第三方解析，匿名可调，
-  判原画：label=="Original" + height==9999 + url_expires_at is None）。
-  两条都挂才判失败等 1 小时。
+  单链路：只走 detail API，拿不到就报错等 1 小时，不降级、不绕行、
+  不依赖第三方解析。
 
 反爬：统一 UA + Referer（common.headers），
 429/403 指数退避重试（common.retry）。
@@ -333,60 +332,6 @@ def download_file(url: str, filepath: str,
         return False
 
 
-def parsedock_resolve(share_url: str) -> dict | None:
-    """ParseDock 备链：detail API 被 WAF 拦时用第三方解析拿原画直链。
-    匿名可调，约 5 秒出结果。返回 {"url": 原画直链, "size": 字节数} 或 None。
-    判原画顺序：label=="Original" → height==9999 → url_expires_at is None。
-    限流未知，别猛刷。"""
-    import uuid
-    try:
-        # 1. 创建任务
-        r = requests.post(
-            "https://api.parsedock.kitt.tools/v1/jobs",
-            headers={"Idempotency-Key": str(uuid.uuid4()),
-                     "Content-Type": "application/json"},
-            json={"url": share_url, "action": "resolve",
-                  "preset": "metadata_only",
-                  "playlist": {"enabled": False, "max_items": 1, "items": []}},
-            timeout=30)
-        if r.status_code not in (200, 201, 202):
-            print(f"[~] ParseDock 建任务失败 ({r.status_code})")
-            return None
-        d = r.json()
-        job_id = d.get("job_id") or d.get("id")
-        token = d.get("job_token") or d.get("token")
-        if not job_id or not token:
-            return None
-        # 2. 轮询结果（最多 30 秒）
-        import time
-        for _ in range(6):
-            time.sleep(5)
-            r2 = requests.get(
-                f"https://api.parsedock.kitt.tools/v1/jobs/{job_id}",
-                headers={"Authorization": f"Bearer {token}"}, timeout=30)
-            d2 = r2.json()
-            if d2.get("status") in ("completed", "succeeded", "done"):
-                break
-        else:
-            print("[~] ParseDock 任务超时")
-            return None
-        # 3. 找 Original 条目
-        fmts = d2.get("result", {}).get("formats", [])
-        for f in fmts:
-            if f.get("label") == "Original" and f.get("height") == 9999 \
-               and f.get("url_expires_at") is None:
-                url = f.get("source_url")
-                size = f.get("file_size")
-                if url:
-                    print(f"[+] ParseDock 拿到原画直链 ({size} 字节)")
-                    return {"url": url, "size": size}
-        print("[~] ParseDock 未找到 Original 条目")
-        return None
-    except Exception as e:
-        print(f"[~] ParseDock 异常 ({e})")
-        return None
-
-
 def run(raw_input: str, output_dir: str = None) -> bool:
     """主流程：输入分享链接/文本，下载视频真原画（单层，无转码降级）。"""
     if output_dir is None:
@@ -412,32 +357,15 @@ def run(raw_input: str, output_dir: str = None) -> bool:
 
     # ---- 主链：detail API 取元数据+URI → play ratio=default 取真原画 ----
     # 第1层 iesdouyin 已死、第2层转码画质差约 23 倍，均移除。
+    # 单链路：只走 detail API，拿不到就报错，不降级、不绕行。
     print("[+] 请求 detail API 取元数据与视频 URI...")
     data = get_detail_api(content_id)
     info = parse_detail_api(data) if data else None
 
-    # ---- 备链：detail API 被 WAF 拦时走 ParseDock ----
-    if not info:
-        print("[~] detail API 不通，尝试 ParseDock 备链...")
-        pd = parsedock_resolve(share_url)
-        if pd:
-            # 文件名：从分享链接实在拿不到元数据时用通用名
-            info = {
-                "desc": f"抖音视频_{content_id}",
-                "nickname": "未知作者",
-                "publish_time_str": "",
-                "quality": "true_original",
-                "media": [{
-                    "url": pd["url"],
-                    "filename": f"douyin_{content_id[:8]}_01.mp4",
-                }],
-            }
-            print("[+] 备链成功，继续下载")
-
     if not info:
         print()
         print("=" * 50)
-        print("⚠️  下载失败：detail API 与 ParseDock 备链均不通。")
+        print("⚠️  下载失败：detail API 被 WAF 拦。")
         print("   按规矩等 1 小时后再试，期间不探测。")
         print("=" * 50)
         return False
