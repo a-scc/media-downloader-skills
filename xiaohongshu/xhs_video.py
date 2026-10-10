@@ -2,14 +2,13 @@
 """小红书视频原画下载 —— 用户 2026-10-07 逆向方法。
 
 原理：
-  短链 → 带 Referer 抓笔记页 → __INITIAL_STATE__ 提 originVideoKey
+  短链 → 抓笔记页 → __INITIAL_STATE__ 提 originVideoKey
   → https://sns-video-hw.xhscdn.com/<originVideoKey>（免签名，裸 key 直连）
 
-要点（用户实测，2026-10-07）：
+要点（用户实测，2026-10-07；临时员工 2026-10-10 独立复现）：
   - originVideoKey 在 video.consumer 分支
   - 已验证：4K 99MB iPhone 原生 MOV，页面 MD5 与下载 MD5 一致，真原文件
-  - yt-dlp 也有此接口（format_id='direct'），第三方验证通过
-  - 必须带 Referer，否则可能被拦
+  - 带 Referer（common.headers），无害且保险；实测无 Referer 也能通
 
 用法:
   python3 xhs_video.py "https://xhslink.cn/o/xxx" --out-dir DIR
@@ -18,11 +17,8 @@ import argparse
 import html
 import json
 import os
-import shutil
 import re
-import subprocess
 import sys
-import time
 import urllib.parse
 import hashlib
 from datetime import datetime, timezone, timedelta
@@ -35,8 +31,6 @@ from common.headers import XIAOHONGSHU as COMMON_HEADERS
 from common.config import MAX_RETRIES
 from common.retry import with_retry, check_response, RetryableHTTPError
 from common.timestamps import write_timestamps_smart
-
-EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 
 def _safe_name(text: str, max_len: int = 30) -> str:
@@ -87,7 +81,9 @@ def parse_initial_state(html_text: str) -> dict:
     match = re.search(r"window\.__INITIAL_STATE__=(\{.*?\})</script>", html_text, re.S)
     if not match:
         raise ValueError("window.__INITIAL_STATE__ not found")
-    raw = html.unescape(match.group(1)).replace(":undefined", ":null")
+    raw = html.unescape(match.group(1))
+    # 只替换作为值的 undefined（后跟 , 或 }），避免破坏字符串内容
+    raw = re.sub(r':undefined(?=[,}])', ':null', raw)
     return json.loads(raw)
 
 
@@ -118,14 +114,24 @@ def note_author(note: dict) -> str:
     return user.get("nickName") or user.get("nickname") or "未知作者"
 
 
-def extract_video_key(html_text: str) -> tuple:
-    """提 originVideoKey 与页面记录的 MD5（用户验证过的方法）。"""
+def extract_video_key(html_text: str, note: dict | None = None) -> tuple:
+    """提 originVideoKey 与页面记录的 MD5。
+    MD5 优先从解析后的 note 结构取（video.media.video.md5），
+    避免全页正则取第一个的运气成分；失败时回退正则。"""
     m = re.search(r'"originVideoKey"\s*:\s*"([^"]+)"', html_text)
     if not m:
         raise ValueError("没找到 originVideoKey（可能不是视频笔记）")
     key = m.group(1).replace('\\u002F', '/')
-    md5_m = re.search(r'"md5"\s*:\s*"([0-9a-f]{32})"', html_text)
-    return key, (md5_m.group(1) if md5_m else None)
+    md5 = None
+    if note:
+        video = note.get("video") or {}
+        media = video.get("media") or {}
+        vinfo = media.get("video") or {}
+        md5 = vinfo.get("md5")
+    if not md5:
+        md5_m = re.search(r'"md5"\s*:\s*"([0-9a-f]{32})"', html_text)
+        md5 = md5_m.group(1) if md5_m else None
+    return key, md5
 
 
 def sniff_video_ext(content: bytes) -> str:
@@ -156,17 +162,17 @@ def main() -> None:
     page_html = fetch_note_page(session, note_id, token)
 
     # 3. 提 originVideoKey 与作者/标题/发布时间
+    #    先解析 note 判类型，避免图文笔记误报
     print("[3/4] 提取 originVideoKey...", file=sys.stderr)
-    key, md5_page = extract_video_key(page_html)
-    print(f"  key={key[:50]}...", file=sys.stderr)
-    if md5_page:
-        print(f"  页面 MD5={md5_page}", file=sys.stderr)
-
     state = parse_initial_state(page_html)
     note = note_from_state(state, note_id)
     if note.get("type") != "video":
         print("这是图文笔记，请用 xhs_img.py 下载", file=sys.stderr)
         sys.exit(1)
+    key, md5_page = extract_video_key(page_html, note)
+    print(f"  key={key[:50]}...", file=sys.stderr)
+    if md5_page:
+        print(f"  页面 MD5={md5_page}", file=sys.stderr)
     author = note_author(note)
     title = note_title(note)
     publish_ts = note.get("time")
@@ -179,21 +185,41 @@ def main() -> None:
     date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
 
     # 4. 下载原视频（免签名裸 key 直连）
+    #    流式写入磁盘（视频可达百 MB，不进内存），增量算 MD5，按 Content-Length 对账
     print("[4/4] 下载原视频...", file=sys.stderr)
     url = f"https://sns-video-hw.xhscdn.com/{key}"
-    r = session.get(url, timeout=300, stream=True)
-    r.raise_for_status()
-    content = r.content
-    ext = sniff_video_ext(content)
-    filename = f"{name_part}_{title_part}_{date_part}_{note_id[:8]}_01{ext}"
     os.makedirs(args.out_dir, exist_ok=True)
-    out_path = os.path.join(args.out_dir, filename)
-    with open(out_path, "wb") as f:
-        f.write(content)
-    print(f"  {r.status_code} {len(content)//1024//1024}MB -> {filename}", file=sys.stderr)
+    try:
+        r = session.get(url, timeout=300, stream=True)
+        r.raise_for_status()
+        expected = int(r.headers.get("Content-Length", 0) or 0)
+        md5_hasher = hashlib.md5()
+        downloaded = 0
+        head_buf = b""
+        tmp_path = os.path.join(args.out_dir, f".tmp_{note_id[:8]}.part")
+        with open(tmp_path, "wb") as f:
+            for chunk in r.iter_content(chunk_size=1024 * 1024):
+                if not chunk:
+                    continue
+                if len(head_buf) < 12:
+                    head_buf += chunk[:12 - len(head_buf)]
+                f.write(chunk)
+                md5_hasher.update(chunk)
+                downloaded += len(chunk)
+        if expected and downloaded != expected:
+            os.remove(tmp_path)
+            raise ValueError(f"下载截断：{downloaded}/{expected} 字节")
+        ext = sniff_video_ext(head_buf)
+        filename = f"{name_part}_{title_part}_{date_part}_{note_id[:8]}_01{ext}"
+        out_path = os.path.join(args.out_dir, filename)
+        os.rename(tmp_path, out_path)
+        print(f"  {r.status_code} {downloaded//1024//1024}MB -> {filename}", file=sys.stderr)
+    except Exception as e:
+        print(f"  下载失败：{e}", file=sys.stderr)
+        raise SystemExit(f"失败：视频下载失败 {e}")
 
     # 验 MD5：对上就是服务器原始文件，没被转码过
-    md5_dl = hashlib.md5(content).hexdigest()
+    md5_dl = md5_hasher.hexdigest()
     md5_match = (md5_dl == md5_page) if md5_page else None
     print(f"  下载 MD5={md5_dl}", file=sys.stderr)
     if md5_match is True:
@@ -214,7 +240,7 @@ def main() -> None:
         "md5_match": md5_match,
         "status": "original_success" if (md5_match in (True, None)) else "transcoded?",
         "file": out_path,
-        "bytes": len(content),
+        "bytes": downloaded,
     }
     manifest_path = os.path.join(args.out_dir, "manifest.json")
     with open(manifest_path, "w", encoding="utf-8") as f:
