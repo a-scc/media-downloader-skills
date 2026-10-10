@@ -10,6 +10,8 @@
      只取最高档，拿不到就报错，不降级
   5. 注意：1440p 为平台转码（encoder=Lavf60.3.100），非上传原文件，
      但已是微博能给的最高清晰度
+  6. video.weibo.com/show 纯视频页走 yt-dlp fallback（需安装 yt-dlp），
+     自动选最高码率档（2026-10-10 审验证：1440p60 可达）
 
 反爬：统一 UA + Referer（common.headers），
 429/403 指数退避重试（common.retry）。
@@ -19,12 +21,11 @@
 """
 
 import os
-import shutil
 import re
 import sys
 import json
-import time
 import argparse
+import shutil
 import subprocess
 from datetime import datetime
 
@@ -37,7 +38,6 @@ from common.config import MAX_RETRIES
 from common.retry import with_retry, check_response
 from common.timestamps import write_timestamps_smart
 
-EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 COOKIE_FILE = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -68,7 +68,8 @@ def _load_cookies(session):
 
 
 def _get_visitor_cookies(session):
-    """绕过新浪访客系统，获取 SUB/SUBP cookie（有效期 ~365 天）。"""
+    """绕过新浪访客系统，获取 SUB/SUBP cookie（有效期 ~365 天）。
+    注意："ver" 写死为 20250916，微博升级接口后可能失效，届时需重抓。"""
     print("[*] 正在获取访客 cookie...")
     r = session.post(
         "https://passport.weibo.com/visitor/genvisitor2",
@@ -143,6 +144,8 @@ def extract_status_id(url):
         r'weibo\.com/\d+/([a-zA-Z0-9]+)',
         r'weibo\.(?:com|cn)/detail/(\d+)',
         r'm\.weibo\.cn/(?:status|detail)/(\d+)',
+        r'weibo\.com/tv/show/1034:(\d+)',
+        r'video\.weibo\.com/show\?fid=1034:(\d+)',
     ]
     for p in patterns:
         m = re.search(p, url)
@@ -161,24 +164,24 @@ def _safe_name(text, max_len=30):
 def _pick_best_video_url(mi):
     """从 media_info 选最高档视频地址（单链路，无降级）。
 
-    只从 playback_list 取最高码率那档（优先 1440p，否则取第一档，通常已按清晰度降序）；
-    playback_list 不存在时只取 mp4_hd_url。拿不到就返回空，不往下找低档。
+    playback_list 的 item 结构为 {"meta":..., "play_info": {"label":..., "url":...,"bitrate":...}}，
+    按 play_info.bitrate 降序取最大档；拿不到就返回空，不往下找低档。
     返回 (url, quality_label)，拿不到时 url 为空字符串。
     """
     pb = mi.get("playback_list") or []
     if pb:
-        # 先找 1440p（最高档）
-        for item in pb:
-            label = str(item.get("label", ""))
-            if "1440" in label:
-                url = item.get("play_url") or item.get("url") or ""
-                if url:
-                    return url, "1440p"
-        # 取第一档（通常已按清晰度降序，即最高档）
-        first = pb[0]
-        url = first.get("play_url") or first.get("url") or ""
+        # 按 bitrate 排序取最大档（不假设原顺序）
+        def _bitrate(item):
+            try:
+                return int((item.get("play_info") or {}).get("bitrate", 0))
+            except (ValueError, TypeError):
+                return 0
+        best = max(pb, key=_bitrate)
+        pi = best.get("play_info") or {}
+        url = pi.get("url") or ""
+        label = str(pi.get("label", "playback"))
         if url:
-            return url, str(first.get("label", "playback"))
+            return url, label
         # playback_list 存在但取不到地址，直接报错，不降级
         return "", "unavailable"
     # 无 playback_list 时只取 mp4_hd_url，不往下找低档
@@ -265,32 +268,64 @@ def fetch_status_videos(session, status_id):
 
 @with_retry(max_retries=MAX_RETRIES)
 def download_file(session, url, filepath):
-    """下载单个视频文件（流式+进度，带 429/403 重试）。"""
+    """下载单个视频文件（流式+进度，带 429/403 重试），按 Content-Length 对账防截断。"""
     print(f"  ⬇ {os.path.basename(filepath)}")
     r = session.get(url, headers=WEIBO_DL, stream=True, timeout=120)
     check_response(r)
-    total = int(r.headers.get("content-length", 0))
+    expected = int(r.headers.get("content-length", 0) or 0)
     downloaded = 0
     with open(filepath, "wb") as f:
         for chunk in r.iter_content(chunk_size=8192):
             if chunk:
                 f.write(chunk)
                 downloaded += len(chunk)
-                if total > 0:
-                    pct = downloaded / total * 100
+                if expected > 0:
+                    pct = downloaded / expected * 100
                     bar = "#" * int(pct / 2)
                     print(f"\r  [{bar:<50}] {pct:.1f}%", end="", flush=True)
+    if expected and downloaded != expected:
+        os.remove(filepath)
+        raise ValueError(f"下载截断：{downloaded}/{expected} 字节")
     print()
     size_mb = downloaded / 1024 / 1024
     print(f"  ✅ {os.path.basename(filepath)} ({size_mb:.1f} MB)")
     return True
 
 
+def download_via_ytdlp(url, output_dir):
+    """video.weibo.com/show 纯视频页走 yt-dlp（免登录，自动选最高码率档）。
+    咱们的 playback_list 链路不认这种链接，这里做 fallback。"""
+    if not shutil.which("yt-dlp"):
+        return {"success": False, "error": "未安装 yt-dlp"}
+    # 先列格式确认有 1440p 档（防页面结构变化）
+    print("[+] 平台: 微博视频（yt-dlp 路线）")
+    out_tpl = os.path.join(output_dir, "%(title).30s_%(id)s.%(ext)s")
+    cmd = ["yt-dlp", "-f", "bestvideo*+bestaudio/best", "--no-playlist",
+           "--retries", "3", "-o", out_tpl, url]
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+    if r.returncode != 0:
+        print(f"[!] yt-dlp 失败: {r.stderr[-200:]}")
+        return {"success": False, "error": "yt-dlp failed"}
+    # 找下载到的文件
+    files = [os.path.join(output_dir, f) for f in os.listdir(output_dir)
+             if f.endswith((".mp4", ".mkv", ".webm"))]
+    if not files:
+        return {"success": False, "error": "未找到下载文件"}
+    newest = max(files, key=os.path.getmtime)
+    print(f"[OK] 完成！\n📂 {newest}")
+    return {"success": True, "files": 1, "dir": output_dir, "file": newest}
+
+
 def download(url, output_dir=None):
-    """主入口：下载单条微博的视频（1440p 优先）。"""
+    """主入口：下载单条微博的视频（1440p 优先）。
+    video.weibo.com/show 纯视频页走 yt-dlp fallback。"""
     if output_dir is None:
         output_dir = os.getcwd()
     os.makedirs(output_dir, exist_ok=True)
+
+    # 纯视频页：yt-dlp 路线（2026-10-10 审验证，手动确认 1440p60 为真顶）
+    if "video.weibo.com/show" in url or "weibo.com/tv/show" in url:
+        return download_via_ytdlp(url, output_dir)
 
     session = requests.Session()
     session.headers.update(WEIBO_API)
@@ -302,7 +337,7 @@ def download(url, output_dir=None):
         print(f"[!] 无法提取微博 ID: {original_url}")
         return {"success": False}
 
-    print(f"[+] 平台: 微博视频")
+    print("[+] 平台: 微博视频")
     print(f"[+] Status ID: {status_id}")
     if not _ensure_cookies(session):
         print("[!] 无法获取微博访问凭证")
