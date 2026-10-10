@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
-"""小红书高画质图片下载 —— 智能策略版（2026-10-08）。
+"""小红书高画质图片下载 —— 原格式直存版（2026-10-10）。
 
 原理：
-  短链 → 带 Referer 抓笔记页 → __INITIAL_STATE__ 提 fileId
-  → 先取裸链判格式 → PNG 才转 HEIF，其余直接存裸链
+  短链 → 抓笔记页 → __INITIAL_STATE__ 提 fileId
+  → 裸链直取，按魔数判格式原样保存，不做任何转码
 
 要点：
   - 域名：sns-img-hw.xhscdn.com（华为云，单域名）
-    下载链路单域名直连，不挂 retry（异常直接报错）
-  - 智能策略：裸链按魔数判格式；PNG → ?imageView2/2/format/heic/q/100 转 HEIF；
-    HEIF/JPEG/WebP 直接存裸链，不转码（转码只有代价无收益）
-  - 必须带 Referer: https://www.xiaohongshu.com/，否则 403
-  - 每张间隔 3 秒，否则 CDN 降级
-  - 体积校验：len(content) > 10000，防截断下载
+  - 策略：裸链无参数直取即原图（2026-10-10 实测 8/8 MD5 与用户原文件一致）；
+    任何格式都不转码（用户要求：原本的格式不要强制转码）
+  - 带 Referer（common.headers），无害且保险；实测无 Referer 也能通，
+    不再断言"否则 403"（2026-10-10 临时员工实测）
+  - 每张间隔 3 秒（保守起见，防 CDN 波动）
+  - 体积校验：按 Content-Length 对账，防截断下载
+  - MPO（实况照片）按 MPF 标记识别，存 .mpo
 
 用法:
   python3 xhs_img.py "https://xhslink.cn/o/xxx" --out-dir DIR
@@ -21,9 +22,7 @@ import argparse
 import html
 import json
 import os
-import shutil
 import re
-import subprocess
 import sys
 import time
 import urllib.parse
@@ -40,8 +39,6 @@ from common.headers import XIAOHONGSHU as COMMON_HEADERS
 from common.config import RATE_LIMITS, MAX_RETRIES
 from common.retry import with_retry, check_response, RetryableHTTPError
 from common.timestamps import write_timestamps_smart
-
-EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 
 def _safe_name(text: str, max_len: int = 30) -> str:
@@ -95,7 +92,9 @@ def parse_initial_state(html_text: str) -> dict:
     match = re.search(r"window\.__INITIAL_STATE__=(\{.*?\})</script>", html_text, re.S)
     if not match:
         raise ValueError("window.__INITIAL_STATE__ not found")
-    raw = html.unescape(match.group(1)).replace(":undefined", ":null")
+    raw = html.unescape(match.group(1))
+    # 只替换作为值的 undefined（后跟 , 或 }），避免破坏字符串内容
+    raw = re.sub(r':undefined(?=[,}])', ':null', raw)
     return json.loads(raw)
 
 
@@ -126,8 +125,13 @@ def note_author(note: dict) -> str:
     return user.get("nickName") or user.get("nickname") or "未知作者"
 
 
-def extract_file_ids(html_text: str) -> list:
-    """用户验证过的方法：正则提 fileId，处理 \\u002F 转义，去重保序。"""
+def extract_file_ids(html_text: str, note: dict | None = None) -> list:
+    """提 fileId：优先从 note.imageList 结构化提取（防评论区带图混入），
+    失败时回退正则全页提取。去重保序，处理 \\u002F 转义。"""
+    if note:
+        ids = [im.get("fileId") for im in note.get("imageList", []) if im.get("fileId")]
+        if ids:
+            return list(dict.fromkeys(i.replace('\\u002F', '/') for i in ids))
     ids = re.findall(r'"fileId"\s*:\s*"([^"]+)"', html_text)
     ids = [i.replace('\\u002F', '/') for i in ids]
     return list(dict.fromkeys(ids))
@@ -135,10 +139,14 @@ def extract_file_ids(html_text: str) -> list:
 
 def detect_format(content: bytes) -> str:
     """按文件魔数判定格式，不依赖 Content-Type。
-    返回: heic/jpg/png/webp/unknown"""
+    返回: heic/jpg/png/webp/mpo/unknown
+    MPO（小红书实况照片）套 JPEG 外壳，需查 MPF\\0 标记识别（标记一般在头 64KB 内）。"""
     if len(content) < 12:
         return "unknown"
     if content[:3] == b'\xff\xd8\xff':
+        # 先查 MPO：MPF 标记在文件头附近
+        if b'MPF\x00' in content[:65536]:
+            return "mpo"
         return "jpg"
     if content[:8] == b'\x89PNG\r\n\x1a\n':
         return "png"
@@ -160,65 +168,48 @@ def detect_format(content: bytes) -> str:
     return "unknown"
 
 
-def download_smart(session: requests.Session, file_id: str, out_path_base: str) -> dict:
-    """智能下载：裸链判格式 → PNG 才转 HEIF，其余存裸链。
+def download_original(session: requests.Session, file_id: str, out_path_base: str) -> dict:
+    """原格式直存：裸链无参数下载，按魔数判格式原样保存，不做任何转码。
     单域名直连。返回含 method/format/domain 的结果字典。"""
-    # 第一步：裸链首取（主备域名循环）
-    bare_domain = None
-    bare_content = None
+    domain = None
+    content = None
     fmt = "unknown"
-    for domain in IMG_DOMAINS:
-        try:
-            url = f"https://{domain}/{file_id}"
-            r = session.get(url, timeout=60)
-            r.raise_for_status()
-            # 体积校验：防截断下载
-            if len(r.content) <= 10000:
-                continue
-            fmt = detect_format(r.content)
-            if fmt != "unknown":
-                bare_domain = domain
-                bare_content = r.content
-                break
-        except Exception:
-            continue
-    if bare_domain is None:
+    url = f"https://{IMG_DOMAINS[0]}/{file_id}"
+    try:
+        r = session.get(url, timeout=60)
+        r.raise_for_status()
+        # 体积校验：按 Content-Length 对账，防截断下载；
+        # 无该头时回退 10000 字节启发式
+        expected = int(r.headers.get("Content-Length", 0) or 0)
+        if expected:
+            if len(r.content) != expected:
+                return {
+                    "downloaded": False, "path": None, "status": "failed",
+                    "bytes": len(r.content), "format": "unknown", "method": "failed",
+                    "domain": None, "url": url, "error": "truncated",
+                }
+        elif len(r.content) <= 10000:
+            return {
+                "downloaded": False, "path": None, "status": "failed",
+                "bytes": len(r.content), "format": "unknown", "method": "failed",
+                "domain": None, "url": url, "error": "too small",
+            }
+        fmt = detect_format(r.content)
+        if fmt != "unknown":
+            domain = IMG_DOMAINS[0]
+            content = r.content
+    except Exception:
+        pass
+    if domain is None:
         return {
             "downloaded": False, "path": None, "status": "failed",
             "bytes": 0, "format": "unknown", "method": "failed",
-            "domain": None, "url": f"https://{IMG_DOMAINS[0]}/{file_id}",
+            "domain": None, "url": url,
         }
 
-    # 第二步：PNG 才转码（干净写法，同域名优先，主备切换）
-    method = "bare"
-    content = bare_content
-    final_url = f"https://{bare_domain}/{file_id}"
-    if fmt == "png":
-        transcoded = False
-        for t_domain in IMG_DOMAINS:
-            try:
-                t_url = f"https://{t_domain}/{file_id}?imageView2/2/format/heic/q/100"
-                tr = session.get(t_url, timeout=60)
-                tr.raise_for_status()
-                if len(tr.content) <= 10000:
-                    continue
-                if detect_format(tr.content) == "heic":
-                    fmt = "heic"
-                    content = tr.content
-                    method = "transcode:png->heic/q100"
-                    bare_domain = t_domain  # 更新为转码成功的域名
-                    final_url = t_url  # 记录实际的转码 URL
-                    transcoded = True
-                    break
-            except Exception:
-                continue
-        if not transcoded:
-            # 转码都失败，存裸 PNG 不丢图（裸 PNG 是服务器源文件）
-            method = "bare_degraded"
-            # fmt 保持 "png"，bare_domain 保持裸链成功的域名
-
-    # 第三步：动态扩展名
-    ext_map = {"heic": ".heic", "jpg": ".jpg", "png": ".png", "webp": ".webp"}
+    # 动态扩展名，原样保存
+    ext_map = {"heic": ".heic", "jpg": ".jpg", "png": ".png",
+               "webp": ".webp", "mpo": ".mpo"}
     ext = ext_map.get(fmt, ".bin")
     out_path = out_path_base + ext
     with open(out_path, "wb") as f:
@@ -227,17 +218,17 @@ def download_smart(session: requests.Session, file_id: str, out_path_base: str) 
     return {
         "downloaded": True,
         "path": out_path,
-        "url": final_url,
+        "url": url,
         "status": "original_success",
         "bytes": len(content),
         "format": fmt,
-        "method": method,
-        "domain": bare_domain,
+        "method": "bare",
+        "domain": domain,
     }
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="小红书高画质图片下载（智能策略：裸链判格式，PNG 才转 HEIF）。")
+    parser = argparse.ArgumentParser(description="小红书高画质图片下载（原格式直存，不转码）。")
     parser.add_argument("input", help="小红书分享文本或短链")
     parser.add_argument("--out-dir", required=True)
     args = parser.parse_args()
@@ -255,17 +246,18 @@ def main() -> None:
     page_html = fetch_note_page(session, note_id, token)
 
     # 3. 提 fileId + 作者/标题/发布时间（用于命名与时间戳）
+    #    先解析 note 结构，fileId 优先结构化提取
     print("[3/5] 提取 fileId...", file=sys.stderr)
-    file_ids = extract_file_ids(page_html)
-    if not file_ids:
-        raise SystemExit("失败：没找到 fileId，页面结构可能变了")
-    print(f"  找到 {len(file_ids)} 张", file=sys.stderr)
-
     state = parse_initial_state(page_html)
     note = note_from_state(state, note_id)
+    # 先判视频笔记，避免 imageList 为空时误报"页面结构变了"
     if note.get("type") == "video":
         print("这是视频笔记，请用 xhs_video.py 下载", file=sys.stderr)
         sys.exit(1)
+    file_ids = extract_file_ids(page_html, note)
+    if not file_ids:
+        raise SystemExit("失败：没找到 fileId，页面结构可能变了")
+    print(f"  找到 {len(file_ids)} 张", file=sys.stderr)
     author = note_author(note)
     title = note_title(note)
     publish_ts = note.get("time")
@@ -277,9 +269,9 @@ def main() -> None:
     title_part = _safe_name(title, 18)
     date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
 
-    # 4+5. 下载（图片间隔见 common/config.py，防 CDN 降级）
+    # 4+5. 下载（图片间隔见 common/config.py，保守起见）
     img_interval = RATE_LIMITS.get("xiaohongshu_image", 3)
-    print(f"[4/5] 下载图片（智能策略，每张间隔 {img_interval} 秒防降级）...", file=sys.stderr)
+    print(f"[4/5] 下载图片（原格式直存，每张间隔 {img_interval} 秒，保守起见）...", file=sys.stderr)
     os.makedirs(args.out_dir, exist_ok=True)
     results = []
     for n, fid in enumerate(file_ids, 1):
@@ -288,7 +280,7 @@ def main() -> None:
         filename_base = f"{name_part}_{title_part}_{date_part}_{note_id[:8]}_{n:02d}"
         out_path_base = os.path.join(args.out_dir, filename_base)
         try:
-            result = download_smart(session, fid, out_path_base)
+            result = download_original(session, fid, out_path_base)
         except Exception as e:
             result = {"downloaded": False, "path": None, "status": "failed",
                       "bytes": 0, "format": "unknown", "method": "failed",
@@ -312,7 +304,7 @@ def main() -> None:
         "author": author,
         "publish_time": publish_ts,
         "publish_time_str": publish_time_str,
-        "method": "smart: bare-first, png->heic/q100 only",
+        "method": "bare: no transcoding, original format",
         "domains": IMG_DOMAINS,
         "status": "original_success" if ok == len(file_ids) and ok > 0 else "failed",
         "images": results,
