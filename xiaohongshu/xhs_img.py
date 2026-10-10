@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""小红书高画质图片下载 —— 原格式直存版（2026-10-10）。
+"""小红书高画质图片下载 —— 原格式直存版。
 
 原理：
   短链 → 抓笔记页 → __INITIAL_STATE__ 提 fileId
@@ -7,10 +7,10 @@
 
 要点：
   - 域名：sns-img-hw.xhscdn.com（华为云，单域名）
-  - 策略：裸链无参数直取即原图（2026-10-10 实测 8/8 MD5 与用户原文件一致）；
+  - 策略：裸链无参数直取即原图；
     任何格式都不转码（用户要求：原本的格式不要强制转码）
   - 带 Referer（common.headers），无害且保险；实测无 Referer 也能通，
-    不再断言"否则 403"（2026-10-10 临时员工实测）
+    不再断言"否则 403"
   - 每张间隔 3 秒（保守起见，防 CDN 波动）
   - 体积校验：按 Content-Length 对账，防截断下载
   - MPO（实况照片）按 MPF 标记识别，存 .mpo
@@ -30,15 +30,31 @@ from datetime import datetime, timezone, timedelta
 
 import requests
 
-# 单域名（华为云），2026-10-09 精简：备域从未触发，不记
+# 单域名（华为云）：备域从未触发，不记
 IMG_DOMAINS = ["sns-img-hw.xhscdn.com"]
 
-# 接入公共模块：统一请求头 / 可配置限流 / 指数退避重试 / 智能时间戳
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from common.headers import XIAOHONGSHU as COMMON_HEADERS
-from common.config import RATE_LIMITS, MAX_RETRIES
-from common.retry import with_retry, check_response, RetryableHTTPError
-from common.timestamps import write_timestamps_smart
+# 接入公共模块（仓库内运行时用）；单文件分发时缺 common/ 则用内置默认值
+try:
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from common.headers import XIAOHONGSHU as COMMON_HEADERS
+    from common.config import RATE_LIMITS, MAX_RETRIES
+    from common.retry import with_retry, check_response, RetryableHTTPError
+    from common.timestamps import write_timestamps_smart
+    _HAS_COMMON = True
+except ImportError:
+    _HAS_COMMON = False
+    COMMON_HEADERS = {
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15",
+        "Referer": "https://www.xiaohongshu.com/",
+    }
+    RATE_LIMITS = {"xiaohongshu_image": 3}
+    MAX_RETRIES = 3
+    class RetryableHTTPError(Exception): pass
+    def with_retry(*a, **k):
+        def deco(f): return f
+        return deco
+    def check_response(r): r.raise_for_status()
+    def write_timestamps_smart(files, timestr, kind="image"): pass
 
 
 def _safe_name(text: str, max_len: int = 30) -> str:
@@ -99,7 +115,7 @@ def parse_initial_state(html_text: str) -> dict:
 
 
 def note_from_state(state: dict, note_id: str) -> dict:
-    # 新版 SSR 结构（2026-10-07 起）：noteData.data.noteData
+    # 新版 SSR 结构：noteData.data.noteData
     nd = state.get("noteData", {}).get("data", {}).get("noteData", {})
     if nd:
         return nd
