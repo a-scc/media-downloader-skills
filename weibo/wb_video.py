@@ -28,12 +28,31 @@ from datetime import datetime
 
 import requests
 
-# 接入公共模块
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from common.headers import WEIBO_API, WEIBO_DL
-from common.config import MAX_RETRIES
-from common.retry import with_retry, check_response
-from common.timestamps import write_timestamps_smart
+# 接入公共模块（仓库内运行时用）；单文件分发时缺 common/ 则用内置默认值
+try:
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from common.headers import WEIBO_API, WEIBO_DL
+    from common.config import MAX_RETRIES
+    from common.retry import with_retry, check_response
+    from common.timestamps import write_timestamps_smart
+    _HAS_COMMON = True
+except ImportError:
+    _HAS_COMMON = False
+    WEIBO_API = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
+        "Referer": "https://weibo.com/",
+        "X-Requested-With": "XMLHttpRequest",
+    }
+    WEIBO_DL = {
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 Version/17.0 Mobile/15E148 Safari/604.1",
+        "Referer": "https://weibo.com/",
+    }
+    MAX_RETRIES = 3
+    def with_retry(*a, **k):
+        def deco(f): return f
+        return deco
+    def check_response(r): r.raise_for_status()
+    def write_timestamps_smart(files, timestr, kind="video"): pass
 
 
 COOKIE_FILE = os.path.join(
