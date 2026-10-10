@@ -8,6 +8,10 @@
   3. weibo.com/ajax/statuses/show 拿 pic_infos / mix_media_info
   4. 下载 largest 原图，间隔见 common/config.py
 
+注意：
+  - large 档自带博主水印（baked in，去不掉），拿到的是"带水印的最高档"而非无水印原图
+  - EXIF 已被微博剥离，像素尺寸是原尺寸但非比特级原文件
+
 反爬：统一 UA + Referer（common.headers），
 429/403 指数退避重试（common.retry）。
 
@@ -16,13 +20,11 @@
 """
 
 import os
-import shutil
 import re
 import sys
 import json
 import time
 import argparse
-import subprocess
 from datetime import datetime
 
 import requests
@@ -31,10 +33,9 @@ import requests
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from common.headers import WEIBO_API, WEIBO_DL
 from common.config import RATE_LIMITS, MAX_RETRIES
-from common.retry import with_retry, check_response, RetryableHTTPError
+from common.retry import with_retry, check_response
 from common.timestamps import write_timestamps_smart
 
-EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
 
 COOKIE_FILE = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -65,7 +66,10 @@ def _load_cookies(session):
 
 
 def _get_visitor_cookies(session):
-    """绕过新浪访客系统，获取 SUB/SUBP cookie（有效期 ~365 天）。"""
+    """绕过新浪访客系统，获取 SUB/SUBP cookie（有效期 ~365 天）。
+    注意："ver" 写死为 20250916，微博升级接口后可能失效，届时需重抓。
+    另：公开微博可走 m.weibo.cn 移动端 API 免 cookie（2026-10-10 临时工验证），
+    本流程仅作 fallback 保留。"""
     print("[*] 正在获取访客 cookie...")
     r = session.post(
         "https://passport.weibo.com/visitor/genvisitor2",
@@ -226,19 +230,35 @@ def fetch_status_images(session, status_id):
     }
 
 
+def _sniff_ext(filepath: str) -> str:
+    """按文件魔数纠正扩展名（微博 GIF 会被存成 .jpg 后缀）。"""
+    with open(filepath, "rb") as f:
+        head = f.read(12)
+    if head[:6] in (b"GIF87a", b"GIF89a"):
+        return ".gif"
+    if head[:8] == b"\x89PNG\r\n\x1a\n":
+        return ".png"
+    if head[:3] == b"\xff\xd8\xff":
+        return ".jpg"
+    return ""
+
+
 @with_retry(max_retries=MAX_RETRIES)
 def download_file(session, url, filepath):
-    """下载单个文件（带 429/403 重试）。"""
+    """下载单个文件（带 429/403 重试），按 Content-Length 对账防截断。"""
     print(f"  ⬇ {os.path.basename(filepath)}", end=" ", flush=True)
     r = session.get(url, headers=WEIBO_DL, stream=True, timeout=60)
     check_response(r)
-    total = int(r.headers.get("content-length", 0))
+    expected = int(r.headers.get("content-length", 0) or 0)
     downloaded = 0
     with open(filepath, "wb") as f:
         for chunk in r.iter_content(8192):
             if chunk:
                 f.write(chunk)
                 downloaded += len(chunk)
+    if expected and downloaded != expected:
+        os.remove(filepath)
+        raise ValueError(f"下载截断：{downloaded}/{expected} 字节")
     size_kb = downloaded / 1024
     print(f"\r  ✅ {os.path.basename(filepath)} ({size_kb:.0f} KB)")
     return True
@@ -260,7 +280,7 @@ def download(url, output_dir=None):
         print(f"[!] 无法提取微博 ID: {original_url}")
         return {"success": False}
 
-    print(f"[+] 平台: 微博图片")
+    print("[+] 平台: 微博图片")
     print(f"[+] Status ID: {status_id}")
     if not _ensure_cookies(session):
         print("[!] 无法获取微博访问凭证")
@@ -290,6 +310,12 @@ def download(url, output_dir=None):
         filepath = os.path.join(save_dir, f["filename"])
         try:
             if download_file(session, f["url"], filepath):
+                # 魔数纠正扩展名（如 GIF 被存成 .jpg）
+                real_ext = _sniff_ext(filepath)
+                if real_ext and not filepath.endswith(real_ext):
+                    new_path = filepath.rsplit(".", 1)[0] + real_ext
+                    os.rename(filepath, new_path)
+                    filepath = new_path
                 downloaded_files.append(filepath)
         except Exception as e:
             print(f"\r  ❌ {f['filename']}: {e}")
