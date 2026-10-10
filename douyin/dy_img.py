@@ -1,55 +1,51 @@
 # -*- coding: utf-8 -*-
-"""抖音图文原图下载器（图片专用）。
+"""抖音图文下载器（图片专用）。
 
-下载原理（单链路，无降级）：
-  1. 提取分享链接 -> 跟随301重定向 -> 获取真实URL
-  2. 请求 www.douyin.com/aweme/v1/web/aweme/detail/ API 获取内容信息
-  3. 提取所有图片原图下载（q75，服务器最高档）
-  4. 拿不到最高画质直接报错，不降级
+下载原理：
+  主链：detail API 取图片直链（被 WAF 拦时走不通）
+  兜底：--urls 模式（浏览器提链 → 直接下载）
+
+  下载 q75 档图片（抖音服务器公开最高档；q75 是有损转码，非相机原图）。
+  拿不到最高档直接报错，不降级。
 
 反爬：统一 UA + Referer（common.headers），图片间隔见 common.config，
 429/403 指数退避重试（common.retry）。
 """
 import sys
 import os
-import shutil
 
-# 接入公共模块：统一请求头 / 可配置限流 / 指数退避重试
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from common.headers import DOUYIN as COMMON_HEADERS
-from common.config import RATE_LIMITS
-from common.retry import with_retry, check_response
-from common.timestamps import write_timestamps_smart
+# 接入公共模块（仓库内运行时用）；单文件分发时缺 common/ 则用内置默认值
+try:
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from common.headers import DOUYIN as COMMON_HEADERS
+    from common.config import RATE_LIMITS
+    from common.timestamps import write_timestamps_smart
+    HEADERS = dict(COMMON_HEADERS)
+    _HAS_COMMON = True
+except ImportError:
+    _HAS_COMMON = False
+    HEADERS = {
+        "User-Agent": (
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
+            "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+            "Version/17.0 Mobile/15E148 Safari/604.1"
+        ),
+        "Referer": "https://www.douyin.com/",
+    }
+    RATE_LIMITS = {"douyin_image": 2}
+    def write_timestamps_smart(files, timestr, kind="image"):
+        pass  # 单文件模式：跳过时间戳写入
 
-# 自动安装依赖（仅通过 requirements.txt + --require-hashes，防止供应链投毒）
 try:
     import requests
 except ImportError:
-    import subprocess
-    _req_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "requirements.txt")
-    if os.path.exists(_req_file):
-        print("[*] 检测到缺少 requests 库，正在通过 requirements.txt 安装（SHA256 hash 校验）...")
-        subprocess.run(
-            [sys.executable, "-m", "pip", "install", "-r", _req_file, "--require-hashes", "-q"],
-            check=True,
-        )
-    else:
-        print("[!] 错误：未找到 requirements.txt，无法安全安装依赖。")
-        print("    请手动执行：pip install -r requirements.txt --require-hashes")
-        sys.exit(1)
-    import requests
+    print("[!] 缺少 requests 库，请执行：pip install requests")
+    sys.exit(1)
 
 import re
-import json
 import struct
 import time
-import subprocess
 from datetime import datetime, timezone, timedelta
-
-EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
-
-
-HEADERS = dict(COMMON_HEADERS)  # 统一请求头见 common/headers.py
 
 
 def extract_url(text: str) -> str | None:
@@ -105,7 +101,7 @@ def get_content_id(real_url: str) -> tuple[str | None, str | None]:
 
 
 def get_ttwid() -> str | None:
-    """注册匿名 ttwid cookie（2026-08 起 detail API 必须携带，否则返回空）。"""
+    """注册匿名 ttwid cookie（detail API 必须携带，否则返回空）。"""
     try:
         s = requests.Session()
         s.headers.update({"User-Agent": HEADERS["User-Agent"]})
@@ -168,55 +164,6 @@ def get_detail_api(content_id: str) -> dict | None:
     return None
 
 
-def extract_v0d00_uri(page_html: str) -> str | None:
-    """从视频页源码提取 v0d00 真原画 URI（2026-10-04 实测：公开视频免登录）。
-    v0d00 是源文件 URI，配合 ratio=default 可拿真原画。"""
-    # v0d00 后跟 32 位左右的 base62 字符串
-    m = re.search(r'v0d00[a-zA-Z0-9_-]{20,40}', page_html)
-    if m:
-        return m.group(0)
-    return None
-
-
-def get_true_original_url(video_id: str) -> str | None:
-    """获取作品视频真原画下载地址（免登录）。
-    流程：取视频页源码 → 搜 v0d00 URI → 拼 aweme.snssdk.com + ratio=default。
-    返回 302 跳转后的直链，或 None（失败时直接报错，不降级）。"""
-    # 1. 取视频页源码（不登录）
-    page_urls = [
-        f"https://www.douyin.com/video/{video_id}/",
-        f"https://www.iesdouyin.com/share/video/{video_id}/",
-    ]
-    html = None
-    for url in page_urls:
-        try:
-            r = requests.get(url, headers=HEADERS, timeout=15)
-            if r.status_code == 200 and len(r.text) > 10000:
-                html = r.text
-                break
-        except Exception:
-            continue
-    if not html:
-        return None
-
-    # 2. 提取 v0d00 URI
-    v0d00 = extract_v0d00_uri(html)
-    if not v0d00:
-        print("[!] 页面源码未找到 v0d00 URI，真原画获取失败")
-        return None
-
-    # 3. 拼真原画地址（不带 Cookie，302 跳 CDN 直链）
-    true_url = f"https://aweme.snssdk.com/aweme/v1/play/?video_id={v0d00}&ratio=default"
-    try:
-        r = requests.head(true_url, headers=HEADERS, allow_redirects=True, timeout=15)
-        if r.status_code == 200:
-            print(f"[+] 真原画链路成功 (v0d00={v0d00[:20]}...)")
-            return r.url  # 302 后的最终 CDN 直链
-    except Exception as e:
-        print(f"[!] 真原画地址请求失败 ({e})")
-    return None
-
-
 def parse_detail_api(data: dict) -> dict | None:
     """从 detail JSON API 响应中提取内容信息（视频或图文）。"""
     try:
@@ -233,16 +180,12 @@ def parse_detail_api(data: dict) -> dict | None:
         if images:
             media_list = []
             for i, img in enumerate(images):
-                best_url = None
-                for u in img.get("url_list", []):
-                    if ".jpeg?" in u or ".jpg?" in u:
-                        best_url = u
-                        break
-                if not best_url and img.get("url_list"):
-                    best_url = img["url_list"][0]
-                if not best_url:
+                # 直接取 url_list[0]（已验证 webp/jpeg 两版等价，不挑格式）
+                url_list = img.get("url_list", [])
+                if not url_list:
                     continue
-                ext = "jpeg" if (".jpeg?" in best_url or ".jpg?" in best_url) else "webp"
+                best_url = url_list[0]
+                ext = "webp" if ".webp" in best_url else "jpg"
                 name_part = _safe_name(nickname, 12)
                 desc_part = _safe_name(desc, 18)
                 # 日期用 YYYYMMDD（Windows 文件名不认冒号）
@@ -270,28 +213,8 @@ def parse_detail_api(data: dict) -> dict | None:
             return None
 
         # ---- 视频 ----
-        # dy_img.py 是图片专用，遇到视频直接提示用 dy_video.py
-        # 这里只尝试真原画（v0d00 + ratio=default），拿不到就报错，不降级
-        aweme_id = ad.get("aweme_id", "")
-        true_url = get_true_original_url(aweme_id) if aweme_id else None
-        if true_url:
-            name_part = _safe_name(nickname, 12)
-            desc_part = _safe_name(desc, 18)
-            date_part = publish_time_str[0:4] + publish_time_str[5:7] + publish_time_str[8:10] if publish_time_str else "nodate"
-            return {
-                "type": "video",
-                "desc": desc,
-                "nickname": nickname,
-                "publish_time": publish_ts,
-                "publish_time_str": publish_time_str,
-                "quality": "true_original",
-                "media": [{
-                    "url": true_url,
-                    "filename": f"{name_part}_{desc_part}_{date_part}_{aweme_id[:8]}_01.mp4",
-                }],
-            }
-
-        print("[!] 真原画获取失败，不降级到转码版")
+        # dy_img.py 是图片专用，遇到视频直接返回 None，外层提示用 dy_video.py
+        print("[!] detail API 返回的是视频，请用 dy_video.py 下载")
         return None
     except Exception as e:
         print(f"[!] 解析 detail API 内容出错: {e}")
@@ -341,19 +264,28 @@ def sniff_image_size(content: bytes):
 
 
 def download_file(url: str, filepath: str, is_image: bool = False,
-                  expected_size: tuple = None, max_retries: int = 3) -> bool:
+                  expected_size: tuple = None, max_retries: int = 3,
+                  single_try: bool = False) -> bool:
     """下载单个文件（视频流式+进度条，图片直接下载）。
     图片：下载后验尺寸，若小于 expected_size 则重下（抖音 CDN 档位不稳定）。
-    无 expected_size 时：连下多次取尺寸最大者。"""
+    无 expected_size 时：连下多次取尺寸最大者。
+    single_try=True 时只下一次（直链模式：URL 已是浏览器提的最高档）。"""
     try:
         print(f"[+] 正在下载: {os.path.basename(filepath)}")
         if is_image:
             best_content = None
             best_size = (0, 0)
-            for attempt in range(max_retries):
+            tries = 1 if single_try else max_retries
+            for attempt in range(tries):
                 r = requests.get(url, headers=HEADERS, timeout=30)
                 r.raise_for_status()
                 content = r.content
+                # Content-Length 对账：截断直接报错
+                cl = r.headers.get("content-length")
+                if cl and len(content) != int(cl):
+                    print(f"[!] {os.path.basename(filepath)}: 内容截断 "
+                          f"({len(content)}/{cl} 字节)")
+                    return False
                 size = sniff_image_size(content) or (0, 0)
                 px = size[0] * size[1]
 
@@ -366,7 +298,7 @@ def download_file(url: str, filepath: str, is_image: bool = False,
                 if px > best_size[0] * best_size[1]:
                     best_content = content
                     best_size = size
-                if attempt < max_retries - 1:
+                if attempt < tries - 1:
                     print(f"[~] 第{attempt + 1}次尺寸 {size[0]}x{size[1]}，重下一次…")
                     time.sleep(1)
 
@@ -428,52 +360,23 @@ def run(raw_input: str, output_dir: str = None) -> bool:
 
     info = None
 
-    # ---- 第0层（视频优先）：真原画直取（v0d00 + ratio=default，免登录）----
-    # 不依赖 detail API，WAF 拦了后面也能走（dy_img.py 遇到视频会提示用 dy_video.py）
-    if content_type == "video":
-        print("[+] 尝试真原画链路 (v0d00)...")
-        true_url = get_true_original_url(content_id)
-        if true_url:
-            # 需要 desc/nickname，走 detail API 拿元数据（只取元数据，不下载）
-            data2 = get_detail_api(content_id)
-            if data2:
-                meta = parse_detail_api(data2)
-                if meta:
-                    # 文件名规范：{作者12}_{标题18}_{YYYYMMDD}_{id8}_{序号02d}
-                    _name = _safe_name(meta["nickname"], 12)
-                    _title = _safe_name(meta["desc"], 18)
-                    _pts = meta.get("publish_time_str", "")
-                    _date = _pts[0:4] + _pts[5:7] + _pts[8:10] if _pts else "nodate"
-                    info = {
-                        "type": "video",
-                        "desc": meta["desc"],
-                        "nickname": meta["nickname"],
-                        "publish_time": meta.get("publish_time"),
-                        "publish_time_str": meta.get("publish_time_str"),
-                        "quality": "true_original",
-                        "media": [{
-                            "url": true_url,
-                            "filename": f"{_name}_{_title}_{_date}_{content_id[:8]}_01.mp4",
-                        }],
-                    }
-                    print("[+] 真原画链路成功 ✅")
-
-    # ---- 主路径：detail JSON API（视频+图文） ----
-    if not info:
-        print("[*] 请求 detail JSON API...")
-        data2 = get_detail_api(content_id)
-        if data2:
-            info = parse_detail_api(data2)
-            if info:
-                print("[+] detail API 获取成功 ✅")
+    # ---- 主链：detail API（视频+图文）----
+    # 图文 detail 已确认被 WAF 拦（四方验证），走不通时直接指引 --urls
+    print("[*] 请求 detail JSON API...")
+    data2 = get_detail_api(content_id)
+    if data2:
+        info = parse_detail_api(data2)
+        if info:
+            print("[+] detail API 获取成功")
 
     # 都失败了
     if not info:
         print()
         print("=" * 50)
-        print("⚠️  下载失败：抖音 detail API 触发了 WAF 限速防护。")
-        print("   这是抖音服务端的间歇性限速，非脚本故障。")
-        print("   建议稍等几分钟到几小时后再重试即可恢复。")
+        print("⚠️  下载失败：detail API 被 WAF 拦。")
+        print("   请改用 --urls 模式：")
+        print("   1. 用浏览器打开分享链接，从页面源码提图片直链存入 urls.txt")
+        print("   2. python dy_img.py --urls urls.txt --out-dir ./out")
         print("=" * 50)
         return False
 
@@ -507,6 +410,49 @@ def run(raw_input: str, output_dir: str = None) -> bool:
         write_timestamps_smart(downloaded_files, info["publish_time_str"], kind="image")
 
     print(f"\n[OK] 全部完成！成功 {success_count}/{len(info['media'])}，保存至: {os.path.abspath(output_dir)}")
+    return success_count > 0
+
+
+def run_urls(urls_file: str, output_dir: str = None) -> bool:
+    """直链模式：从文本文件逐行读取图片直链直接下载（跳过 detail API）。
+
+    用于 detail API 被 WAF 拦截时：先用浏览器从页面提直链存文件，再用本模式下载。
+    每行一个 URL，空行和 # 开头行跳过。扩展名按 URL 中的模板判断。
+    """
+    if output_dir is None:
+        output_dir = os.path.dirname(os.path.abspath(__file__))
+    os.makedirs(output_dir, exist_ok=True)
+    if not os.path.exists(urls_file):
+        print(f"[!] 找不到文件: {urls_file}")
+        return False
+
+    urls = []
+    for enc in ("utf-8", "gbk", "utf-16"):
+        try:
+            with open(urls_file, "r", encoding=enc) as f:
+                urls = [l.strip() for l in f
+                        if l.strip() and not l.strip().startswith("#")]
+            break
+        except Exception:
+            continue
+
+    if not urls:
+        print("[!] 文件中未找到有效 URL")
+        return False
+
+    print(f"[+] 直链模式，共 {len(urls)} 个 URL")
+    img_interval = RATE_LIMITS.get("douyin_image", 2)
+    success_count = 0
+    for idx, url in enumerate(urls, 1):
+        if idx > 1:
+            time.sleep(img_interval)
+        # 扩展名按模板来（一般是 webp/jpeg，平台强制转码）
+        ext = "webp" if ".webp" in url else "jpg"
+        filepath = os.path.join(output_dir, f"dy_img_{idx:02d}.{ext}")
+        if download_file(url, filepath, is_image=True, single_try=True):
+            success_count += 1
+
+    print(f"\n[OK] 完成 {success_count}/{len(urls)}，保存至: {os.path.abspath(output_dir)}")
     return success_count > 0
 
 
@@ -555,11 +501,18 @@ if __name__ == "__main__":
         print("用法:")
         print("  单个下载:  python dy_img.py <图文分享链接或文本> [--out-dir <保存目录>]")
         print("  批量下载:  python dy_img.py --batch <txt文件路径> [--out-dir <保存目录>]")
+        print("  直链下载:  python dy_img.py --urls <urls.txt> [--out-dir <保存目录>]")
+        print("             （detail API 被 WAF 拦时用：先浏览器提直链存文件，再用本模式下载）")
         print("  指定目录:  python dy_img.py <链接> <保存目录>")
         print(f"  默认保存至: {script_dir}")
         sys.exit(0)
 
-    if args[0] == "--batch":
+    if args[0] == "--urls":
+        if len(args) < 2:
+            print("[!] --urls 需要指定 URL 文件路径")
+            sys.exit(1)
+        run_urls(args[1], out_dir)
+    elif args[0] == "--batch":
         txt = args[1] if len(args) > 1 else "links.txt"
         # 兼容旧的位置参数
         if len(args) > 2 and out_dir == script_dir:
