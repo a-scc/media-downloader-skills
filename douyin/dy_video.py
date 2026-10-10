@@ -1,61 +1,56 @@
 # -*- coding: utf-8 -*-
 """抖音作品视频真原画下载器（视频专用）。
 
-下载原理（单层真原画，2026-10-09 定案）：
+下载原理（单层真原画）：
   detail API 取元数据 + 视频 URI（v0d00/v0300）
   → aweme/v1/play/?video_id={uri}&ratio=default&line=0（免登录）
   → 302 跟随拿 CDN 直链 → 下载源文件
 
-  v0300 是新链路（4K H.265 作品也走 v0300，若若 2026-10-08 验证）。
-  2026-10-09 三层对比实测（Norbb「我真的没有办法」）：
-    - 第1层 iesdouyin 已死：_ROUTER_DATA 无 item_list（2026-08 起 SSR 改版），删
-    - 第2层转码最佳仅 1440p/2.3Mbps，真原画 4K/41Mbps，差 18 倍，删
-    - 第0层原"页面取 URI"被 JSVM bot-gated，改从 detail API 的 video.uri 取
-  失败即判 WAF，等 1 小时，不降级、不绕行。
+  ratio=default 直接拿原画，不走档位选择（避开"4K"标签陷阱：
+  4K 转码与原画同分辨率同帧率，码率差 16 倍，只看标签会拿错）。
+  原画校验：URL 无 br= 参数、桶名为 tos-cn-v-（转码在 tos-cn-ve-）。
+
+  主链 detail API 被 WAF 拦时走 ParseDock 备链（第三方解析，匿名可调，
+  判原画：label=="Original" + height==9999 + url_expires_at is None）。
+  两条都挂才判失败等 1 小时。
 
 反爬：统一 UA + Referer（common.headers），
 429/403 指数退避重试（common.retry）。
 """
 import sys
 import os
-import shutil
 
-# 接入公共模块：统一请求头 / 指数退避重试
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from common.headers import DOUYIN as COMMON_HEADERS
-from common.config import MAX_RETRIES
-from common.retry import with_retry, check_response
-from common.timestamps import write_timestamps_smart
+# 接入公共模块（仓库内运行时用）；单文件分发时缺 common/ 则用内置默认值
+try:
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from common.headers import DOUYIN as COMMON_HEADERS
+    from common.config import MAX_RETRIES
+    from common.timestamps import write_timestamps_smart
+    HEADERS = dict(COMMON_HEADERS)
+    _HAS_COMMON = True
+except ImportError:
+    _HAS_COMMON = False
+    HEADERS = {
+        "User-Agent": (
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
+            "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+            "Version/17.0 Mobile/15E148 Safari/604.1"
+        ),
+        "Referer": "https://www.douyin.com/",
+    }
+    MAX_RETRIES = 3
+    def write_timestamps_smart(files, timestr, kind="video"):
+        pass  # 单文件模式：跳过时间戳写入
 
-# 自动安装依赖（仅通过 requirements.txt + --require-hashes，防止供应链投毒）
 try:
     import requests
 except ImportError:
-    import subprocess
-    _req_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "requirements.txt")
-    if os.path.exists(_req_file):
-        print("[*] 检测到缺少 requests 库，正在通过 requirements.txt 安装（SHA256 hash 校验）...")
-        subprocess.run(
-            [sys.executable, "-m", "pip", "install", "-r", _req_file, "--require-hashes", "-q"],
-            check=True,
-        )
-    else:
-        print("[!] 错误：未找到 requirements.txt，无法安全安装依赖。")
-        print("    请手动执行：pip install -r requirements.txt --require-hashes")
-        sys.exit(1)
-    import requests
+    print("[!] 缺少 requests 库，请执行：pip install requests")
+    sys.exit(1)
 
 import re
-import json
-import struct
 import time
-import subprocess
 from datetime import datetime, timezone, timedelta
-
-EXIFTOOL = shutil.which("exiftool") or os.path.expanduser("~/workspace/tools/Image-ExifTool-13.59/exiftool")
-
-
-HEADERS = dict(COMMON_HEADERS)  # 统一请求头见 common/headers.py
 
 
 def extract_url(text: str) -> str | None:
@@ -111,7 +106,7 @@ def get_content_id(real_url: str) -> tuple[str | None, str | None]:
 
 
 def get_ttwid() -> str | None:
-    """注册匿名 ttwid cookie（2026-08 起 detail API 必须携带，否则返回空）。"""
+    """注册匿名 ttwid cookie（detail API 必须携带，否则返回空）。"""
     try:
         s = requests.Session()
         s.headers.update({"User-Agent": HEADERS["User-Agent"]})
@@ -134,8 +129,8 @@ def get_ttwid() -> str | None:
 def get_detail_api(content_id: str) -> dict | None:
     """主路径：从 douyin.com 的 detail JSON API 获取视频元数据与 URI。
 
-    2026-10-09 起为唯一上游（iesdouyin 第1层已死、视频页被 JSVM bot-gated）。
-    2026-08 起 detail API 需带 ttwid cookie，首次返回空时自动注册 ttwid 后重试。
+    为唯一上游（iesdouyin 第1层已死、视频页被 JSVM bot-gated）。
+    detail API 需带 ttwid cookie，首次返回空时自动注册 ttwid 后重试。
     """
     api_url = (
         "https://www.douyin.com/aweme/v1/web/aweme/detail/"
@@ -148,7 +143,7 @@ def get_detail_api(content_id: str) -> dict | None:
             "AppleWebKit/605.1.15 (KHTML, like Gecko) "
             "Version/16.0 Mobile/15E148 Safari/604.1"
         ),
-        # 若若 2026-10-08：加 Origin + 改 Referer，否则返回 0 字节
+        # 加 Origin + 改 Referer，否则返回 0 字节
         "Origin": "https://open.douyin.com",
         "Referer": "https://open.douyin.com/",
     }
@@ -178,9 +173,8 @@ def get_detail_api(content_id: str) -> dict | None:
 
 
 def extract_v0d00_uri(text: str) -> str | None:
-    """提取/校验真原画 URI（2026-10-04 实测：公开视频免登录）。
-    v0d00 是老链路源文件 URI，v0300 是新链路（4K H.265 作品也走 v0300，若若 2026-10-08 验证）。
-    两者配合 ratio=default 都能拿真原画。"""
+    """提取/校验视频 URI（v0d00 老链路 / v0300 新链路）。
+    配合 ratio=default 拿真原画（已有直接证据，不再纠结 v0d00 说法）。"""
     # v0d00/v0300 后跟 32 位左右的 base62 字符串
     m = re.search(r'v0(?:d00|300)[a-zA-Z0-9_-]{20,40}', text)
     if m:
@@ -192,9 +186,12 @@ def resolve_true_original(uri: str) -> str | None:
     """由视频 URI 解析真原画 CDN 直链（免登录）。
     拼 play/?video_id={uri}&ratio=default&line=0，302 跟随拿最终直链。
     URI 从 detail API 的 video.play_addr_265.uri（或 play_addr.uri）取，
-    不再走视频页（www.douyin.com/video/ 已被 JSVM bot-gated，2026-10-09 实测）。
+    不再走视频页（www.douyin.com/video/ 已被 JSVM bot-gated）。
     主备域名：先 www.douyin.com，失败则 aweme.snssdk.com。
-    返回 302 跳转后的直链，或 None。"""
+    返回 302 跳转后的直链，或 None。
+    
+    校验（防"4K"标签陷阱）：真原画 URL 应无 br= 参数、桶名为 tos-cn-v-
+    （转码档在 tos-cn-ve- 且带 br= 签名）。不符合则警告但不阻断。"""
     if not uri:
         return None
     play_hosts = [
@@ -206,8 +203,14 @@ def resolve_true_original(uri: str) -> str | None:
         try:
             r = requests.head(true_url, headers=HEADERS, allow_redirects=True, timeout=15)
             if r.status_code == 200:
+                final_url = r.url  # 302 后的最终 CDN 直链
                 print(f"[+] 真原画链路成功 ({host.split('/')[2]}, uri={uri[:20]}...)")
-                return r.url  # 302 后的最终 CDN 直链
+                # 原画校验：无 br 参数 + 桶名 tos-cn-v-（非 ve-）
+                if "br=" in final_url or "tos-cn-ve-" in final_url:
+                    print("[!] 警告：直链含 br= 或桶名为 ve-，可能是转码档非原画")
+                elif "tos-cn-v-" in final_url:
+                    print("[+] 桶名校验通过 (tos-cn-v-)，确认为原画")
+                return final_url
         except Exception as e:
             print(f"[~] {host.split('/')[2]} 请求失败 ({e})，试下一个")
     print("[~] 真原画主备域名均失败")
@@ -217,12 +220,12 @@ def resolve_true_original(uri: str) -> str | None:
 def parse_detail_api(data: dict) -> dict | None:
     """从 detail JSON API 响应中提取视频真原画信息（单层，无转码降级）。
 
-    2026-10-09 定案：转码版（最佳 1440p/2.3Mbps）相对真原画（4K/41Mbps）
-    画质差 18 倍，按用户指令移除，不再提供转码分支。
+    转码版（最佳 1440p/1.86Mbps）相对真原画（4K/43.76Mbps）
+    画质差约 23 倍，按用户指令移除，不再提供转码分支。
     URI 直接从 video.play_addr_265.uri（或 play_addr.uri）取，
     不再走视频页（JSVM bot-gated）。
     """
-    # 若若 2026-10-08：story_25_filter 检测——服务端内容过滤，永久拦死，直接跳过
+    # story_25_filter 检测——服务端内容过滤，永久拦死，直接跳过
     ad_check = data.get("aweme_detail")
     fd = data.get("filter_detail", {})
     if ad_check is None and fd.get("filter_reason"):
@@ -291,98 +294,97 @@ def _safe_name(text: str, max_len: int = 30) -> str:
     return text[:max_len]
 
 
-def sniff_image_size(content: bytes):
-    """从文件魔数识别图片尺寸（不依赖 PIL）。返回 (w, h) 或 None。"""
-    # PNG: IHDR 在偏移 16 处
-    if content.startswith(b"\x89PNG\r\n\x1a\n") and len(content) >= 24:
-        w, h = struct.unpack(">II", content[16:24])
-        return (w, h)
-    # JPEG: 找 SOF 标记
-    if content.startswith(b"\xff\xd8"):
-        i = 2
-        while i < len(content) - 9:
-            if content[i] != 0xFF:
-                i += 1
-                continue
-            marker = content[i + 1]
-            if 0xC0 <= marker <= 0xC3:  # SOF0/1/2/3
-                h = struct.unpack(">H", content[i + 5:i + 7])[0]
-                w = struct.unpack(">H", content[i + 7:i + 9])[0]
-                return (w, h)
-            if marker == 0xD9:  # EOI
-                break
-            seg_len = struct.unpack(">H", content[i + 2:i + 4])[0]
-            i += 2 + seg_len
-    # WebP: VP8 头
-    if content.startswith(b"RIFF") and len(content) >= 30 and content[8:12] == b"WEBP":
-        if content[12:16] == b"VP8 " and len(content) >= 30:
-            w = struct.unpack("<H", content[26:28])[0] & 0x3FFF
-            h = struct.unpack("<H", content[28:30])[0] & 0x3FFF
-            return (w, h)
-    return None
-
-
-def download_file(url: str, filepath: str, is_image: bool = False,
-                  expected_size: tuple = None, max_retries: int = MAX_RETRIES) -> bool:
-    """下载单个文件（视频流式+进度条，图片直接下载）。
-    图片：下载后验尺寸，若小于 expected_size 则重下（抖音 CDN 档位不稳定）。
-    无 expected_size 时：连下多次取尺寸最大者。"""
+def download_file(url: str, filepath: str,
+                  max_retries: int = MAX_RETRIES) -> bool:
+    """下载视频文件（流式+进度条+Content-Length 对账）。
+    下载完比对字节数，不一致则报错删残件。"""
     try:
         print(f"[+] 正在下载: {os.path.basename(filepath)}")
-        if is_image:
-            best_content = None
-            best_size = (0, 0)
-            for attempt in range(max_retries):
-                r = requests.get(url, headers=HEADERS, timeout=30)
-                r.raise_for_status()
-                content = r.content
-                size = sniff_image_size(content) or (0, 0)
-                px = size[0] * size[1]
+        r = requests.get(url, headers=HEADERS, stream=True, timeout=30)
+        if r.status_code == 403:
+            print("[~] 403，去掉Referer重试...")
+            h2 = HEADERS.copy()
+            h2.pop("Referer", None)
+            r = requests.get(url, headers=h2, stream=True, timeout=30)
+        r.raise_for_status()
 
-                # 有期望尺寸：达到即收工
-                if expected_size and px >= expected_size[0] * expected_size[1]:
-                    best_content = content
-                    best_size = size
-                    break
-                # 无期望尺寸：取最大者
-                if px > best_size[0] * best_size[1]:
-                    best_content = content
-                    best_size = size
-                if attempt < max_retries - 1:
-                    print(f"[~] 第{attempt + 1}次尺寸 {size[0]}x{size[1]}，重下一次…")
-                    time.sleep(1)
-
-            with open(filepath, "wb") as f:
-                f.write(best_content)
-            size_kb = len(best_content) / 1024
-            print(f"[OK] 下载完成！保存至: {os.path.abspath(filepath)} "
-                  f"({size_kb:.0f} KB, {best_size[0]}x{best_size[1]})")
-        else:
-            r = requests.get(url, headers=HEADERS, stream=True, timeout=30)
-            if r.status_code == 403:
-                print("[~] 403，去掉Referer重试...")
-                h2 = HEADERS.copy()
-                h2.pop("Referer", None)
-                r = requests.get(url, headers=h2, stream=True, timeout=30)
-            r.raise_for_status()
-
-            total = int(r.headers.get("content-length", 0))
-            downloaded = 0
-            with open(filepath, "wb") as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    if chunk:
-                        f.write(chunk)
-                        downloaded += len(chunk)
-                        if total > 0:
-                            pct = downloaded / total * 100
-                            bar = "#" * int(pct / 2)
-                            print(f"\r  [{bar:<50}] {pct:.1f}%", end="", flush=True)
-            print()
-            print(f"[OK] 下载完成！保存至: {os.path.abspath(filepath)}")
+        total = int(r.headers.get("content-length", 0))
+        downloaded = 0
+        with open(filepath, "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
+                    downloaded += len(chunk)
+                    if total > 0:
+                        pct = downloaded / total * 100
+                        bar = "#" * int(pct / 2)
+                        print(f"\r  [{bar:<50}] {pct:.1f}%", end="", flush=True)
+        print()
+        # Content-Length 对账：断流存残件直接报错
+        if total > 0 and downloaded != total:
+            os.remove(filepath)
+            print(f"[!] 内容截断 ({downloaded}/{total} 字节)，已删残件")
+            return False
+        print(f"[OK] 下载完成！保存至: {os.path.abspath(filepath)} "
+              f"({downloaded / 1024 / 1024:.1f} MB)")
         return True
     except Exception as e:
         print(f"[!] 下载失败: {e}")
         return False
+
+
+def parsedock_resolve(share_url: str) -> dict | None:
+    """ParseDock 备链：detail API 被 WAF 拦时用第三方解析拿原画直链。
+    匿名可调，约 5 秒出结果。返回 {"url": 原画直链, "size": 字节数} 或 None。
+    判原画顺序：label=="Original" → height==9999 → url_expires_at is None。
+    限流未知，别猛刷。"""
+    import uuid
+    try:
+        # 1. 创建任务
+        r = requests.post(
+            "https://api.parsedock.kitt.tools/v1/jobs",
+            headers={"Idempotency-Key": str(uuid.uuid4()),
+                     "Content-Type": "application/json"},
+            json={"url": share_url, "action": "resolve",
+                  "preset": "metadata_only",
+                  "playlist": {"enabled": False, "max_items": 1, "items": []}},
+            timeout=30)
+        if r.status_code not in (200, 201, 202):
+            print(f"[~] ParseDock 建任务失败 ({r.status_code})")
+            return None
+        d = r.json()
+        job_id = d.get("job_id") or d.get("id")
+        token = d.get("job_token") or d.get("token")
+        if not job_id or not token:
+            return None
+        # 2. 轮询结果（最多 30 秒）
+        import time
+        for _ in range(6):
+            time.sleep(5)
+            r2 = requests.get(
+                f"https://api.parsedock.kitt.tools/v1/jobs/{job_id}",
+                headers={"Authorization": f"Bearer {token}"}, timeout=30)
+            d2 = r2.json()
+            if d2.get("status") in ("completed", "succeeded", "done"):
+                break
+        else:
+            print("[~] ParseDock 任务超时")
+            return None
+        # 3. 找 Original 条目
+        fmts = d2.get("result", {}).get("formats", [])
+        for f in fmts:
+            if f.get("label") == "Original" and f.get("height") == 9999 \
+               and f.get("url_expires_at") is None:
+                url = f.get("source_url")
+                size = f.get("file_size")
+                if url:
+                    print(f"[+] ParseDock 拿到原画直链 ({size} 字节)")
+                    return {"url": url, "size": size}
+        print("[~] ParseDock 未找到 Original 条目")
+        return None
+    except Exception as e:
+        print(f"[~] ParseDock 异常 ({e})")
+        return None
 
 
 def run(raw_input: str, output_dir: str = None) -> bool:
@@ -408,18 +410,34 @@ def run(raw_input: str, output_dir: str = None) -> bool:
 
     print(f"[+] 内容ID: {content_id} (类型: {content_type})")
 
-    # ---- 单层：detail API 取元数据+URI → play ratio=default 取真原画 ----
-    # 2026-10-09 定案：第1层 iesdouyin 已死、第2层转码画质差 18 倍，均移除。
-    # 失败即判 WAF，等 1 小时，不降级、不绕行。
+    # ---- 主链：detail API 取元数据+URI → play ratio=default 取真原画 ----
+    # 第1层 iesdouyin 已死、第2层转码画质差约 23 倍，均移除。
     print("[+] 请求 detail API 取元数据与视频 URI...")
     data = get_detail_api(content_id)
     info = parse_detail_api(data) if data else None
 
+    # ---- 备链：detail API 被 WAF 拦时走 ParseDock ----
+    if not info:
+        print("[~] detail API 不通，尝试 ParseDock 备链...")
+        pd = parsedock_resolve(share_url)
+        if pd:
+            # 文件名：从分享链接实在拿不到元数据时用通用名
+            info = {
+                "desc": f"抖音视频_{content_id}",
+                "nickname": "未知作者",
+                "publish_time_str": "",
+                "quality": "true_original",
+                "media": [{
+                    "url": pd["url"],
+                    "filename": f"douyin_{content_id[:8]}_01.mp4",
+                }],
+            }
+            print("[+] 备链成功，继续下载")
+
     if not info:
         print()
         print("=" * 50)
-        print("⚠️  下载失败：抖音触发了 WAF 限速防护。")
-        print("   这是抖音服务端的间歇性限速，非脚本故障。")
+        print("⚠️  下载失败：detail API 与 ParseDock 备链均不通。")
         print("   按规矩等 1 小时后再试，期间不探测。")
         print("=" * 50)
         return False
@@ -432,13 +450,13 @@ def run(raw_input: str, output_dir: str = None) -> bool:
     downloaded_files = []
     for media in info["media"]:
         filepath = os.path.join(output_dir, media["filename"])
-        if download_file(media["url"], filepath, is_image=False):
+        if download_file(media["url"], filepath):
             success_count += 1
             downloaded_files.append(filepath)
 
     # 一步到位：自动写入时间戳
     if downloaded_files and info.get("publish_time_str"):
-        write_timestamps_smart(downloaded_files, info["publish_time_str"], kind="image")
+        write_timestamps_smart(downloaded_files, info["publish_time_str"], kind="video")
 
     print(f"\n[OK] 全部完成！成功 {success_count}/{len(info['media'])}，保存至: {os.path.abspath(output_dir)}")
     return success_count > 0
