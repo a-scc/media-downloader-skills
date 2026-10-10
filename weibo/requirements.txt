@@ -1,1 +1,2 @@
 requests>=2.28.0
+yt-dlp>=2024.1.0  # video.weibo.com/show 纯视频页 fallback
