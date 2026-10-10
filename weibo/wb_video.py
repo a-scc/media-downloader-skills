@@ -10,8 +10,7 @@
      只取最高档，拿不到就报错，不降级
   5. 注意：1440p 为平台转码（encoder=Lavf60.3.100），非上传原文件，
      但已是微博能给的最高清晰度
-  6. video.weibo.com/show 纯视频页走 yt-dlp fallback（需安装 yt-dlp），
-     自动选最高码率档（2026-10-10 审验证：1440p60 可达）
+  6. 仅支持 weibo.com 状态链接；video.weibo.com/show 纯视频页暂不支持
 
 反爬：统一 UA + Referer（common.headers），
 429/403 指数退避重试（common.retry）。
@@ -25,8 +24,6 @@ import re
 import sys
 import json
 import argparse
-import shutil
-import subprocess
 from datetime import datetime
 
 import requests
@@ -144,8 +141,6 @@ def extract_status_id(url):
         r'weibo\.com/\d+/([a-zA-Z0-9]+)',
         r'weibo\.(?:com|cn)/detail/(\d+)',
         r'm\.weibo\.cn/(?:status|detail)/(\d+)',
-        r'weibo\.com/tv/show/1034:(\d+)',
-        r'video\.weibo\.com/show\?fid=1034:(\d+)',
     ]
     for p in patterns:
         m = re.search(p, url)
@@ -292,40 +287,17 @@ def download_file(session, url, filepath):
     return True
 
 
-def download_via_ytdlp(url, output_dir):
-    """video.weibo.com/show 纯视频页走 yt-dlp（免登录，自动选最高码率档）。
-    咱们的 playback_list 链路不认这种链接，这里做 fallback。"""
-    if not shutil.which("yt-dlp"):
-        return {"success": False, "error": "未安装 yt-dlp"}
-    # 先列格式确认有 1440p 档（防页面结构变化）
-    print("[+] 平台: 微博视频（yt-dlp 路线）")
-    out_tpl = os.path.join(output_dir, "%(title).30s_%(id)s.%(ext)s")
-    cmd = ["yt-dlp", "-f", "bestvideo*+bestaudio/best", "--no-playlist",
-           "--retries", "3", "-o", out_tpl, url]
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
-    if r.returncode != 0:
-        print(f"[!] yt-dlp 失败: {r.stderr[-200:]}")
-        return {"success": False, "error": "yt-dlp failed"}
-    # 找下载到的文件
-    files = [os.path.join(output_dir, f) for f in os.listdir(output_dir)
-             if f.endswith((".mp4", ".mkv", ".webm"))]
-    if not files:
-        return {"success": False, "error": "未找到下载文件"}
-    newest = max(files, key=os.path.getmtime)
-    print(f"[OK] 完成！\n📂 {newest}")
-    return {"success": True, "files": 1, "dir": output_dir, "file": newest}
-
 
 def download(url, output_dir=None):
-    """主入口：下载单条微博的视频（1440p 优先）。
-    video.weibo.com/show 纯视频页走 yt-dlp fallback。"""
+    """主入口：下载单条微博的视频（1440p 优先，单链路）。
+    仅支持 weibo.com 状态链接；video.weibo.com/show 纯视频页暂不支持。"""
     if output_dir is None:
         output_dir = os.getcwd()
     os.makedirs(output_dir, exist_ok=True)
 
-    # 纯视频页：yt-dlp 路线（2026-10-10 审验证，手动确认 1440p60 为真顶）
     if "video.weibo.com/show" in url or "weibo.com/tv/show" in url:
-        return download_via_ytdlp(url, output_dir)
+        print("[!] 纯视频页暂不支持，请用微博状态链接", file=sys.stderr)
+        return {"success": False, "error": "unsupported url type"}
 
     session = requests.Session()
     session.headers.update(WEIBO_API)
