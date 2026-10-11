@@ -53,7 +53,9 @@ except ImportError:
     def with_retry(*a, **k):
         def deco(f): return f
         return deco
-    def check_response(r): r.raise_for_status()
+    def check_response(r):
+        r.raise_for_status()
+        return r
     def write_timestamps_smart(files, timestr, kind="image"): pass
 
 
